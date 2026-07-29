@@ -1,6 +1,6 @@
-# SENT-Owned Italian Ticketing Blueprint
+# Como to Entrails migration research notes
 
-**Status:** Active working blueprint  
+**Status:** Working document<br>
 **Created:** 2026-07-29  
 **Last Updated:** 2026-07-29  
 **Superseded By:** None  
@@ -8,35 +8,34 @@
 
 ## Changes
 
-- 2026-07-29: Reframed the destination as full retirement of Como and
-  Ticka/PlaNet, not a permanent provider integration.
+- 2026-07-29: Recorded Entrails as the intended target and made the transition
+  assumptions explicit.
 - 2026-07-29: Added official-source findings on Italian automated ticketing,
   football identity/access rules, online-sale controls, and suitability
   recognition.
 - 2026-07-29: Split the target into Entrails, a SENT-owned Italian fiscal
   kernel, unavoidable authority interfaces, and transitional legacy service.
 
-## Executive decision
+## Scope and working assumptions
 
-The intended destination is:
+The current working assumptions are:
 
-1. **Entrails is the sole ticketing system of record.**
-2. **Como App, Como API, Firestore ticketing aggregates, and Ticka/PlaNet are
-   retired.**
-3. **SENT owns the Italian fiscal ticketing capability** and seeks the required
+1. Entrails is the intended target platform for ticketing data and workflows.
+2. Como App, Como API, Firestore ticketing aggregates, and Ticka/PlaNet would be
+   phased out after Entrails covers the required flows and the replacement has
+   the necessary approvals.
+3. One option is for SENT to build the Italian fiscal component and seek
    recognition of suitability for it.
-4. **External authority and venue boundaries remain integrations where they
-   are inherently external:** Agenzia delle Entrate/SIAE, public-safety checks,
-   and stadium access hardware or its approved interface.
-5. **Retirement is phased.** Titles already issued by Ticka may still require
-   legacy servicing until the SENT replacement is accepted and their remaining
-   lifecycle has an approved path.
+4. Agenzia delle Entrate/SIAE, public-safety checks, and stadium access hardware
+   remain external interfaces.
+5. Titles already issued by Ticka may need legacy servicing until their
+   remaining lifecycle has an accepted path.
 
-The architectural recommendation is a separately deployed **Italian Fiscal
-Kernel** owned by SENT and called by Entrails. This is a technical change-control
-boundary, not an assumption that only that service will be examined during
-approval. Online-sale and access-control components may enter the certification
-perimeter; this must be confirmed before implementation.
+A separately deployed Italian Fiscal Kernel is one architecture option. Entrails
+would call it through a narrow interface. The separation would help control
+changes to approved fiscal code, but it does not mean that authorities will
+review only that component. Online sales and access control may also enter the
+certification perimeter.
 
 ## Evidence standard
 
@@ -58,8 +57,9 @@ opinion.
 - **Planet** is the name used by the Como API integration layer.
 - **Titolare del sistema** is an operating/legal role. It is not the same as the
   software producer and does not by itself make SENT's replacement suitable.
-- **SENT Fiscal Kernel** is the proposed SENT-owned replacement capability. The
-  goal is not to copy the Ticka product or its API shape.
+- **SENT Fiscal Kernel** is the name used here for the proposed build option. Its
+  interface would follow the required fiscal outcomes rather than the current
+  Ticka API shape.
 
 Official SIAE guidance says any interested party may apply for recognition of
 suitability. It does not restrict applications to the current system holder.
@@ -127,7 +127,7 @@ ordinary domain or workflow capabilities that should move into Entrails.
 flowchart TB
   clients["Entrails clients\nshop, back office, operations"]
 
-  subgraph entrails["Entrails — sole system of record"]
+  subgraph entrails["Entrails: intended target platform"]
     commerce["Products, orders, payments"]
     rights["Ticket → Privilege → Seating"]
     italy["Holder, fiscal configuration,\nsubscription, eligibility references"]
@@ -297,7 +297,7 @@ These are legacy implementation choices to remove, not reproduce:
 - inconsistent timestamps, statuses, and response shapes;
 - credentials or personal-data artefacts in source history.
 
-## Build-versus-buy assessment
+## Build option: initial assessment
 
 ### Feasible in principle
 
@@ -322,19 +322,19 @@ The following are missing:
 - approved privacy and retention rules;
 - production volumes, resilience objectives, support model, and audit process.
 
-The right immediate decision is therefore **approve or reject a bounded
-certification-discovery phase**, not approve a full production build estimate.
+The next useful step is a bounded certification discovery phase. It should
+produce the evidence needed for a build decision and a credible estimate.
 
 ## Delivery workstreams
 
-### 0. Certification discovery — Gate 0
+### 0. Certification discovery: Gate 0
 
 - appoint an Italian legal/compliance owner and a qualified conformity partner;
 - obtain the current official specifications, test artefacts, Ticka dossier,
   smart-card process, and representative accepted outputs;
 - agree the certification perimeter and controlled-change process;
 - confirm public-safety, accreditation, Alfi, and privacy boundaries;
-- produce a build estimate and formal go/no-go decision.
+- produce a build estimate and a documented build decision.
 
 ### 1. Entrails Italy domain
 
@@ -359,7 +359,7 @@ certification-discovery phase**, not approve a full production build estimate.
 - validate web identity/security behavior and authority interfaces;
 - obtain suitability recognition before production use.
 
-### 4. Migration, pilot, and retirement
+### 4. Migration, pilot, and existing system exit
 
 - reconcile source inventory, titles, holders, subscriptions, transfers, and
   access history with deterministic lineage;
@@ -372,7 +372,8 @@ certification-discovery phase**, not approve a full production build estimate.
 
 ## Decisions for the call
 
-1. Is full retirement of Como and Ticka/PlaNet the agreed destination?
+1. Is Entrails the agreed target, and what must Como and Ticka/PlaNet continue
+   to support during migration?
 2. Will SENT fund a certification-discovery phase before promising delivery?
 3. Who obtains the Ticka recognition dossier, current specifications, test
    card, accepted fiscal samples, and malfunction procedures?
@@ -411,14 +412,14 @@ certification-discovery phase**, not approve a full production build estimate.
 
 ## Sources
 
-- **[L1]** [SIAE — Automated ticketing and access-control systems](https://www.siae.it/it/cosa-facciamo/servizi-collaborazione-altri-enti/agenzia-delle-entrate/biglietterie-automatizzate-controllo-accessi/)
-- **[L2]** [Agenzia delle Entrate — recognition procedure, 22 October 2002](https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Provvedimento%2Bdel%2B22%2B10%2B2002_Provvedimento%2BAE%2B22%2Bottobre%2B2002.pdf/6cc8cbd3-5243-c35f-52a8-4d90222bf9ab)
-- **[L3]** [Agenzia delle Entrate — automated ticketing technical rules, 23 July 2001](https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Decreto%2Bdel%2B23%2B07%2B2001_Decreto%2B23%2Bluglio%2B2001.pdf/fe239ae7-f9b2-6488-87d0-bb3ad42366ab)
-- **[L4]** [D.M. 13 July 2000 — automated ticketing fiscal rules](https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Decreto%2Bdel%2B13%2B07%2B2000_DM%2B13%2Bluglio%2B2000.pdf/c53eee61-57b8-3f33-ee15-dfb4c7b19dc7)
-- **[L5]** [Agenzia delle Entrate — coordinated online-ticketing rules, amended 2025](https://d2aod8qfhzlk6j.cloudfront.net/SITOIS/Provvedimento_secondary_ticketing_27_06_2019_78fe5a6183.pdf)
-- **[L6]** [Gazzetta Ufficiale — D.M. 6 June 2005, football stadium ticketing](https://www.gazzettaufficiale.it/atto/serie_generale/caricaDettaglioAtto/originario?atto.codiceRedazionale=05A06478&atto.dataPubblicazioneGazzetta=2005-06-30&elenco30giorni=false)
-- **[L7]** [Interior Ministry — supporter-card technical guidance](https://www.interno.gov.it/sites/default/files/allegati/tessera_del_tifoso.pdf)
-- **[L8]** [Interior Ministry — transition from supporter card to fidelity card](https://www.interno.gov.it/it/notizie/dalla-tessera-tifoso-alla-fidelity-card)
+- **[L1]** [SIAE: Automated ticketing and access-control systems](https://www.siae.it/it/cosa-facciamo/servizi-collaborazione-altri-enti/agenzia-delle-entrate/biglietterie-automatizzate-controllo-accessi/)
+- **[L2]** [Agenzia delle Entrate: recognition procedure, 22 October 2002](https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Provvedimento%2Bdel%2B22%2B10%2B2002_Provvedimento%2BAE%2B22%2Bottobre%2B2002.pdf/6cc8cbd3-5243-c35f-52a8-4d90222bf9ab)
+- **[L3]** [Agenzia delle Entrate: automated ticketing technical rules, 23 July 2001](https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Decreto%2Bdel%2B23%2B07%2B2001_Decreto%2B23%2Bluglio%2B2001.pdf/fe239ae7-f9b2-6488-87d0-bb3ad42366ab)
+- **[L4]** [D.M. 13 July 2000: automated ticketing fiscal rules](https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Decreto%2Bdel%2B13%2B07%2B2000_DM%2B13%2Bluglio%2B2000.pdf/c53eee61-57b8-3f33-ee15-dfb4c7b19dc7)
+- **[L5]** [Agenzia delle Entrate: coordinated online-ticketing rules, amended 2025](https://d2aod8qfhzlk6j.cloudfront.net/SITOIS/Provvedimento_secondary_ticketing_27_06_2019_78fe5a6183.pdf)
+- **[L6]** [Gazzetta Ufficiale: D.M. 6 June 2005, football stadium ticketing](https://www.gazzettaufficiale.it/atto/serie_generale/caricaDettaglioAtto/originario?atto.codiceRedazionale=05A06478&atto.dataPubblicazioneGazzetta=2005-06-30&elenco30giorni=false)
+- **[L7]** [Interior Ministry: supporter-card technical guidance](https://www.interno.gov.it/sites/default/files/allegati/tessera_del_tifoso.pdf)
+- **[L8]** [Interior Ministry: transition from supporter card to fidelity card](https://www.interno.gov.it/it/notizie/dalla-tessera-tifoso-alla-fidelity-card)
 - [Ticka product site](https://www.ticka.it/) and [PlaNet company page](https://www.ticka.it/a-proposito-di-ticka/chi-siamo/41-planet-sistemi-informatici.html) for vendor terminology and product claims only.
 
 ## Repository evidence snapshot
@@ -426,9 +427,9 @@ certification-discovery phase**, not approve a full production build estimate.
 Public source links and excerpts are intentionally omitted from this sanitized
 brief. Findings were traced at:
 
-- `SENT-Italy/como-app` — `25f69e5e024b8b8a23590ad6a803e733e97d7c38`;
-- `SENT-Italy/como-api` — `322dc5b73ed17e89762d051d524cccb60535a745`;
-- Entrails — `e89406e469d81a153c48aab6a4457da5f1e9f984`.
+- `SENT-Italy/como-app`: `25f69e5e024b8b8a23590ad6a803e733e97d7c38`;
+- `SENT-Italy/como-api`: `322dc5b73ed17e89762d051d524cccb60535a745`;
+- Entrails: `e89406e469d81a153c48aab6a4457da5f1e9f984`.
 
 The code audit covered single-match and season issuance, the Planet adapter,
 reservations, seat operations, holder/person workflows, title transfer and

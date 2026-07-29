@@ -1,14 +1,15 @@
-# Como → Entrails migration briefing
+# Como to Entrails migration working note
 
-A public, sanitized meeting guide for the Como ticketing migration research.
+A public, sanitized technical note for the Como ticketing migration discussion.
 
 **Live briefing:** https://sent-ticketing.github.io/como-entrails-migration-guide/
 
-**Standalone research blueprint:** [research-blueprint.md](research-blueprint.md)
+**Detailed research notes:** [research-blueprint.md](research-blueprint.md)
 
-The published page separates code-verified findings, confirmed requirements,
-architectural inference, and evidence that is still missing. The accompanying
-blueprint adds official primary sources and the SENT-owned replacement scope.
+The page covers the current and proposed system boundaries, the Entrails data
+model, Italian requirements, migration gaps, and decisions for the meeting. The
+research notes include the official primary sources and more detail on the
+option of building a SENT fiscal component.
 Neither document is a legal or certification opinion. They intentionally contain
 no private source links, code excerpts, credentials, or personal-data examples.
 

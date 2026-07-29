@@ -3,446 +3,328 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A verified public briefing for replacing Como and Ticka/PlaNet with Entrails and a SENT-owned Italian fiscal ticketing capability." />
+    <meta name="description" content="Technical working note for the Como to Entrails ticketing migration discussion." />
     <meta name="robots" content="noindex, nofollow" />
-    <meta property="og:title" content="Como → Entrails migration briefing" />
-    <meta property="og:description" content="Verified domain gaps, Italian legal outcomes, a SENT-owned target architecture, and the decisions needed for a safe migration." />
+    <meta property="og:title" content="Como to Entrails ticketing migration" />
+    <meta property="og:description" content="Architecture, data gaps, Italian requirements, and open decisions for the migration discussion." />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#102a2d" />
-    <title>Como → Entrails migration briefing</title>
+    <meta name="theme-color" content="#f5f6f7" />
+    <title>Como to Entrails ticketing migration</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <a class="skip-link" href="#content">Skip to the briefing</a>
+    <a class="skip-link" href="#content">Skip to content</a>
 
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="Back to the top">
-        <span class="brand-mark" aria-hidden="true">S</span>
-        <span>SENT × Entrails</span>
-      </a>
-      <nav aria-label="Briefing sections">
-        <a href="#guide">Call guide</a>
-        <a href="#ticka">Ticka / PlaNet</a>
-        <a href="#architecture">Architecture</a>
-        <a href="#differences">Differences</a>
-        <a href="#decisions">Decisions</a>
-      </nav>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="document-name" href="#top">Como / Entrails</a>
+        <span class="document-state">Working document</span>
+        <nav aria-label="Document sections">
+          <a href="#agenda">Agenda</a>
+          <a href="#systems">Systems</a>
+          <a href="#data">Data model</a>
+          <a href="#italy">Italy</a>
+          <a href="#decisions">Decisions</a>
+          <a href="#sources">Sources</a>
+        </nav>
+      </div>
     </header>
 
     <main id="content">
-      <section class="hero" id="top">
-        <div class="eyebrow"><span class="status-dot"></span> Public, sanitized working brief</div>
-        <p class="kicker">Como 1907 ticketing migration</p>
-        <h1>Move to Entrails.<br />Own the Italian fiscal capability.</h1>
-        <p class="lede">
-          The target is full retirement of Como and Ticka/PlaNet—not a permanent Planet
-          integration. Entrails becomes the system of record, while SENT builds and obtains
-          approval for the Italian fiscal capability that the legacy platform currently supplies.
+      <section class="intro" id="top">
+        <p class="document-type">Technical discussion note</p>
+        <h1>Como to Entrails ticketing migration</h1>
+        <p class="intro-text">
+          This note compares the current Como platform with Entrails. It focuses on the data model,
+          Italian ticketing requirements, and the work that would be needed to move the Como flows
+          into Entrails.
         </p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#guide">Start the call guide</a>
-          <a class="button button-secondary" href="https://github.com/SENT-Ticketing/como-entrails-migration-guide/blob/main/research-blueprint.md">Open the blueprint</a>
+
+        <div class="working-assumption">
+          <strong>Working assumption</strong>
+          <p>
+            Entrails is the intended target platform. Como and Ticka/PlaNet would continue to support
+            existing flows during migration, especially season tickets. The cutover sequence and the
+            scope of a SENT-owned fiscal component are still open for discussion.
+          </p>
         </div>
-        <div class="verification-line">
-          <span>Last verified 29 July 2026</span>
-          <span>Static code audit</span>
-          <span>Not a legal or certification opinion</span>
-        </div>
+
+        <dl class="document-meta">
+          <div><dt>Prepared for</dt><dd>Architecture and migration discussion</dd></div>
+          <div><dt>Research date</dt><dd>29 July 2026</dd></div>
+          <div><dt>Evidence</dt><dd>Repository audit, operator input, official Italian sources</dd></div>
+          <div><dt>Limit</dt><dd>Not a legal or certification opinion</dd></div>
+        </dl>
+
+        <p class="document-link">
+          <a href="https://github.com/SENT-Ticketing/como-entrails-migration-guide/blob/main/research-blueprint.md">Detailed research notes (Markdown)</a>
+        </p>
       </section>
 
-      <section class="metrics" aria-label="Research summary">
-        <article>
-          <strong>13</strong>
-          <span>core gaps</span>
-          <small>all migration-critical</small>
-        </article>
-        <article>
-          <strong>4</strong>
-          <span>delivery workstreams</span>
-          <small>domain, fiscal, authority, transition</small>
-        </article>
-        <article>
-          <strong>1</strong>
-          <span>target system of record</span>
-          <small>Entrails owns ticketing truth</small>
-        </article>
-        <article>
-          <strong>0</strong>
-          <span>permanent Planet dependency</span>
-          <small>legacy support is transitional</small>
-        </article>
-      </section>
-
-      <section class="section call-guide" id="guide">
-        <div class="section-heading">
-          <p class="kicker">Tomorrow’s working session</p>
-          <h2>A decision-led call, not a document walkthrough</h2>
-          <p>Use the sequence below to leave the call with owners and evidence requests.</p>
-        </div>
-        <ol class="agenda">
-          <li>
-            <span class="agenda-time">05 min</span>
-            <div><strong>Confirm the destination</strong><p>Entrails becomes the sole ticketing system; Como and Ticka/PlaNet are retired after an accepted transition.</p></div>
-          </li>
-          <li>
-            <span class="agenda-time">15 min</span>
-            <div><strong>Decompose Ticka/PlaNet</strong><p>Separate ordinary ticketing features, the certified fiscal kernel, public-authority checks, and stadium access.</p></div>
-          </li>
-          <li>
-            <span class="agenda-time">20 min</span>
-            <div><strong>Place every capability</strong><p>Decide what belongs in Entrails, the SENT fiscal kernel, an unavoidable external boundary, or temporary legacy servicing.</p></div>
-          </li>
-          <li>
-            <span class="agenda-time">10 min</span>
-            <div><strong>Agree the replacement path</strong><p>Define the certification discovery, representative match pilot, access-control boundary, and season-ticket transition.</p></div>
-          </li>
-          <li>
-            <span class="agenda-time">10 min</span>
-            <div><strong>Assign evidence owners</strong><p>Name owners for the homologation dossier, current specifications, test card, Alfi contract, public-safety interfaces, and privacy review.</p></div>
-          </li>
-        </ol>
-        <aside class="callout">
-          <span class="callout-label">Desired outcome</span>
-          <p>A go/no-go discovery plan for a SENT-owned fiscal system, a target boundary, and owners for every Gate 0 evidence item.</p>
-        </aside>
-      </section>
-
-      <section class="section" id="boundary">
-        <div class="section-heading split-heading">
-          <div>
-            <p class="kicker">Evidence boundary</p>
-            <h2>What is verified—and what is not</h2>
-          </div>
-          <p class="section-note">Every claim on this page is scoped to one of these grades.</p>
-        </div>
-
-        <div class="evidence-grid">
-          <article class="evidence-card verified">
-            <span class="pill">Code-verified</span>
-            <h3>Repository behaviour</h3>
-            <p>Como sale, reservation, issuance, holder, season-ticket, transfer, payment, fulfilment, report, and access-export paths were traced.</p>
-            <dl>
-              <div><dt>como-app</dt><dd><code>25f69e5e</code></dd></div>
-              <div><dt>como-api</dt><dd><code>322dc5b7</code></dd></div>
-              <div><dt>Entrails</dt><dd><code>e89406e4</code></dd></div>
-            </dl>
-          </article>
-          <article class="evidence-card confirmed">
-            <span class="pill">Official-source verified</span>
-            <h3>Italian regulatory outcomes</h3>
-            <p>Agenzia delle Entrate, SIAE, Gazzetta Ufficiale, and Interior Ministry sources confirm suitability approval, fiscal seals and logs, summary transmission, named football tickets, access control, and authority interfaces.</p>
-          </article>
-          <article class="evidence-card inferred">
-            <span class="pill">Requirement-confirmed</span>
-            <h3>Club operating needs</h3>
-            <p>Operator answers confirm price classes, reductions, named holders, accreditation, subscriptions, current C1/C2 workflows, and related match-day operations. Exact current technical formats still require authoritative samples.</p>
-          </article>
-          <article class="evidence-card unknown">
-            <span class="pill">Still unverified</span>
-            <h3>Certification and production evidence</h3>
-            <p>The current Ticka approval dossier, latest restricted specifications, test-card access, production exports, Alfi boundary, exact accreditation mandate, and approved retention policy remain Gate 0 evidence.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="ticka">
-        <div class="section-heading">
-          <p class="kicker">Ticka / PlaNet</p>
-          <h2>Replace a capability stack—not a single API</h2>
-          <p><strong>Ticka</strong> is the vendor product, <strong>PlaNet S.r.l.</strong> is its producer, and <code>Planet</code> is the integration namespace observed in Como. The law requires outcomes and approval; it does not require this vendor.</p>
-        </div>
-        <div class="evidence-grid">
-          <article class="evidence-card verified">
-            <span class="pill">Entrails</span>
-            <h3>Ordinary ticketing domain</h3>
-            <p>Products, orders, payments, inventory, seating, holders, subscriptions, transfer workflows, fulfilment, and access history belong in Entrails.</p>
-          </article>
-          <article class="evidence-card confirmed">
-            <span class="pill">SENT-owned + approved</span>
-            <h3>Italian fiscal kernel</h3>
-            <p>Fiscal configuration, smart-card interaction, seal generation, append-only transaction log, cancellations, ratei, summaries, transmission, and inspection form a controlled product boundary.</p>
-          </article>
-          <article class="evidence-card inferred">
-            <span class="pill">Unavoidable authority</span>
-            <h3>External checks and endpoints</h3>
-            <p>Agenzia/SIAE approval and reporting, public-safety eligibility such as Questura/VRO, and the approved stadium access boundary cannot be replaced by an internal database assertion.</p>
-          </article>
-          <article class="evidence-card unknown">
-            <span class="pill">Transitional only</span>
-            <h3>Ticka/PlaNet and current Alfi path</h3>
-            <p>Legacy-issued season rights and corrections may need servicing until the SENT system is approved and accepted. Alfi can remain an initial hardware integration without remaining the owner of Entrails ticketing truth.</p>
-          </article>
-        </div>
-        <div class="thesis">
-          <span class="thesis-index">01</span>
-          <div><p class="kicker">Build verdict</p><h3>SENT can pursue its own approved system—but this is a regulated product programme.</h3><p>Official rules allow any interested party to seek suitability recognition. Approval requires documentation, independent conformity evidence, experimental tests, controlled variants, and renewal. A separate deployment is sensible; its actual certification perimeter must be agreed before implementation.</p></div>
-        </div>
-      </section>
-
-      <section class="section" id="architecture">
-        <div class="section-heading">
-          <p class="kicker">Architecture</p>
-          <h2>One product, with a controlled fiscal boundary</h2>
-          <p>The migration decomposes the legacy orchestration aggregate and then reconnects the required Italian controls behind Entrails.</p>
-        </div>
-
-        <div class="architecture-grid">
-          <article class="diagram-panel">
-            <div class="panel-title"><span>Current</span><h3>Como orchestration boundary</h3></div>
-            <div class="system-diagram current-system" role="img" aria-label="Como app talks to both Como API and Firestore. Como API coordinates Firestore, Planet, payment providers, and Alfi exports.">
-              <div class="node node-app">Como app<small>Vue / Capacitor</small></div>
-              <div class="arrow down" aria-hidden="true">↓</div>
-              <div class="node-row">
-                <div class="node node-api">Como API<small>orchestration</small></div>
-                <div class="arrow across" aria-hidden="true">↔</div>
-                <div class="node node-store">Firestore<small>mutable aggregates</small></div>
-              </div>
-              <div class="arrow down" aria-hidden="true">↓</div>
-              <div class="node-row three">
-                <div class="node node-external">Ticka / PlaNet<small>certified titles</small></div>
-                <div class="node node-external">PSPs<small>payments</small></div>
-                <div class="node node-external">Alfi<small>access exports</small></div>
-              </div>
-            </div>
-            <p class="diagram-caption">Ticka/PlaNet is the observed certified-title boundary. Firestore is both workflow storage and a mutable reporting mirror.</p>
-          </article>
-
-          <article class="diagram-panel accent-panel">
-            <div class="panel-title"><span>Target</span><h3>SENT-owned Italian stack</h3></div>
-            <div class="system-diagram target-system" role="img" aria-label="Entrails owns ticketing and Italian domain truth, invokes a SENT-owned approved fiscal kernel, and connects to Italian authorities and the stadium access boundary.">
-              <div class="node node-commerce">Entrails<small>sole system of record</small></div>
-              <div class="arrow down" aria-hidden="true">↓</div>
-              <div class="node-row three">
-                <div class="node node-ticket">Ticketing<small>products + rights</small></div>
-                <div class="node node-new">Italy domain<small>holder + subscription</small></div>
-                <div class="node node-right">Orchestrator<small>per-right state</small></div>
-              </div>
-              <div class="arrow down" aria-hidden="true">↓</div>
-              <div class="node node-right">SENT fiscal kernel<small>owned + homologated</small></div>
-              <div class="arrow down" aria-hidden="true">↓</div>
-              <div class="node-row three">
-                <div class="node node-new">Agenzia / SIAE<small>approval + reporting</small></div>
-                <div class="node node-new">Questura / VRO<small>public safety</small></div>
-                <div class="node node-new">Stadium access<small>Alfi → owned later</small></div>
-              </div>
-            </div>
-            <p class="diagram-caption">Separate deployment protects the controlled fiscal core from ordinary product change. It does not predetermine what the authorities will include in certification review.</p>
-          </article>
-        </div>
-
-        <div class="thesis">
-          <span class="thesis-index">02</span>
-          <div><p class="kicker">Core conclusion</p><h3>Full replacement does not mean copying Como into Entrails.</h3><p>Preserve the legally significant facts, discard the legacy coupling, and give every commercial right, holder, fiscal title, access event, and correction an explicit identity and lineage.</p></div>
-        </div>
-      </section>
-
-      <section class="section" id="primitives">
-        <div class="section-heading">
-          <p class="kicker">Entrails primitives</p>
-          <h2>The kernel we keep</h2>
-        </div>
-        <div class="primitive-flow" role="img" aria-label="TicketKind is the sellable product. Ticket is the commercial instance. Privilege is the executable right. PrivilegeType is the capacity and access class.">
-          <article><span>Configuration</span><strong>PrivilegeType</strong><p>Capacity and access class</p></article>
-          <div class="flow-arrow" aria-hidden="true">→</div>
-          <article><span>Product</span><strong>TicketKind</strong><p>Sellable bundle of rights</p></article>
-          <div class="flow-arrow" aria-hidden="true">→</div>
-          <article><span>Commerce</span><strong>Ticket</strong><p>Ownership and lifecycle record</p></article>
-          <div class="flow-arrow" aria-hidden="true">→</div>
-          <article><span>Execution</span><strong>Privilege</strong><p>One admission or perk right</p></article>
-        </div>
-
-        <div class="mapping-table-wrap">
+      <section class="document-section" id="agenda">
+        <header class="section-header">
+          <span class="section-number">01</span>
+          <div><h2>Meeting agenda</h2><p>The aim is to agree responsibilities and identify missing evidence. It is not a design approval meeting.</p></div>
+        </header>
+        <div class="table-panel">
           <table>
-            <caption>Safe conceptual mapping</caption>
-            <thead><tr><th>Como / Italian concept</th><th>Entrails destination</th><th>Assessment</th></tr></thead>
+            <thead><tr><th>Time</th><th>Topic</th><th>Question to resolve</th></tr></thead>
             <tbody>
-              <tr><td>Match / event</td><td><code>Event</code></td><td><span class="tag close">Close</span></td></tr>
-              <tr><td>Ordine Posto</td><td><code>PrivilegeType</code> + seating + fiscal category</td><td><span class="tag compound">Compound</span></td></tr>
-              <tr><td>Issued match title</td><td><code>Ticket</code> + <code>Privilege</code> + issuance evidence</td><td><span class="tag compound">Compound</span></td></tr>
-              <tr><td>Purchaser</td><td><code>Order.owner</code></td><td><span class="tag close">Close</span></td></tr>
-              <tr><td>Issuing operator</td><td><code>Order.created_by</code> + issuing context</td><td><span class="tag partial">Partial</span></td></tr>
-              <tr><td>Named legal holder</td><td>New immutable per-right holder snapshot</td><td><span class="tag missing">Missing</span></td></tr>
-              <tr><td>Fiscal price class / reduction</td><td>New versioned fiscal configuration + issuance snapshot</td><td><span class="tag missing">Missing</span></td></tr>
-              <tr><td>Season subscription</td><td>New subscription + per-event privileges and allocations</td><td><span class="tag missing">Missing</span></td></tr>
-              <tr><td>Scan history</td><td>External canonical journal or append-only access events</td><td><span class="tag conditional">Conditional</span></td></tr>
+              <tr><td>5 min</td><td>Migration objective</td><td>What is the intended end state, and which legacy flows must remain available during transition?</td></tr>
+              <tr><td>15 min</td><td>Current system</td><td>Which responsibilities sit in Como, Ticka/PlaNet, Alfi, and the public authority interfaces?</td></tr>
+              <tr><td>20 min</td><td>Entrails gaps</td><td>Which changes belong in the Entrails domain model, and which belong in a separate fiscal component?</td></tr>
+              <tr><td>10 min</td><td>Italian requirements</td><td>Which requirements are confirmed, and which still need current specifications or legal review?</td></tr>
+              <tr><td>10 min</td><td>Next steps</td><td>Who obtains the certification dossier, technical samples, access contracts, and privacy decisions?</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <section class="section" id="differences">
-        <div class="section-heading split-heading">
-          <div><p class="kicker">Critical differences</p><h2>Fundamental facts that must survive</h2></div>
-          <p class="section-note">“Fundamental” describes domain truth. “Dangerous” describes the harm of mapping it incorrectly.</p>
+      <section class="document-section" id="systems">
+        <header class="section-header">
+          <span class="section-number">02</span>
+          <div><h2>System boundaries</h2><p>The proposed side is a working architecture. It still depends on certification and integration decisions.</p></div>
+        </header>
+
+        <div class="diagram-grid">
+          <figure class="architecture-panel">
+            <figcaption><span>Current</span><strong>Como platform</strong></figcaption>
+            <div class="architecture-diagram" role="img" aria-label="Como app connects to Como API and Firestore. Como API connects to Ticka PlaNet, payment providers, and Alfi.">
+              <div class="diagram-node primary">Como app<small>sales and operations UI</small></div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-row">
+                <div class="diagram-node">Como API<small>workflow coordination</small></div>
+                <span>↔</span>
+                <div class="diagram-node">Firestore<small>reservations and reports</small></div>
+              </div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-row three">
+                <div class="diagram-node external">Ticka / PlaNet<small>fiscal title and related APIs</small></div>
+                <div class="diagram-node external">Payment providers</div>
+                <div class="diagram-node external">Alfi<small>stadium access</small></div>
+              </div>
+            </div>
+            <p>Planet currently covers fiscal issuance and several ordinary ticketing functions. Firestore also acts as a workflow store and reporting mirror.</p>
+          </figure>
+
+          <figure class="architecture-panel">
+            <figcaption><span>Proposed</span><strong>Entrails with Italian extensions</strong></figcaption>
+            <div class="architecture-diagram" role="img" aria-label="Entrails owns commerce and rights. Italian holder, subscription, fiscal, and access records link to each privilege. A fiscal component connects to Italian authorities and stadium access.">
+              <div class="diagram-node primary">Entrails applications<small>shop, back office, operations</small></div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-row three">
+                <div class="diagram-node">Commerce<small>order and payment</small></div>
+                <div class="diagram-node">Ticket domain<small>ticket and privilege</small></div>
+                <div class="diagram-node">Italy records<small>holder and subscription</small></div>
+              </div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-node candidate">Fiscal component<small>build option, requires recognition</small></div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-row three">
+                <div class="diagram-node external">Agenzia / SIAE</div>
+                <div class="diagram-node external">Questura / VRO</div>
+                <div class="diagram-node external">Alfi or later replacement</div>
+              </div>
+            </div>
+            <p>A separate fiscal component may reduce the certification impact of normal Entrails changes. The certification perimeter still needs to be confirmed.</p>
+          </figure>
         </div>
 
-        <div class="risk-groups">
-          <article class="risk-group">
-            <span class="risk-number">01</span>
-            <div><h3>Certified identity and fiscal evidence</h3><p>Title identity, fiscal seat category, reduction, versioned price/tax facts, and the certified issuing context need immutable evidence linked to the exact right.</p></div>
-            <span class="severity critical">Critical</span>
-          </article>
-          <article class="risk-group">
-            <span class="risk-number">02</span>
-            <div><h3>People and privacy boundaries</h3><p>Purchaser, operator, owner, legal holder, and attendee are distinct roles. The holder snapshot needs an explicit access, retention, and erasure policy.</p></div>
-            <span class="severity critical">Critical</span>
-          </article>
-          <article class="risk-group">
-            <span class="risk-number">03</span>
-            <div><h3>Certified lifecycle and recovery</h3><p>Partial issuance, reconciliation, cancellation, reissue, corrections, and fiscal authority need per-right state and idempotent recovery.</p></div>
-            <span class="severity critical">Critical</span>
-          </article>
-          <article class="risk-group">
-            <span class="risk-number">04</span>
-            <div><h3>Subscriptions and continuity</h3><p>A season product spans events and value allocations. Certified transfer continuity is different from Entrails commercial transfer lineage.</p></div>
-            <span class="severity critical">Critical</span>
-          </article>
-          <article class="risk-group">
-            <span class="risk-number">05</span>
-            <div><h3>Inventory, access, and provenance</h3><p>One system must own capacity writes. Every migrated fact needs deterministic lineage, while access history needs an explicit canonical owner.</p></div>
-            <span class="severity critical">Critical</span>
-          </article>
-        </div>
-
-        <div class="subsection-heading">
-          <p class="kicker">Do not map 1:1</p>
-          <h3>The most dangerous false equivalences</h3>
-        </div>
-        <div class="trap-grid">
-          <article><code>Como ticket row</code><span>≠</span><code>Ticket</code><p>Split commerce, right, holder, payment, issuance, and fulfilment.</p></article>
-          <article><code>Planet title ID</code><span>≠</span><code>Ticket UUID</code><p>Preserve certified and commercial identities separately.</p></article>
-          <article><code>Holder</code><span>≠</span><code>Owner / Attendee</code><p>Use a per-right legal-holder snapshot.</p></article>
-          <article><code>Season title</code><span>≠</span><code>Combi TicketKind</code><p>Model included events, rights, and value allocations.</p></article>
-          <article><code>Payment success</code><span>≠</span><code>Issuance success</code><p>Track commerce and certified fulfilment independently.</p></article>
-          <article><code>Cessione</code><span>≠</span><code>Ticket.transfer()</code><p>Link certified continuity to commercial lineage.</p></article>
-          <article><code>Reserved seat</code><span>≠</span><code>Allocated privilege</code><p>Reconcile provider, reservation, and mirror state first.</p></article>
-          <article><code>Fiscal seal</code><span>≠</span><code>Access token</code><p>They have separate security and lifecycle roles.</p></article>
-        </div>
-
-        <div class="subsection-heading">
-          <p class="kicker">Dangerous, not fundamental</p>
-          <h3>Legacy mechanisms to contain—not reproduce</h3>
-        </div>
-        <div class="hazard-list">
-          <div><span class="severity critical">Critical</span><p>Direct client writes for privileged transitions</p></div>
-          <div><span class="severity critical">Critical</span><p>Positional coupling of seats, holders, and responses</p></div>
-          <div><span class="severity critical">Critical</span><p>Mutable report projections treated as history</p></div>
-          <div><span class="severity critical">Critical</span><p>Process-local enforcement of hard limits</p></div>
-          <div><span class="severity critical">Critical</span><p>Frontend-filtered authorization scope</p></div>
-          <div><span class="severity critical">Critical</span><p>Credential or personal-data artifacts in source history</p></div>
-          <div><span class="severity high">High</span><p>Parallel, contradictory status flags</p></div>
-          <div><span class="severity high">High</span><p>Raw provider responses used as the domain schema</p></div>
-          <div><span class="severity high">High</span><p>Numeric client role levels</p></div>
-          <div><span class="severity high">High</span><p>Duplicated match and season issuance paths</p></div>
-          <div><span class="severity high">High</span><p>Mutable scheduler repair and reconciliation</p></div>
-          <div><span class="severity high">High</span><p>Inconsistent timestamps, statuses, and response shapes</p></div>
+        <h3>What the Planet adapter currently covers</h3>
+        <p class="section-copy">
+          The inspected adapter is about 4,100 lines, excluding the separate match and season issuance flows.
+          A direct API rewrite would move several current couplings into Entrails. The responsibilities should be split first.
+        </p>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Area</th><th>Current use</th><th>Likely target placement</th></tr></thead>
+            <tbody>
+              <tr><td>Events and code tables</td><td>Organizers, events, seat orders, reductions, subscription types</td><td>Entrails configuration, with certified codes referenced by the fiscal component</td></tr>
+              <tr><td>Inventory and seating</td><td>Availability, block/unblock, no-map capacity, pre-emption</td><td>Entrails, with one agreed capacity writer during migration</td></tr>
+              <tr><td>People and eligibility</td><td>Holders, purchasers, supporter cards, bans, reference data</td><td>Entrails holder records plus external authority decisions</td></tr>
+              <tr><td>Fiscal issuance</td><td>Match and season titles, fiscal identity, transaction log references</td><td>SENT fiscal component or Ticka during transition</td></tr>
+              <tr><td>Title lifecycle</td><td>State, cancellation, transferability, holder transfer, history</td><td>Entrails workflow plus append-only fiscal actions</td></tr>
+              <tr><td>Reporting and access</td><td>Reports, title detail, access-related data and exports</td><td>Entrails projections backed by fiscal and access journals</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <section class="section target-boundary" id="target">
-        <div class="section-heading">
-          <p class="kicker">Required target boundary</p>
-          <h2>Extend around the kernel, not through it</h2>
-        </div>
-        <div class="target-map" role="img" aria-label="Entrails owns the ticket domain and invokes a SENT-owned Italian fiscal kernel, which connects to Italian fiscal authorities, public-safety services, and the stadium access system.">
-          <div class="target-layer additions top-additions">
-            <span>Subscription instance</span><span>Per-event allocation</span><span>Eligibility decision</span>
+      <section class="document-section" id="data">
+        <header class="section-header">
+          <span class="section-number">03</span>
+          <div><h2>Data model</h2><p>Entrails already separates the commercial ticket from the right that can be used.</p></div>
+        </header>
+
+        <figure class="model-panel">
+          <figcaption>Entrails kernel and proposed supporting records</figcaption>
+          <div class="model-flow" role="img" aria-label="PrivilegeType leads to TicketKind, Ticket, and Privilege. Privilege links to holder snapshot, fiscal issuance, and access events. A subscription allocation also links to a privilege.">
+            <div class="model-core">
+              <div class="model-node"><small>Configuration</small>PrivilegeType</div>
+              <span>→</span>
+              <div class="model-node"><small>Product</small>TicketKind</div>
+              <span>→</span>
+              <div class="model-node"><small>Commerce</small>Ticket</div>
+              <span>→</span>
+              <div class="model-node focus"><small>Right</small>Privilege</div>
+            </div>
+            <div class="model-links">
+              <span>linked to</span>
+              <div class="model-node proposed">Holder snapshot</div>
+              <div class="model-node proposed">Fiscal issuance</div>
+              <div class="model-node proposed">Access events</div>
+              <div class="model-node proposed">Subscription allocation</div>
+            </div>
           </div>
-          <div class="connector" aria-hidden="true">↓</div>
-          <div class="target-layer kernel">
-            <span>Event</span><i>→</i><span>PrivilegeType</span><i>→</i><span>TicketKind</span><i>→</i><span>Ticket</span><i>→</i><span>Privilege</span>
-          </div>
-          <div class="connector" aria-hidden="true">↓</div>
-          <div class="target-layer additions">
-            <span>Holder snapshot</span><span>Certified issuance journal</span><span>Access event journal</span>
-          </div>
-          <div class="connector" aria-hidden="true">↕</div>
-          <div class="target-layer external"><span>SENT-owned Italian fiscal kernel</span></div>
-          <div class="connector" aria-hidden="true">↕</div>
-          <div class="target-layer external"><span>Agenzia / SIAE</span><span>Questura / VRO</span><span>Alfi initially / SENT access later</span></div>
+        </figure>
+
+        <h3>Concept mapping</h3>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Como or Italian concept</th><th>Entrails placement</th><th>Assessment</th></tr></thead>
+            <tbody>
+              <tr><td>Match or event</td><td><code>Event</code></td><td><span class="status close">Close</span></td></tr>
+              <tr><td>Ordine Posto</td><td><code>PrivilegeType</code>, seating, and fiscal category</td><td><span class="status compound">Compound</span></td></tr>
+              <tr><td>Issued match title</td><td><code>Ticket</code>, <code>Privilege</code>, and fiscal issuance</td><td><span class="status compound">Compound</span></td></tr>
+              <tr><td>Purchaser</td><td><code>Order.owner</code></td><td><span class="status close">Close</span></td></tr>
+              <tr><td>Issuing operator</td><td><code>Order.created_by</code> plus issuing context</td><td><span class="status partial">Partial</span></td></tr>
+              <tr><td>Named holder</td><td>New per-right holder snapshot</td><td><span class="status missing">Missing</span></td></tr>
+              <tr><td>Fiscal reduction and price class</td><td>New versioned fiscal configuration</td><td><span class="status missing">Missing</span></td></tr>
+              <tr><td>Season subscription</td><td>New subscription with event allocations and privileges</td><td><span class="status missing">Missing</span></td></tr>
+              <tr><td>Scan history</td><td>Append-only access events or an agreed external journal</td><td><span class="status open">Open</span></td></tr>
+            </tbody>
+          </table>
         </div>
-        <div class="invariants">
-          <article><strong>Separate identities</strong><p>Certified title, fiscal seal, barcode, Ticket, and Privilege IDs remain distinct and linked.</p></article>
-          <article><strong>Independent states</strong><p>Payment, issuance, fulfilment, ticket lifecycle, and claimed state never stand in for one another.</p></article>
-          <article><strong>Immutable evidence</strong><p>Used fiscal configuration is frozen; corrections append facts rather than rewriting history.</p></article>
-          <article><strong>One inventory writer</strong><p>Mirrors and caches cannot independently authorize capacity.</p></article>
-          <article><strong>Deterministic lineage</strong><p>Every imported fact retains source ID, target ID, checksum, run, and correction provenance.</p></article>
-          <article><strong>Explicit subscriptions</strong><p>Every included event has its own right, seat continuity, and fiscal value allocation.</p></article>
+
+        <h3>Gaps that affect the target model</h3>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Area</th><th>Missing or different in Entrails</th><th>Why it matters</th><th>Priority</th></tr></thead>
+            <tbody>
+              <tr><td>Person roles</td><td>Purchaser, operator, commercial owner, named holder, and attendee are not represented separately at issuance time.</td><td>A mutable owner or profile cannot stand in for the person named on a title.</td><td>Before pilot</td></tr>
+              <tr><td>Fiscal configuration</td><td>No versioned seat order, reduction, and price or tax snapshot for each issued right.</td><td>Later configuration edits must not change historical fiscal evidence.</td><td>Before pilot</td></tr>
+              <tr><td>Certified title identity</td><td>The fiscal title, seal, barcode, Ticket ID, and Privilege ID need separate fields and links.</td><td>They have different purposes and lifecycles.</td><td>Before pilot</td></tr>
+              <tr><td>Subscriptions</td><td>No explicit season instance with included events, seats, value allocation, and rateo.</td><td>A season title cannot be treated as one ordinary ticket or product bundle.</td><td>Before season migration</td></tr>
+              <tr><td>Issuance recovery</td><td>No per-right state for partial success, retry, cancellation, correction, and reconciliation.</td><td>A paid order can contain a mix of successful and failed external issuances.</td><td>Before pilot</td></tr>
+              <tr><td>Inventory authority</td><td>Planet, Firestore, and Como currently hold related seat state.</td><td>One system must approve each capacity write during migration.</td><td>Before data import</td></tr>
+              <tr><td>Access history</td><td><code>Privilege.claimed</code> is a current state, not a scan journal.</td><td>Repeated attempts, denials, reversals, and device context cannot be reconstructed from a Boolean.</td><td>Before gate integration</td></tr>
+              <tr><td>Migration lineage</td><td>No general mapping ledger for source IDs, target IDs, checksums, runs, and corrections.</td><td>Imported records must remain traceable after Como is no longer available.</td><td>Before data import</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Current implementation patterns not to carry over</h3>
+        <ul class="plain-list columns">
+          <li>Direct client writes for privileged transitions</li>
+          <li>Position-based matching of seats, holders, and provider responses</li>
+          <li>Mutable report documents used as historical evidence</li>
+          <li>Process-local enforcement of capacity or purchase limits</li>
+          <li>Authorization scope enforced only by client filtering</li>
+          <li>Raw Planet responses used as the application data model</li>
+          <li>Separate match and season implementations with duplicated rules</li>
+          <li>Repair jobs that overwrite the record they are meant to reconcile</li>
+        </ul>
+      </section>
+
+      <section class="document-section" id="italy">
+        <header class="section-header">
+          <span class="section-number">04</span>
+          <div><h2>Italian requirements</h2><p>This table separates published requirements from operator input and open interpretation.</p></div>
+        </header>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Area</th><th>Current finding</th><th>System consequence</th><th>Evidence</th></tr></thead>
+            <tbody>
+              <tr><td>System suitability</td><td>An interested party can apply. Approval involves documentation, independent conformity material, tests, and examination.</td><td>A SENT-built fiscal component is possible, but it needs a formal recognition path.</td><td><a href="#source-l1">L1</a>, <a href="#source-l2">L2</a></td></tr>
+              <tr><td>Controlled changes</td><td>Recognition is time limited and system variants require prior authorization.</td><td>The approved fiscal code needs controlled releases and a stable boundary.</td><td><a href="#source-l1">L1</a>, <a href="#source-l2">L2</a></td></tr>
+              <tr><td>Fiscal title</td><td>The rules cover activation cards, fiscal seals, transaction records, and non-rewritable storage.</td><td>Issuance and cancellation need an append-only record linked to the exact privilege.</td><td><a href="#source-l3">L3</a>, <a href="#source-l4">L4</a></td></tr>
+              <tr><td>Summaries and inspection</td><td>Event, daily, and monthly data includes fiscal amounts, seat orders, reductions, subscriptions, and ratei.</td><td>Entrails must retain the issuance-time facts used in accepted reports.</td><td><a href="#source-l3">L3</a>, <a href="#source-l4">L4</a></td></tr>
+              <tr><td>Football identity and capacity</td><td>Published football rules cover named titles, venue and seat data, sector capacity, and public-security access.</td><td>Holder snapshots, sector capacity, and bounded authority access are part of the design.</td><td><a href="#source-l6">L6</a></td></tr>
+              <tr><td>Access control</td><td>The title is checked against valid rights and invalidated for repeat entry.</td><td>Fiscal identity, access token, and scan history stay separate but linked.</td><td><a href="#source-l1">L1</a>, <a href="#source-l6">L6</a></td></tr>
+              <tr><td>Online sales</td><td>Published rules include identified users, contact verification, transaction traceability, and security controls.</td><td>The web flow may be part of the review. Its exact football scope needs confirmation.</td><td><a href="#source-l5">L5</a></td></tr>
+              <tr><td>Supporter or fidelity card</td><td>Interior Ministry material describes public-security clearance. Later guidance makes use conditional rather than universal.</td><td>Store the decision reference needed for a match, not an unlimited copy of the authority data.</td><td><a href="#source-l7">L7</a>, <a href="#source-l8">L8</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="open-notes">
+          <h3>Items that still need a current source or sample</h3>
+          <ul class="plain-list">
+            <li>The accepted C1 and C2 schemas, examples, transmission responses, and correction process.</li>
+            <li>The exact source, event scope, and effective date for the reported Codice Fiscale or accreditation change.</li>
+            <li>The current retention rules for football holder data and their relationship to fiscal record retention.</li>
+            <li>The certification perimeter for the online shop and the Alfi access integration.</li>
+          </ul>
         </div>
       </section>
 
-      <section class="section" id="decisions">
-        <div class="section-heading">
-          <p class="kicker">Gate 0</p>
-          <h2>Decisions required before committing to the build</h2>
-          <p>These establish scope and feasibility before implementation estimates become credible.</p>
+      <section class="document-section" id="transition">
+        <header class="section-header">
+          <span class="section-number">05</span>
+          <div><h2>Transition outline</h2><p>The sequence below is a discussion basis. Dates depend on the certification work and existing season-ticket obligations.</p></div>
+        </header>
+        <div class="phase-flow" role="img" aria-label="Transition moves from current service, through evidence and design, to a single-match pilot, dual servicing, and legacy exit.">
+          <div><span>1</span><strong>Current service</strong><p>Como and Ticka remain authoritative.</p></div>
+          <i>→</i>
+          <div><span>2</span><strong>Evidence and design</strong><p>Confirm specifications, ownership, and certification path.</p></div>
+          <i>→</i>
+          <div><span>3</span><strong>Single-match pilot</strong><p>Run one representative event and reconcile all results.</p></div>
+          <i>→</i>
+          <div><span>4</span><strong>Dual servicing</strong><p>New flows move while existing season rights remain supported.</p></div>
+          <i>→</i>
+          <div><span>5</span><strong>Legacy exit</strong><p>Retire only after reporting, correction, access, and rollback checks pass.</p></div>
         </div>
-        <div class="decision-list">
-          <article><span>01</span><div><h3>Recognition path and perimeter</h3><p>Engage the relevant certifier and authorities to confirm the application path, current specifications, approved test approach, and whether web and access components enter scope.</p></div><strong>Owner needed</strong></article>
-          <article><span>02</span><div><h3>Current Ticka dossier</h3><p>Obtain the version, recognition documents, operational procedures, smart-card setup, failure process, and interface contract SENT is entitled to receive.</p></div><strong>Owner needed</strong></article>
-          <article><span>03</span><div><h3>Fiscal artefacts</h3><p>Obtain current transaction-log and transmission specifications, a test card, code tables, representative summaries, ratei, corrections, and accepted outputs.</p></div><strong>Owner needed</strong></article>
-          <article><span>04</span><div><h3>Holder and privacy policy</h3><p>Validate the minimum football-holder data, legal purpose, security, authority access, field-specific retention, correction, and erasure handling.</p></div><strong>Owner needed</strong></article>
-          <article><span>05</span><div><h3>Authority and stadium boundaries</h3><p>Confirm Questura/VRO rules, the exact Codice Fiscale/accreditation source, and whether Alfi remains the initial approved access path.</p></div><strong>Owner needed</strong></article>
-          <article><span>06</span><div><h3>Entrails domain changes</h3><p>Approve holder snapshots, fiscal configuration versions, subscriptions/ratei, inventory authority, transfer continuity, and append-only access evidence.</p></div><strong>Owner needed</strong></article>
-          <article><span>07</span><div><h3>Issuance recovery contract</h3><p>Approve per-right idempotency, partial success, retry, cancellation, correction, inspection, and accounting behaviour.</p></div><strong>Owner needed</strong></article>
-          <article><span>08</span><div><h3>Transition and retirement</h3><p>Define which legacy-issued season rights remain serviceable, the single-match pilot, reconciliation gates, rollback, and final Ticka/PlaNet shutdown criteria.</p></div><strong>Owner needed</strong></article>
-        </div>
+        <p class="section-copy">
+          The suggested pilot includes seated and standing inventory, one reduction, complimentary issuance,
+          named holders, cancellation, and refund handling. Reconciliation should cover money, capacity, issued
+          titles, holders, and access results.
+        </p>
       </section>
 
-      <section class="section pilot">
-        <div>
-          <p class="kicker">Recommended first production boundary</p>
-          <h2>One representative single match</h2>
-          <p>Include seated and standing inventory, reductions, complimentary issuance, named holders, and refunds. Keep existing season tickets on the legacy service until subscription and rateo primitives pass acceptance.</p>
-        </div>
-        <div class="pilot-checks">
-          <span>Reconcile before sale</span>
-          <span>Reconcile after each operating day</span>
-          <span>Document dual-service rollback</span>
-          <span>Require zero unexplained deltas</span>
-        </div>
+      <section class="document-section" id="decisions">
+        <header class="section-header">
+          <span class="section-number">06</span>
+          <div><h2>Decisions and evidence owners</h2><p>These are the questions that should leave the meeting with an owner.</p></div>
+        </header>
+        <ol class="decision-list">
+          <li><span>01</span><p>Confirm the intended end state and the legacy servicing obligations that remain during migration.</p></li>
+          <li><span>02</span><p>Obtain the current Ticka recognition dossier, approved version, operating procedures, and interface contract.</p></li>
+          <li><span>03</span><p>Obtain the current transaction log and transmission specifications, a test card, and accepted examples.</p></li>
+          <li><span>04</span><p>Identify the conformity or certification partner and confirm the system components included in review.</p></li>
+          <li><span>05</span><p>Confirm the Questura or VRO process, the accreditation requirement, and the Alfi contract boundary.</p></li>
+          <li><span>06</span><p>Approve the minimum holder data, access controls, retention, correction, and deletion policy.</p></li>
+          <li><span>07</span><p>Agree which system owns inventory during import, pilot, and dual servicing.</p></li>
+          <li><span>08</span><p>Define the reconciliation and exit checks for retiring each legacy responsibility.</p></li>
+        </ol>
       </section>
 
-      <section class="section" id="sources">
-        <div class="section-heading">
-          <p class="kicker">Primary sources</p>
-          <h2>What the legal conclusion rests on</h2>
-          <p>These sources establish the direction, not a substitute for Italian counsel, the current technical specifications, or formal suitability review.</p>
-        </div>
-        <div class="evidence-grid">
-          <article class="evidence-card confirmed">
-            <span class="pill">Fiscal system</span>
-            <h3>Suitability, seals, logs, and transmission</h3>
-            <p><a href="https://www.siae.it/it/cosa-facciamo/servizi-collaborazione-altri-enti/agenzia-delle-entrate/biglietterie-automatizzate-controllo-accessi/">SIAE overview</a> · <a href="https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Provvedimento%2Bdel%2B22%2B10%2B2002_Provvedimento%2BAE%2B22%2Bottobre%2B2002.pdf/6cc8cbd3-5243-c35f-52a8-4d90222bf9ab">Agenzia suitability procedure</a> · <a href="https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Decreto%2Bdel%2B23%2B07%2B2001_Decreto%2B23%2Bluglio%2B2001.pdf/fe239ae7-f9b2-6488-87d0-bb3ad42366ab">technical specifications</a></p>
-          </article>
-          <article class="evidence-card confirmed">
-            <span class="pill">Football</span>
-            <h3>Named tickets, capacity, access, and privacy</h3>
-            <p><a href="https://www.gazzettaufficiale.it/atto/serie_generale/caricaDettaglioAtto/originario?atto.codiceRedazionale=05A06478&amp;atto.dataPubblicazioneGazzetta=2005-06-30&amp;elenco30giorni=false">D.M. 6 June 2005</a> · <a href="https://www.interno.gov.it/it/notizie/dalla-tessera-tifoso-alla-fidelity-card">Interior Ministry fidelity-card update</a></p>
-          </article>
-          <article class="evidence-card confirmed">
-            <span class="pill">Online sale</span>
-            <h3>Identity and security controls</h3>
-            <p><a href="https://d2aod8qfhzlk6j.cloudfront.net/SITOIS/Provvedimento_secondary_ticketing_27_06_2019_78fe5a6183.pdf">Agenzia coordinated rules, amended 2025</a></p>
-          </article>
-          <article class="evidence-card inferred">
-            <span class="pill">Vendor terminology</span>
-            <h3>Ticka and PlaNet</h3>
-            <p><a href="https://www.ticka.it/">Ticka product site</a> · <a href="https://www.ticka.it/a-proposito-di-ticka/chi-siamo/41-planet-sistemi-informatici.html">PlaNet company page</a>. Product approval/version statements are vendor claims until matched to the official dossier.</p>
-          </article>
+      <section class="document-section sources" id="sources">
+        <header class="section-header">
+          <span class="section-number">07</span>
+          <div><h2>Sources and evidence boundary</h2><p>The legal sources support the findings above. Current technical specifications and formal advice are still required.</p></div>
+        </header>
+
+        <ol class="source-list">
+          <li id="source-l1"><span>L1</span><a href="https://www.siae.it/it/cosa-facciamo/servizi-collaborazione-altri-enti/agenzia-delle-entrate/biglietterie-automatizzate-controllo-accessi/">SIAE: automated ticketing and access-control systems</a></li>
+          <li id="source-l2"><span>L2</span><a href="https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Provvedimento%2Bdel%2B22%2B10%2B2002_Provvedimento%2BAE%2B22%2Bottobre%2B2002.pdf/6cc8cbd3-5243-c35f-52a8-4d90222bf9ab">Agenzia delle Entrate: recognition procedure, 22 October 2002</a></li>
+          <li id="source-l3"><span>L3</span><a href="https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Decreto%2Bdel%2B23%2B07%2B2001_Decreto%2B23%2Bluglio%2B2001.pdf/fe239ae7-f9b2-6488-87d0-bb3ad42366ab">Agenzia delle Entrate: automated ticketing technical rules, 23 July 2001</a></li>
+          <li id="source-l4"><span>L4</span><a href="https://www.agenziaentrate.gov.it/portale/documents/20143/275244/Decreto%2Bdel%2B13%2B07%2B2000_DM%2B13%2Bluglio%2B2000.pdf/c53eee61-57b8-3f33-ee15-dfb4c7b19dc7">D.M. 13 July 2000: automated ticketing fiscal rules</a></li>
+          <li id="source-l5"><span>L5</span><a href="https://d2aod8qfhzlk6j.cloudfront.net/SITOIS/Provvedimento_secondary_ticketing_27_06_2019_78fe5a6183.pdf">Agenzia delle Entrate: coordinated online-ticketing rules, amended 2025</a></li>
+          <li id="source-l6"><span>L6</span><a href="https://www.gazzettaufficiale.it/atto/serie_generale/caricaDettaglioAtto/originario?atto.codiceRedazionale=05A06478&amp;atto.dataPubblicazioneGazzetta=2005-06-30&amp;elenco30giorni=false">Gazzetta Ufficiale: D.M. 6 June 2005, football stadium ticketing</a></li>
+          <li id="source-l7"><span>L7</span><a href="https://www.interno.gov.it/sites/default/files/allegati/tessera_del_tifoso.pdf">Interior Ministry: supporter-card technical guidance</a></li>
+          <li id="source-l8"><span>L8</span><a href="https://www.interno.gov.it/it/notizie/dalla-tessera-tifoso-alla-fidelity-card">Interior Ministry: transition from supporter card to fidelity card</a></li>
+        </ol>
+
+        <div class="evidence-note">
+          <p><strong>Code snapshot:</strong> como-app <code>25f69e5e</code>, como-api <code>322dc5b7</code>, Entrails <code>e89406e4</code>.</p>
+          <p><strong>Still missing:</strong> production exports, current Ticka approval material, accepted fiscal samples, deployed access contracts, and approved privacy rules.</p>
         </div>
       </section>
     </main>
 
     <footer>
-      <div>
-        <strong>Como → Entrails migration briefing</strong>
-        <p>Prepared from pinned repository evidence, official Italian sources, and confirmed operating requirements.</p>
-      </div>
-      <div class="footer-note">
-        <span>Research snapshot: 29 July 2026</span>
-        <span>This page does not claim Entrails is SIAE-certified.</span>
-      </div>
+      <p>Como to Entrails ticketing migration</p>
+      <p>Working document, 29 July 2026</p>
     </footer>
   </body>
 </html>
