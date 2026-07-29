@@ -2,6 +2,8 @@
 
 A public, sanitized meeting guide for the Como ticketing migration research.
 
+**Live briefing:** https://sent-ticketing.github.io/como-entrails-migration-guide/
+
 The published page separates code-verified findings, confirmed requirements,
 architectural inference, and evidence that is still missing. It intentionally
 contains no private source links, code excerpts, credentials, personal-data
