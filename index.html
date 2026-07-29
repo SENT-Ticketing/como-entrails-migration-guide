@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Technical working note for the Como to Entrails ticketing migration discussion." />
+    <meta name="description" content="Pre-research on the Como to Entrails ticketing migration." />
     <meta name="robots" content="noindex, nofollow" />
     <meta property="og:title" content="Como to Entrails ticketing migration" />
-    <meta property="og:description" content="Architecture, data gaps, Italian requirements, and open decisions for the migration discussion." />
+    <meta property="og:description" content="Architecture, data gaps, Italian requirements, and open questions for the Como to Entrails migration." />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#f5f6f7" />
     <title>Como to Entrails ticketing migration</title>
@@ -20,7 +20,6 @@
         <a class="document-name" href="#top">Como / Entrails</a>
         <span class="document-state">Working document</span>
         <nav aria-label="Document sections">
-          <a href="#agenda">Agenda</a>
           <a href="#systems">Systems</a>
           <a href="#data">Data model</a>
           <a href="#italy">Italy</a>
@@ -32,7 +31,7 @@
 
     <main id="content">
       <section class="intro" id="top">
-        <p class="document-type">Technical discussion note</p>
+        <p class="document-type">Technical pre-research</p>
         <h1>Como to Entrails ticketing migration</h1>
         <p class="intro-text">
           This note compares the current Como platform with Entrails. It focuses on the data model,
@@ -45,12 +44,12 @@
           <p>
             Entrails is the intended target platform. Como and Ticka/PlaNet would continue to support
             existing flows during migration, especially season tickets. The cutover sequence and the
-            scope of a SENT-owned fiscal component are still open for discussion.
+            scope of a SENT-owned fiscal component still need further research.
           </p>
         </div>
 
         <dl class="document-meta">
-          <div><dt>Prepared for</dt><dd>Architecture and migration discussion</dd></div>
+          <div><dt>Purpose</dt><dd>System and data-model comparison</dd></div>
           <div><dt>Research date</dt><dd>29 July 2026</dd></div>
           <div><dt>Evidence</dt><dd>Repository audit, operator input, official Italian sources</dd></div>
           <div><dt>Limit</dt><dd>Not a legal or certification opinion</dd></div>
@@ -61,28 +60,9 @@
         </p>
       </section>
 
-      <section class="document-section" id="agenda">
-        <header class="section-header">
-          <span class="section-number">01</span>
-          <div><h2>Meeting agenda</h2><p>The aim is to agree responsibilities and identify missing evidence. It is not a design approval meeting.</p></div>
-        </header>
-        <div class="table-panel">
-          <table>
-            <thead><tr><th>Time</th><th>Topic</th><th>Question to resolve</th></tr></thead>
-            <tbody>
-              <tr><td>5 min</td><td>Migration objective</td><td>What is the intended end state, and which legacy flows must remain available during transition?</td></tr>
-              <tr><td>15 min</td><td>Current system</td><td>Which responsibilities sit in Como, Ticka/PlaNet, Alfi, and the public authority interfaces?</td></tr>
-              <tr><td>20 min</td><td>Entrails gaps</td><td>Which changes belong in the Entrails domain model, and which belong in a separate fiscal component?</td></tr>
-              <tr><td>10 min</td><td>Italian requirements</td><td>Which requirements are confirmed, and which still need current specifications or legal review?</td></tr>
-              <tr><td>10 min</td><td>Next steps</td><td>Who obtains the certification dossier, technical samples, access contracts, and privacy decisions?</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
       <section class="document-section" id="systems">
         <header class="section-header">
-          <span class="section-number">02</span>
+          <span class="section-number">01</span>
           <div><h2>System boundaries</h2><p>The proposed side is a working architecture. It still depends on certification and integration decisions.</p></div>
         </header>
 
@@ -152,7 +132,7 @@
 
       <section class="document-section" id="data">
         <header class="section-header">
-          <span class="section-number">03</span>
+          <span class="section-number">02</span>
           <div><h2>Data model</h2><p>Entrails already separates the commercial ticket from the right that can be used.</p></div>
         </header>
 
@@ -228,7 +208,7 @@
 
       <section class="document-section" id="italy">
         <header class="section-header">
-          <span class="section-number">04</span>
+          <span class="section-number">03</span>
           <div><h2>Italian requirements</h2><p>This table separates published requirements from operator input and open interpretation.</p></div>
         </header>
         <div class="table-panel">
@@ -260,8 +240,8 @@
 
       <section class="document-section" id="transition">
         <header class="section-header">
-          <span class="section-number">05</span>
-          <div><h2>Transition outline</h2><p>The sequence below is a discussion basis. Dates depend on the certification work and existing season-ticket obligations.</p></div>
+          <span class="section-number">04</span>
+          <div><h2>Transition outline</h2><p>This is a preliminary sequence. Dates depend on the certification work and existing season-ticket obligations.</p></div>
         </header>
         <div class="phase-flow" role="img" aria-label="Transition moves from current service, through evidence and design, to a single-match pilot, dual servicing, and legacy exit.">
           <div><span>1</span><strong>Current service</strong><p>Como and Ticka remain authoritative.</p></div>
@@ -283,8 +263,8 @@
 
       <section class="document-section" id="decisions">
         <header class="section-header">
-          <span class="section-number">06</span>
-          <div><h2>Decisions and evidence owners</h2><p>These are the questions that should leave the meeting with an owner.</p></div>
+          <span class="section-number">05</span>
+          <div><h2>Open questions and evidence</h2><p>These items need evidence or ownership before design and migration planning.</p></div>
         </header>
         <ol class="decision-list">
           <li><span>01</span><p>Confirm the intended end state and the legacy servicing obligations that remain during migration.</p></li>
@@ -300,7 +280,7 @@
 
       <section class="document-section sources" id="sources">
         <header class="section-header">
-          <span class="section-number">07</span>
+          <span class="section-number">06</span>
           <div><h2>Sources and evidence boundary</h2><p>The legal sources support the findings above. Current technical specifications and formal advice are still required.</p></div>
         </header>
 

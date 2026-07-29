@@ -4,7 +4,7 @@
 **Created:** 2026-07-29  
 **Last Updated:** 2026-07-29  
 **Superseded By:** None  
-**Related Docs:** [Live call guide](https://sent-ticketing.github.io/como-entrails-migration-guide/)
+**Related Docs:** [Research overview](https://sent-ticketing.github.io/como-entrails-migration-guide/)
 
 ## Changes
 
@@ -370,7 +370,7 @@ produce the evidence needed for a build decision and a credible estimate.
 - retire Ticka/PlaNet only after correction, reporting, access, rollback, and
   operational-support exit criteria pass.
 
-## Decisions for the call
+## Open decisions and evidence requests
 
 1. Is Entrails the agreed target, and what must Como and Ticka/PlaNet continue
    to support during migration?
