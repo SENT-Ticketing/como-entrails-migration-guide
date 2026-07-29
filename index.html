@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A verified, public briefing on the Como-to-Entrails ticketing migration: primitives, fundamental differences, risks, and decisions." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content="Como → Entrails migration briefing" />
+    <meta property="og:description" content="Verified primitives, fundamental gaps, dangerous mappings, and the decisions needed for a safe migration." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#102a2d" />
+    <title>Como → Entrails migration briefing</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to the briefing</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Back to the top">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>SENT × Entrails</span>
+      </a>
+      <nav aria-label="Briefing sections">
+        <a href="#guide">Call guide</a>
+        <a href="#boundary">Evidence</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#differences">Differences</a>
+        <a href="#decisions">Decisions</a>
+      </nav>
+    </header>
+
+    <main id="content">
+      <section class="hero" id="top">
+        <div class="eyebrow"><span class="status-dot"></span> Public, sanitized working brief</div>
+        <p class="kicker">Como 1907 ticketing migration</p>
+        <h1>Keep the Entrails kernel.<br />Add the missing certified boundaries.</h1>
+        <p class="lede">
+          Como and Entrails do not merely store the same ticket in different databases.
+          Como orchestrates a certified title owned by Planet; Entrails owns a commercial
+          ticket and its executable privileges. A safe migration must preserve both truths.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#guide">Start the call guide</a>
+          <a class="button button-secondary" href="#decisions">Jump to decisions</a>
+        </div>
+        <div class="verification-line">
+          <span>Last verified 29 July 2026</span>
+          <span>Static code audit</span>
+          <span>Not a legal or certification opinion</span>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Research summary">
+        <article>
+          <strong>13</strong>
+          <span>core gaps</span>
+          <small>all migration-critical</small>
+        </article>
+        <article>
+          <strong>12</strong>
+          <span>semantic traps</span>
+          <small>no safe name-based mapping</small>
+        </article>
+        <article>
+          <strong>12</strong>
+          <span>legacy hazards</span>
+          <small>do not port as architecture</small>
+        </article>
+        <article>
+          <strong>8</strong>
+          <span>stop-ship decisions</span>
+          <small>before production import</small>
+        </article>
+      </section>
+
+      <section class="section call-guide" id="guide">
+        <div class="section-heading">
+          <p class="kicker">Tomorrow’s working session</p>
+          <h2>A decision-led call, not a document walkthrough</h2>
+          <p>Use the sequence below to leave the call with owners and evidence requests.</p>
+        </div>
+        <ol class="agenda">
+          <li>
+            <span class="agenda-time">05 min</span>
+            <div><strong>Align on the ticket kernel</strong><p>Confirm TicketKind → Ticket → Privilege and the distinction between commerce and admission.</p></div>
+          </li>
+          <li>
+            <span class="agenda-time">10 min</span>
+            <div><strong>Confirm current-system authority</strong><p>Who owns certified issuance, inventory, holder truth, and scan history today?</p></div>
+          </li>
+          <li>
+            <span class="agenda-time">20 min</span>
+            <div><strong>Resolve the critical mismatches</strong><p>Work through identity, fiscal evidence, subscriptions, partial issuance, corrections, and transfer continuity.</p></div>
+          </li>
+          <li>
+            <span class="agenda-time">10 min</span>
+            <div><strong>Agree the pilot boundary</strong><p>Decide which single-match flows move first and which remain serviced by the legacy platform.</p></div>
+          </li>
+          <li>
+            <span class="agenda-time">05 min</span>
+            <div><strong>Assign evidence owners</strong><p>Name an owner and deadline for every unresolved provider, data, privacy, and access-control contract.</p></div>
+          </li>
+        </ol>
+        <aside class="callout">
+          <span class="callout-label">Desired outcome</span>
+          <p>An approved target boundary, an explicit pilot scope, and named owners for every Gate 0 evidence item.</p>
+        </aside>
+      </section>
+
+      <section class="section" id="boundary">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="kicker">Evidence boundary</p>
+            <h2>What is verified—and what is not</h2>
+          </div>
+          <p class="section-note">Every claim on this page is scoped to one of these grades.</p>
+        </div>
+
+        <div class="evidence-grid">
+          <article class="evidence-card verified">
+            <span class="pill">Code-verified</span>
+            <h3>Repository behaviour</h3>
+            <p>Como sale, reservation, issuance, holder, season-ticket, transfer, payment, fulfilment, report, and access-export paths were traced.</p>
+            <dl>
+              <div><dt>como-app</dt><dd><code>25f69e5e</code></dd></div>
+              <div><dt>como-api</dt><dd><code>322dc5b7</code></dd></div>
+              <div><dt>Entrails</dt><dd><code>e89406e4</code></dd></div>
+            </dl>
+          </article>
+          <article class="evidence-card confirmed">
+            <span class="pill">Requirement-confirmed</span>
+            <h3>Operational and Italian needs</h3>
+            <p>Operator answers and the Italy/SIAE fit-gap confirm price classes, reductions, named holders, accreditation, subscriptions, C1/C2 reporting, and related operating flows.</p>
+          </article>
+          <article class="evidence-card inferred">
+            <span class="pill">Architectural inference</span>
+            <h3>Target decisions and risks</h3>
+            <p>The proposed boundaries follow from multiple code paths and requirements. They are design conclusions, not undocumented claims about production.</p>
+          </article>
+          <article class="evidence-card unknown">
+            <span class="pill">Still unverified</span>
+            <h3>Authoritative external contracts</h3>
+            <p>Planet certification internals, production Firestore schema and rules, live Alfi ownership, redacted production exports, and final retention policies remain Gate 0 evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="architecture">
+        <div class="section-heading">
+          <p class="kicker">Architecture</p>
+          <h2>The systems own different kinds of truth</h2>
+          <p>The migration is a decomposition of an orchestration aggregate into explicit domain records.</p>
+        </div>
+
+        <div class="architecture-grid">
+          <article class="diagram-panel">
+            <div class="panel-title"><span>Current</span><h3>Como orchestration boundary</h3></div>
+            <div class="system-diagram current-system" role="img" aria-label="Como app talks to both Como API and Firestore. Como API coordinates Firestore, Planet, payment providers, and Alfi exports.">
+              <div class="node node-app">Como app<small>Vue / Capacitor</small></div>
+              <div class="arrow down" aria-hidden="true">↓</div>
+              <div class="node-row">
+                <div class="node node-api">Como API<small>orchestration</small></div>
+                <div class="arrow across" aria-hidden="true">↔</div>
+                <div class="node node-store">Firestore<small>mutable aggregates</small></div>
+              </div>
+              <div class="arrow down" aria-hidden="true">↓</div>
+              <div class="node-row three">
+                <div class="node node-external">Planet<small>certified titles</small></div>
+                <div class="node node-external">PSPs<small>payments</small></div>
+                <div class="node node-external">Alfi<small>access exports</small></div>
+              </div>
+            </div>
+            <p class="diagram-caption">Planet is the observed certified-title boundary. Firestore is both workflow storage and a mutable reporting mirror.</p>
+          </article>
+
+          <article class="diagram-panel accent-panel">
+            <div class="panel-title"><span>Target</span><h3>Entrails plus explicit evidence</h3></div>
+            <div class="system-diagram target-system" role="img" aria-label="Orders lead to tickets and privileges. Privileges link to holder snapshots, certified issuance, and access events.">
+              <div class="node node-commerce">Order + Payment<small>commercial truth</small></div>
+              <div class="arrow down" aria-hidden="true">↓</div>
+              <div class="node-row">
+                <div class="node node-ticket">Ticket<small>commercial record</small></div>
+                <div class="arrow across" aria-hidden="true">→</div>
+                <div class="node node-right">Privilege<small>executable right</small></div>
+              </div>
+              <div class="arrow down" aria-hidden="true">↓</div>
+              <div class="node-row three">
+                <div class="node node-new">Holder<small>snapshot</small></div>
+                <div class="node node-new">Issuance<small>journal</small></div>
+                <div class="node node-new">Access<small>events</small></div>
+              </div>
+            </div>
+            <p class="diagram-caption">The Entrails kernel remains intact. Certified, identity, subscription, and access facts are linked rather than hidden inside Ticket.</p>
+          </article>
+        </div>
+
+        <div class="thesis">
+          <span class="thesis-index">01</span>
+          <div><p class="kicker">Core conclusion</p><h3>A Como report row must never become one Entrails Ticket.</h3><p>It mixes commerce, admission, holder identity, payment, certified issuance, and fulfilment. These must become linked records with preserved source lineage.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="primitives">
+        <div class="section-heading">
+          <p class="kicker">Entrails primitives</p>
+          <h2>The kernel we keep</h2>
+        </div>
+        <div class="primitive-flow" role="img" aria-label="TicketKind is the sellable product. Ticket is the commercial instance. Privilege is the executable right. PrivilegeType is the capacity and access class.">
+          <article><span>Configuration</span><strong>PrivilegeType</strong><p>Capacity and access class</p></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article><span>Product</span><strong>TicketKind</strong><p>Sellable bundle of rights</p></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article><span>Commerce</span><strong>Ticket</strong><p>Ownership and lifecycle record</p></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article><span>Execution</span><strong>Privilege</strong><p>One admission or perk right</p></article>
+        </div>
+
+        <div class="mapping-table-wrap">
+          <table>
+            <caption>Safe conceptual mapping</caption>
+            <thead><tr><th>Como / Italian concept</th><th>Entrails destination</th><th>Assessment</th></tr></thead>
+            <tbody>
+              <tr><td>Match / event</td><td><code>Event</code></td><td><span class="tag close">Close</span></td></tr>
+              <tr><td>Ordine Posto</td><td><code>PrivilegeType</code> + seating + fiscal category</td><td><span class="tag compound">Compound</span></td></tr>
+              <tr><td>Issued match title</td><td><code>Ticket</code> + <code>Privilege</code> + issuance evidence</td><td><span class="tag compound">Compound</span></td></tr>
+              <tr><td>Purchaser</td><td><code>Order.owner</code></td><td><span class="tag close">Close</span></td></tr>
+              <tr><td>Issuing operator</td><td><code>Order.created_by</code> + issuing context</td><td><span class="tag partial">Partial</span></td></tr>
+              <tr><td>Named legal holder</td><td>New immutable per-right holder snapshot</td><td><span class="tag missing">Missing</span></td></tr>
+              <tr><td>Fiscal price class / reduction</td><td>New versioned fiscal configuration + issuance snapshot</td><td><span class="tag missing">Missing</span></td></tr>
+              <tr><td>Season subscription</td><td>New subscription + per-event privileges and allocations</td><td><span class="tag missing">Missing</span></td></tr>
+              <tr><td>Scan history</td><td>External canonical journal or append-only access events</td><td><span class="tag conditional">Conditional</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="differences">
+        <div class="section-heading split-heading">
+          <div><p class="kicker">Critical differences</p><h2>Fundamental facts that must survive</h2></div>
+          <p class="section-note">“Fundamental” describes domain truth. “Dangerous” describes the harm of mapping it incorrectly.</p>
+        </div>
+
+        <div class="risk-groups">
+          <article class="risk-group">
+            <span class="risk-number">01</span>
+            <div><h3>Certified identity and fiscal evidence</h3><p>Title identity, fiscal seat category, reduction, versioned price/tax facts, and the certified issuing context need immutable evidence linked to the exact right.</p></div>
+            <span class="severity critical">Critical</span>
+          </article>
+          <article class="risk-group">
+            <span class="risk-number">02</span>
+            <div><h3>People and privacy boundaries</h3><p>Purchaser, operator, owner, legal holder, and attendee are distinct roles. The holder snapshot needs an explicit access, retention, and erasure policy.</p></div>
+            <span class="severity critical">Critical</span>
+          </article>
+          <article class="risk-group">
+            <span class="risk-number">03</span>
+            <div><h3>External lifecycle and recovery</h3><p>Partial issuance, reconciliation, cancellation, reissue, corrections, and provider authority need per-right state and idempotent recovery.</p></div>
+            <span class="severity critical">Critical</span>
+          </article>
+          <article class="risk-group">
+            <span class="risk-number">04</span>
+            <div><h3>Subscriptions and continuity</h3><p>A season product spans events and value allocations. Certified transfer continuity is different from Entrails commercial transfer lineage.</p></div>
+            <span class="severity critical">Critical</span>
+          </article>
+          <article class="risk-group">
+            <span class="risk-number">05</span>
+            <div><h3>Inventory, access, and provenance</h3><p>One system must own capacity writes. Every migrated fact needs deterministic lineage, while access history needs an explicit canonical owner.</p></div>
+            <span class="severity critical">Critical</span>
+          </article>
+        </div>
+
+        <div class="subsection-heading">
+          <p class="kicker">Do not map 1:1</p>
+          <h3>The most dangerous false equivalences</h3>
+        </div>
+        <div class="trap-grid">
+          <article><code>Como ticket row</code><span>≠</span><code>Ticket</code><p>Split commerce, right, holder, payment, issuance, and fulfilment.</p></article>
+          <article><code>Planet title ID</code><span>≠</span><code>Ticket UUID</code><p>Preserve certified and commercial identities separately.</p></article>
+          <article><code>Holder</code><span>≠</span><code>Owner / Attendee</code><p>Use a per-right legal-holder snapshot.</p></article>
+          <article><code>Season title</code><span>≠</span><code>Combi TicketKind</code><p>Model included events, rights, and value allocations.</p></article>
+          <article><code>Payment success</code><span>≠</span><code>Issuance success</code><p>Track commerce and certified fulfilment independently.</p></article>
+          <article><code>Cessione</code><span>≠</span><code>Ticket.transfer()</code><p>Link certified continuity to commercial lineage.</p></article>
+          <article><code>Reserved seat</code><span>≠</span><code>Allocated privilege</code><p>Reconcile provider, reservation, and mirror state first.</p></article>
+          <article><code>Fiscal seal</code><span>≠</span><code>Access token</code><p>They have separate security and lifecycle roles.</p></article>
+        </div>
+
+        <div class="subsection-heading">
+          <p class="kicker">Dangerous, not fundamental</p>
+          <h3>Legacy mechanisms to contain—not reproduce</h3>
+        </div>
+        <div class="hazard-list">
+          <div><span class="severity critical">Critical</span><p>Direct client writes for privileged transitions</p></div>
+          <div><span class="severity critical">Critical</span><p>Positional coupling of seats, holders, and responses</p></div>
+          <div><span class="severity critical">Critical</span><p>Mutable report projections treated as history</p></div>
+          <div><span class="severity critical">Critical</span><p>Process-local enforcement of hard limits</p></div>
+          <div><span class="severity critical">Critical</span><p>Frontend-filtered authorization scope</p></div>
+          <div><span class="severity critical">Critical</span><p>Credential or personal-data artifacts in source history</p></div>
+          <div><span class="severity high">High</span><p>Parallel, contradictory status flags</p></div>
+          <div><span class="severity high">High</span><p>Raw provider responses used as the domain schema</p></div>
+          <div><span class="severity high">High</span><p>Numeric client role levels</p></div>
+          <div><span class="severity high">High</span><p>Duplicated match and season issuance paths</p></div>
+          <div><span class="severity high">High</span><p>Mutable scheduler repair and reconciliation</p></div>
+          <div><span class="severity high">High</span><p>Inconsistent timestamps, statuses, and response shapes</p></div>
+        </div>
+      </section>
+
+      <section class="section target-boundary" id="target">
+        <div class="section-heading">
+          <p class="kicker">Required target boundary</p>
+          <h2>Extend around the kernel, not through it</h2>
+        </div>
+        <div class="target-map" role="img" aria-label="The Entrails kernel is surrounded by subscription, holder, eligibility, certified issuance, provider, and access event boundaries.">
+          <div class="target-layer additions top-additions">
+            <span>Subscription instance</span><span>Per-event allocation</span><span>Eligibility decision</span>
+          </div>
+          <div class="connector" aria-hidden="true">↓</div>
+          <div class="target-layer kernel">
+            <span>Event</span><i>→</i><span>PrivilegeType</span><i>→</i><span>TicketKind</span><i>→</i><span>Ticket</span><i>→</i><span>Privilege</span>
+          </div>
+          <div class="connector" aria-hidden="true">↓</div>
+          <div class="target-layer additions">
+            <span>Holder snapshot</span><span>Certified issuance journal</span><span>Access event journal</span>
+          </div>
+          <div class="connector" aria-hidden="true">↕</div>
+          <div class="target-layer external"><span>Certified fiscal / access provider</span></div>
+        </div>
+        <div class="invariants">
+          <article><strong>Separate identities</strong><p>Certified title, fiscal seal, barcode, Ticket, and Privilege IDs remain distinct and linked.</p></article>
+          <article><strong>Independent states</strong><p>Payment, issuance, fulfilment, ticket lifecycle, and claimed state never stand in for one another.</p></article>
+          <article><strong>Immutable evidence</strong><p>Used fiscal configuration is frozen; corrections append facts rather than rewriting history.</p></article>
+          <article><strong>One inventory writer</strong><p>Mirrors and caches cannot independently authorize capacity.</p></article>
+          <article><strong>Deterministic lineage</strong><p>Every imported fact retains source ID, target ID, checksum, run, and correction provenance.</p></article>
+          <article><strong>Explicit subscriptions</strong><p>Every included event has its own right, seat continuity, and fiscal value allocation.</p></article>
+        </div>
+      </section>
+
+      <section class="section" id="decisions">
+        <div class="section-heading">
+          <p class="kicker">Gate 0</p>
+          <h2>Decisions required before production import</h2>
+          <p>These are evidence requests, not implementation tasks.</p>
+        </div>
+        <div class="decision-list">
+          <article><span>01</span><div><h3>Certified provider contract</h3><p>Obtain the versioned Planet issuance, cancellation, correction, transfer, and reference-table contract.</p></div><strong>Owner needed</strong></article>
+          <article><span>02</span><div><h3>Holder and privacy policy</h3><p>Approve the minimum holder snapshot, legal purpose, access controls, retention, correction, and erasure handling.</p></div><strong>Owner needed</strong></article>
+          <article><span>03</span><div><h3>Fiscal configuration evidence</h3><p>Confirm seat categories, reductions, price/tax snapshots, rounding, corrections, and representative C1/C2 outputs.</p></div><strong>Owner needed</strong></article>
+          <article><span>04</span><div><h3>Subscription allocation</h3><p>Define included events, seat continuity, per-event value or rateo, cancellation, and renewal semantics.</p></div><strong>Owner needed</strong></article>
+          <article><span>05</span><div><h3>Partial issuance recovery</h3><p>Approve per-right idempotency, retry, compensation, and accounting behaviour for mixed provider outcomes.</p></div><strong>Owner needed</strong></article>
+          <article><span>06</span><div><h3>Inventory authority</h3><p>Select the canonical capacity and seat-lock writer for migration, dual running, and the target state.</p></div><strong>Owner needed</strong></article>
+          <article><span>07</span><div><h3>Access-history owner</h3><p>Confirm the live Alfi contract and whether Alfi or Entrails owns certified scan history after cutover.</p></div><strong>Owner needed</strong></article>
+          <article><span>08</span><div><h3>Source exports and lineage</h3><p>Obtain redacted Planet and Firestore exports, deployed Firestore rules, schemas, indexes, and reconciliation examples.</p></div><strong>Owner needed</strong></article>
+        </div>
+      </section>
+
+      <section class="section pilot">
+        <div>
+          <p class="kicker">Recommended first production boundary</p>
+          <h2>One representative single match</h2>
+          <p>Include seated and standing inventory, reductions, complimentary issuance, named holders, and refunds. Keep existing season tickets on the legacy service until subscription and rateo primitives pass acceptance.</p>
+        </div>
+        <div class="pilot-checks">
+          <span>Reconcile before sale</span>
+          <span>Reconcile after each operating day</span>
+          <span>Document dual-service rollback</span>
+          <span>Require zero unexplained deltas</span>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <strong>Como → Entrails migration briefing</strong>
+        <p>Prepared from pinned repository evidence and confirmed operating requirements.</p>
+      </div>
+      <div class="footer-note">
+        <span>Research snapshot: 29 July 2026</span>
+        <span>This page does not claim Entrails is SIAE-certified.</span>
+      </div>
+    </footer>
+  </body>
+</html>
