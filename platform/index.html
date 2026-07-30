@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A technical orientation to Entrails and the core ticketing applications around it." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content="Entrails platform overview" />
+    <meta property="og:description" content="Core services, ticket primitives, purchase flow, access control, and white-label structure." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f5f6f7" />
+    <title>Entrails platform overview</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="document-name" href="#top">Entrails platform</a>
+        <span class="document-state">Technical orientation</span>
+        <nav aria-label="Document sections">
+          <a href="#system">System</a>
+          <a href="#entrails">Entrails</a>
+          <a href="#journey">Ticket journey</a>
+          <a href="#load">Load</a>
+          <a href="#whitelabel">White labels</a>
+          <a href="#reading">Code guide</a>
+          <a href="../">Como comparison</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="intro" id="top">
+        <p class="document-type">Platform orientation</p>
+        <h1>Entrails and the core ticketing system</h1>
+        <p class="intro-text">
+          Entrails is the central ticketing API. The consumer shop, organiser dashboard, waiting
+          line, and access service are separate applications around it. This page explains why those
+          boundaries exist and how a ticket moves through them.
+        </p>
+
+        <div class="working-assumption">
+          <strong>Scope</strong>
+          <p>
+            The guide covers the core path from event setup to admission. Supporting services are
+            shown only where they clarify identity, payments, communication, seating, or brand
+            configuration. It is an orientation, not an inventory of every repository or API.
+          </p>
+        </div>
+
+        <dl class="document-meta">
+          <div><dt>Backend</dt><dd>Entrails</dd></div>
+          <div><dt>Consumer</dt><dd>Vuescera</dd></div>
+          <div><dt>Operations</dt><dd>Vuejones</dd></div>
+          <div><dt>Queue and access</dt><dd>Sphincter</dd></div>
+        </dl>
+
+        <p class="document-link">
+          Source links use pinned repository revisions and may require organisation access.
+        </p>
+      </section>
+
+      <section class="document-section" id="system">
+        <header class="section-header">
+          <span class="section-number">01</span>
+          <div><h2>System in one view</h2><p>Different users enter through different applications, but Entrails holds the central commerce and ticket state.</p></div>
+        </header>
+
+        <div class="diagram-grid">
+          <figure class="architecture-panel">
+            <figcaption><span>Purchase</span><strong>Buyer to ticket</strong></figcaption>
+            <div class="architecture-diagram compact-diagram" role="img" aria-label="A buyer opens Vuescera, passes through the Sphincter waiting line when it is active, and purchases through Entrails. Entrails uses payment, identity, messaging, and seating services.">
+              <div class="diagram-node">Ticket buyer<small>public web or embedded shop</small></div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-node primary">Vuescera<small>shop and ticket presentation</small></div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-node candidate">Sphincter gate<small>open, throttle, or queue</small></div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-node primary">Entrails<small>event, inventory, order, ticket, privilege</small></div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-row three">
+                <div class="diagram-node external">Payments</div>
+                <div class="diagram-node external">Identity and messages</div>
+                <div class="diagram-node external">Seating</div>
+              </div>
+            </div>
+            <p>The waiting line is in front of the shop flow. It controls how quickly buyers enter when demand rises; it does not own the order or ticket.</p>
+          </figure>
+
+          <figure class="architecture-panel">
+            <figcaption><span>Operations</span><strong>Setup and admission</strong></figcaption>
+            <div class="architecture-diagram compact-diagram" role="img" aria-label="Organisers use Vuejones to configure events in Entrails. Gate staff use a scanner client connected to Sphincter, which validates access against ticket rights from Entrails.">
+              <div class="diagram-row">
+                <div class="diagram-node">Organiser</div>
+                <div class="diagram-node">Gate staff</div>
+              </div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-row">
+                <div class="diagram-node primary">Vuejones<small>dashboard and reports</small></div>
+                <div class="diagram-node primary">Scanner client<small>admission interface</small></div>
+              </div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-row">
+                <div class="diagram-node primary">Entrails<small>configuration and rights</small></div>
+                <div class="diagram-node candidate">Sphincter<small>scan and access path</small></div>
+              </div>
+              <div class="diagram-arrow">↔</div>
+              <div class="diagram-node external">Shared platform services<small>configuration, identity, payments, delivery</small></div>
+            </div>
+            <p>Vuejones is the organiser interface. Sphincter handles the high-frequency gate and waiting-line paths separately from dashboard work.</p>
+          </figure>
+        </div>
+
+        <h3>Core responsibilities</h3>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>System</th><th>Why it exists</th><th>What it owns</th><th>What it does not own</th></tr></thead>
+            <tbody>
+              <tr><td>Entrails</td><td>Keep commercial and ticket rules in one transactional backend.</td><td>Organisations, events, products, inventory, orders, payments, tickets, privileges, seating links, and permissions.</td><td>Brand assets, browser presentation, or waiting-line position.</td></tr>
+              <tr><td>Vuescera</td><td>Provide the public purchase and ticket-holder experience as a separately deployed frontend.</td><td>Shop navigation, checkout presentation, ticket display, translations, and brand-specific public assets.</td><td>Authoritative price, capacity, payment, or ticket state.</td></tr>
+              <tr><td>Vuejones</td><td>Separate organiser operations from the public shop.</td><td>Event setup, product and inventory administration, member workflows, operational tools, and reporting views.</td><td>Backend permission or domain enforcement.</td></tr>
+              <tr><td>Sphincter</td><td>Keep burst admission and gate traffic off the normal application path.</td><td>Waiting-line entries, throttling, gate state, advancement, and access/scanning requests.</td><td>Orders, payments, or the commercial ticket record.</td></tr>
+              <tr><td>GCS</td><td>Keep shared platform and white-label configuration consistent across services.</td><td>Ticketeer configuration such as names, domains, locale, and platform settings.</td><td>Event, order, or ticket state.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="document-section" id="entrails">
+        <header class="section-header">
+          <span class="section-number">02</span>
+          <div><h2>Entrails domain model</h2><p>The commercial ticket and the usable right are separate records.</p></div>
+        </header>
+
+        <figure class="model-panel">
+          <figcaption>Core ticket model</figcaption>
+          <div class="model-flow" role="img" aria-label="An organisation creates an event. A privilege type defines the right and capacity. A ticket kind defines the product. A purchase creates a ticket containing one or more privileges. A privilege can be assigned seating and claimed at admission.">
+            <div class="model-core">
+              <div class="model-node"><small>Context</small>Event</div>
+              <span>→</span>
+              <div class="model-node"><small>Right type</small>PrivilegeType</div>
+              <span>→</span>
+              <div class="model-node"><small>Product</small>TicketKind</div>
+              <span>→</span>
+              <div class="model-node"><small>Commercial</small>Ticket</div>
+              <span>→</span>
+              <div class="model-node focus"><small>Usable right</small>Privilege</div>
+            </div>
+            <div class="model-links">
+              <span>Connected records</span>
+              <div class="model-node proposed">Organization</div>
+              <div class="model-node proposed">Order and Payment</div>
+              <div class="model-node proposed">Price snapshot</div>
+              <div class="model-node proposed">Seating</div>
+              <div class="model-node proposed">Owner or holder</div>
+            </div>
+          </div>
+        </figure>
+
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Primitive</th><th>Mental model</th><th>Reason for the separation</th></tr></thead>
+            <tbody>
+              <tr><td><code>Ticketeer</code></td><td>The white-label platform or brand above one or more organisations.</td><td>Shares a product while preserving platform configuration and permissions.</td></tr>
+              <tr><td><code>Organization</code></td><td>The organiser responsible for events and commercial configuration.</td><td>Scopes staff membership, events, settlement, and operational access.</td></tr>
+              <tr><td><code>Event</code></td><td>The occurrence for which products and admission rights are configured.</td><td>Groups timing, venue, shops, capacity, and reporting context.</td></tr>
+              <tr><td><code>PrivilegeType</code></td><td>A class of admission or entitlement with capacity rules.</td><td>Inventory belongs to a usable right, not only to a product description.</td></tr>
+              <tr><td><code>TicketKind</code></td><td>The product definition offered through a shop.</td><td>The same right can be packaged and priced in different ways.</td></tr>
+              <tr><td><code>Ticket</code></td><td>The purchased or issued commercial record.</td><td>Ownership, resale, transfer, and price history have a commercial lifecycle.</td></tr>
+              <tr><td><code>Privilege</code></td><td>The right that can be exercised, assigned, transferred, or claimed.</td><td>Admission state can change without rewriting the original purchase.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="document-section" id="journey">
+        <header class="section-header">
+          <span class="section-number">03</span>
+          <div><h2>From event setup to admission</h2><p>The normal flow crosses several applications but keeps each state change at its owning service.</p></div>
+        </header>
+
+        <div class="phase-flow" role="img" aria-label="An organiser publishes an event, the waiting line controls entry to the shop, Entrails creates the order and ticket, delivery presents the ticket, and Sphincter processes admission.">
+          <div><span>1</span><strong>Configure</strong><p>Vuejones writes event, shop, price, inventory, and access configuration through Entrails.</p></div>
+          <i>→</i>
+          <div><span>2</span><strong>Enter shop</strong><p>Vuescera checks the Sphincter gate. Buyers enter directly, are throttled, or wait.</p></div>
+          <i>→</i>
+          <div><span>3</span><strong>Purchase</strong><p>Entrails validates capacity and price, records the order and payment, then creates tickets and privileges.</p></div>
+          <i>→</i>
+          <div><span>4</span><strong>Present</strong><p>The buyer sees the resulting ticket through web, email, wallet, or another configured channel.</p></div>
+          <i>→</i>
+          <div><span>5</span><strong>Admit</strong><p>The scanner calls Sphincter. The access result is tied back to the privilege.</p></div>
+        </div>
+
+        <h3>State ownership across the flow</h3>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>State</th><th>Primary owner</th><th>Consumers</th></tr></thead>
+            <tbody>
+              <tr><td>Event, products, prices, capacity</td><td>Entrails</td><td>Vuejones and Vuescera</td></tr>
+              <tr><td>Waiting position and gate mode</td><td>Sphincter</td><td>Vuescera and gate operations</td></tr>
+              <tr><td>Cart, order, payment and ledger</td><td>Entrails and configured payment adapter</td><td>Vuescera and Vuejones</td></tr>
+              <tr><td>Ticket ownership and privileges</td><td>Entrails</td><td>Shop, dashboard, delivery, transfer, resale, and access paths</td></tr>
+              <tr><td>Scan request and gate response</td><td>Sphincter access path</td><td>Scanner client and Entrails ticket state</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="document-section" id="load">
+        <header class="section-header">
+          <span class="section-number">04</span>
+          <div><h2>Load and failure boundaries</h2><p>The platform separates public traffic, admission control, transactional work, and background processing.</p></div>
+        </header>
+
+        <div class="ownership-grid scale-grid">
+          <div><small>Public delivery</small><strong>Static frontend builds</strong><span>Vuescera and Vuejones can be served independently from the backend and deployed per brand.</span></div>
+          <div><small>Demand control</small><strong>Queue before checkout</strong><span>Sphincter measures entry rate and advances buyers at a controlled pace before they reach Entrails.</span></div>
+          <div><small>Transactional core</small><strong>Entrails owns invariants</strong><span>Capacity, price, order, payment, ticket, and privilege changes remain server-side.</span></div>
+          <div><small>Slow work</small><strong>Background workers</strong><span>Celery-backed tasks separate retries and long-running work from the immediate purchase response.</span></div>
+        </div>
+
+        <p class="section-copy">
+          These boundaries allow the public shop, queue, backend workers, and access path to be
+          operated and scaled according to different traffic patterns. They also keep a failure in a
+          delivery channel or background integration from becoming the source of truth for inventory
+          or ticket ownership.
+        </p>
+      </section>
+
+      <section class="document-section" id="whitelabel">
+        <header class="section-header">
+          <span class="section-number">05</span>
+          <div><h2>White-label structure</h2><p>One product codebase is combined with platform configuration, tenant data, and separate frontend builds.</p></div>
+        </header>
+
+        <div class="brand-system" role="img" aria-label="GCS supplies Ticketeer configuration to Entrails. Entrails scopes organisations, members, events, and tickets by Ticketeer. Shared Vuescera and Vuejones source is built with a brand and Ticketeer identifier into separate coloured white-label deployments.">
+          <div class="brand-layer"><small>Configuration authority</small><strong>GCS</strong><span>brand name · locale · domains · platform settings</span></div>
+          <i>↓ synchronized</i>
+          <div class="brand-layer primary"><small>Backend tenancy</small><strong>Entrails Ticketeer</strong><span>organizations · memberships · permissions · events · tickets</span></div>
+          <i>↓ API and build configuration</i>
+          <div class="brand-code-row">
+            <div class="brand-layer"><small>Shared consumer code</small><strong>Vuescera</strong><span><code>VITE_APP_BRAND</code> + <code>VITE_APP_TICKETEER</code></span></div>
+            <div class="brand-layer"><small>Shared dashboard code</small><strong>Vuejones</strong><span><code>VITE_APP_BRAND</code> + <code>VITE_APP_TICKETEER</code></span></div>
+          </div>
+          <i>↓ separate builds and domains</i>
+          <div class="brand-grid">
+            <div class="brand-card brand-one"><strong>guts</strong><span>app · dashboard · widget</span></div>
+            <div class="brand-card brand-two"><strong>wicket</strong><span>app · dashboard · widget</span></div>
+            <div class="brand-card brand-three"><strong>tectix</strong><span>app · dashboard · widget</span></div>
+            <div class="brand-card brand-four"><strong>demo</strong><span>app · dashboard · widget</span></div>
+          </div>
+        </div>
+
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Concern</th><th>Shared</th><th>Scoped per white label</th></tr></thead>
+            <tbody>
+              <tr><td>Application code</td><td>Entrails, Vuescera, Vuejones, and the supporting service implementations.</td><td>Enabled features and deployment configuration.</td></tr>
+              <tr><td>Brand presentation</td><td>Frontend component and translation structure.</td><td>Assets, colours, content, public domains, and analytics settings.</td></tr>
+              <tr><td>Business structure</td><td>Ticketeer and Organization models.</td><td>Organisations, members, roles, PSP configuration, events, and settlement context.</td></tr>
+              <tr><td>Runtime</td><td>Common deployment patterns and API contracts.</td><td>Frontend builds, domains, credentials, and tenant-specific configuration.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="document-section" id="reading">
+        <header class="section-header">
+          <span class="section-number">06</span>
+          <div><h2>Repository reading guide</h2><p>Start with the central model, then follow one user flow into the surrounding application.</p></div>
+        </header>
+
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Repository</th><th>Read it for</th><th>Suggested entry point</th></tr></thead>
+            <tbody>
+              <tr><td><a href="#source-s1">Entrails</a></td><td>Domain model, API rules, tenancy, events, orders, tickets, privileges, payments, seating, and background work.</td><td><code>TICKETING_101.md</code>, then <code>TICKET.md</code> and the ticket models.</td></tr>
+              <tr><td><a href="#source-s4">Vuescera</a></td><td>The buyer journey, shops, checkout, ticket display, queue screen, translations, and brand builds.</td><td>Router, views, store, and API clients.</td></tr>
+              <tr><td><a href="#source-s5">Vuejones</a></td><td>Organiser operations, event/product configuration, memberships, inventory tools, and reports.</td><td>Router, organisation store, event views, and API client.</td></tr>
+              <tr><td><a href="#source-s6">Sphincter</a></td><td>Gate modes, waiting-line state, advancement, admission rate, scanner requests, and access operations.</td><td>README, gate handlers, advancer, and admin views.</td></tr>
+              <tr><td><a href="#source-s7">GCS</a></td><td>Ticketeer and platform configuration shared across services.</td><td>Ticketeer model and configuration workflow.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Supporting systems</h3>
+        <p class="section-copy">
+          Identity and OTP, payment adapters, messaging, object storage, and the seating solver support
+          the core flow. They are separate because they have different provider contracts, credentials,
+          traffic, and failure modes. The local <a href="#source-s9">dev-stack</a> connects published
+          service images for development without turning those services into one repository.
+        </p>
+
+        <h3>Suggested first reading</h3>
+        <ol class="decision-list">
+          <li><span>01</span><p>Read the Entrails ticketing introduction and ticket-domain notes.</p></li>
+          <li><span>02</span><p>Trace <code>TicketKind → Ticket → Privilege</code> in the Entrails models.</p></li>
+          <li><span>03</span><p>Follow one public purchase route in Vuescera and its Entrails API calls.</p></li>
+          <li><span>04</span><p>Follow the matching event and product configuration in Vuejones.</p></li>
+          <li><span>05</span><p>Read the Sphincter queue behaviour before changing waiting-line or gate flows.</p></li>
+          <li><span>06</span><p>Use the <a href="../">Como comparison</a> to translate the current Como concepts into this model.</p></li>
+        </ol>
+      </section>
+
+      <section class="document-section sources" id="sources">
+        <header class="section-header">
+          <span class="section-number">07</span>
+          <div><h2>Source references</h2><p>The repository links are pinned to the revisions used for this orientation.</p></div>
+        </header>
+
+        <ol class="source-list">
+          <li id="source-s1"><span>S1</span><div><a href="https://github.com/GETProtocolLab/entrails/blob/96aefa23a166d9e9a81b0b14933b3c6a78366ea6/TICKETING_101.md">Entrails: ticketing introduction</a>; <a href="https://github.com/GETProtocolLab/entrails/blob/96aefa23a166d9e9a81b0b14933b3c6a78366ea6/TICKET.md">ticket-domain notes</a></div></li>
+          <li id="source-s2"><span>S2</span><a href="https://github.com/GETProtocolLab/entrails/tree/96aefa23a166d9e9a81b0b14933b3c6a78366ea6/apps/ticket/models">Entrails: TicketKind, Ticket, PrivilegeType, Privilege, pricing, and seating models</a></li>
+          <li id="source-s3"><span>S3</span><div><a href="https://github.com/GETProtocolLab/entrails/blob/96aefa23a166d9e9a81b0b14933b3c6a78366ea6/apps/organization/models.py">Entrails: Ticketeer, Organization, and membership models</a>; <a href="https://github.com/GETProtocolLab/entrails/blob/96aefa23a166d9e9a81b0b14933b3c6a78366ea6/apps/organization/tasks.py">GCS synchronization</a></div></li>
+          <li id="source-s4"><span>S4</span><div><a href="https://github.com/GETProtocolLab/vuescera/tree/d576652f22b7236b1d905f11632976a9fe35ce51/src">Vuescera consumer application</a>; <a href="https://github.com/GETProtocolLab/vuescera/blob/d576652f22b7236b1d905f11632976a9fe35ce51/vite.config.ts">white-label build configuration</a></div></li>
+          <li id="source-s5"><span>S5</span><div><a href="https://github.com/GETProtocolLab/vuejones/tree/9e2025846276bf049d99e16dca037b66c592756c/src">Vuejones organiser dashboard</a>; <a href="https://github.com/GETProtocolLab/vuejones/blob/9e2025846276bf049d99e16dca037b66c592756c/vite.config.ts">dashboard build configuration</a></div></li>
+          <li id="source-s6"><span>S6</span><div><a href="https://github.com/GETProtocolLab/sphincter/blob/bbed4788bdbbccdfb223d84c9bf403e06d49801e/README.md">Sphincter: queue behaviour and development guide</a>; <a href="https://github.com/GETProtocolLab/sphincter/blob/bbed4788bdbbccdfb223d84c9bf403e06d49801e/sphincter/handlers_gate.go">gate handlers</a></div></li>
+          <li id="source-s7"><span>S7</span><a href="https://github.com/GETProtocolLab/gcs/blob/f3b640856481c19e94d1c8edb40db1e0b07507af/gcs/models/__init__.py">GCS: Ticketeer configuration model</a></li>
+          <li id="source-s8"><span>S8</span><a href="https://github.com/SENT-Ticketing/mono-repo-sent-ticketing/blob/a83cc6de0e1e1bfddfd37f74b1418676524b8476/docs/architecture/opn-platform-map.md">SENT platform and repository map</a></li>
+          <li id="source-s9"><span>S9</span><a href="https://github.com/GETProtocolLab/dev-stack/blob/f9159079018b6640aa7d15dc4d01f3edb0583216/README.md">dev-stack: local service orchestration</a></li>
+        </ol>
+
+        <div class="evidence-note">
+          <p><strong>Public boundary:</strong> this page contains system responsibilities and source paths only. Repository contents remain subject to their own GitHub access controls.</p>
+          <p><strong>Snapshot:</strong> Entrails <code>96aefa23</code>, Vuescera <code>d576652f</code>, Vuejones <code>9e202584</code>, Sphincter <code>bbed4788</code>, and GCS <code>f3b64085</code>.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Entrails platform overview</p>
+      <p>Technical orientation, 30 July 2026</p>
+    </footer>
+  </body>
+</html>
