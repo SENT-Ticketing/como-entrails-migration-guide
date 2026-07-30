@@ -5,6 +5,8 @@ Italian requirements in Entrails.
 
 **Live briefing:** https://sent-ticketing.github.io/como-entrails-migration-guide/
 
+**Platform overview:** https://sent-ticketing.github.io/como-entrails-migration-guide/platform/
+
 **Detailed research notes:** [research-blueprint.md](research-blueprint.md)
 
 The page covers the current Como feature and integration surface, its mapping
