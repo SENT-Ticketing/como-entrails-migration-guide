@@ -177,6 +177,31 @@ td:first-child { font-weight: 600; }
 .diagram-row.three { align-items: stretch; }
 .diagram-row.three .diagram-node { width: calc(33.333% - 7px); min-width: 0; }
 
+.season-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.season-flow > div { padding: 13px 10px; border: 1px solid var(--line-strong); border-radius: 4px; background: #fafbfc; text-align: center; }
+.season-flow small { display: block; margin-bottom: 5px; color: var(--muted); font-size: .65rem; text-transform: uppercase; }
+.season-flow strong { font-size: .82rem; }
+.season-flow i { display: grid; place-items: center; color: var(--muted); font-style: normal; }
+.season-flow p { grid-column: 1 / -1; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: .83rem; text-align: center; }
+
+.evidence-boundaries, .ownership-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 28px; }
+.evidence-boundaries > div, .ownership-grid > div { padding: 17px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.evidence-boundaries strong, .ownership-grid strong { display: block; font-size: .86rem; }
+.evidence-boundaries p { margin-top: 6px; color: var(--muted); font-size: .8rem; }
+.ownership-grid { grid-template-columns: repeat(4, 1fr); margin-top: 24px; }
+.ownership-grid small { display: block; margin-bottom: 10px; color: var(--muted); font-size: .65rem; text-transform: uppercase; }
+.ownership-grid span { display: block; margin-top: 3px; color: var(--muted); font-size: .76rem; font-weight: 400; }
+
 .model-panel { margin-bottom: 42px; }
 .model-flow { padding: 30px; }
 .model-core, .model-links { display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -231,7 +256,7 @@ td:first-child { font-weight: 600; }
 
 .decision-list, .source-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
 .decision-list li { display: grid; grid-template-columns: 50px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
-.decision-list span, .source-list span { color: var(--muted); font-family: "SFMono-Regular", Consolas, monospace; font-size: .72rem; }
+.decision-list span, .source-list > li > span { color: var(--muted); font-family: "SFMono-Regular", Consolas, monospace; font-size: .72rem; }
 .source-list li { display: grid; grid-template-columns: 46px 1fr; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 70px; }
 .evidence-note { color: var(--muted); }
 .evidence-note p + p { margin-top: 8px; }
@@ -253,7 +278,11 @@ footer {
   .document-meta div:nth-child(3) { border-left: 0; }
   .document-meta div:nth-child(n+3) { border-top: 1px solid var(--line); }
   .diagram-grid { grid-template-columns: 1fr; }
+  .ownership-grid { grid-template-columns: repeat(2, 1fr); }
+  .season-flow { grid-template-columns: 1fr; }
+  .season-flow i { transform: rotate(90deg); }
   .model-core { flex-wrap: wrap; }
+  .evidence-boundaries { grid-template-columns: 1fr; }
   .phase-flow { grid-template-columns: 1fr; }
   .phase-flow i { transform: rotate(90deg); }
 }
@@ -277,6 +306,7 @@ footer {
   .model-core { flex-direction: column; }
   .model-core > span { transform: rotate(90deg); }
   .model-node { width: 100%; min-width: 0; }
+  .ownership-grid { grid-template-columns: 1fr; }
   .plain-list.columns { columns: 1; }
   footer { flex-direction: column; }
 }
