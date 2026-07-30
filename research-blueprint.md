@@ -8,7 +8,10 @@
 
 ## Changes
 
-- 2026-07-29: Recorded Entrails as the intended target and made the transition
+- 2026-07-29: Added a source-linked Como feature inventory, billing and season
+  model comparison, external integration boundary, and reusable multi-club
+  ownership model.
+- 2026-07-29: Recorded Entrails as the target and made the transition
   assumptions explicit.
 - 2026-07-29: Added official-source findings on Italian automated ticketing,
   football identity/access rules, online-sale controls, and suitability
@@ -20,7 +23,7 @@
 
 The current working assumptions are:
 
-1. Entrails is the intended target platform for ticketing data and workflows.
+1. Entrails is the target platform for ticketing data and workflows.
 2. Como App, Como API, Firestore ticketing aggregates, and Ticka/PlaNet would be
    phased out after Entrails covers the required flows and the replacement has
    the necessary approvals.
@@ -50,6 +53,27 @@ certification perimeter.
 This is an engineering blueprint, not Italian legal advice or a certification
 opinion.
 
+## Pinned technical sources
+
+The comparison uses immutable links rather than a moving branch head:
+
+- [Como app routes and feature surface](https://github.com/SENT-Italy/como-app/blob/25f69e5e024b8b8a23590ad6a803e733e97d7c38/src/router/index.js)
+  and [client API surface](https://github.com/SENT-Italy/como-app/blob/25f69e5e024b8b8a23590ad6a803e733e97d7c38/src/clients/ComoAPI.js),
+  commit `25f69e5e024b8b8a23590ad6a803e733e97d7c38`;
+- [Como API Planet adapter](https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/planet/index.js),
+  [single-match issuance](https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/tickets/issueSingleMatchTickets.js),
+  and [season issuance](https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/tickets/issueSeasonTickets.js),
+  commit `322dc5b73ed17e89762d051d524cccb60535a745`;
+- [Entrails ticket and privilege models](https://github.com/GETProtocolLab/entrails/tree/e89406e469d81a153c48aab6a4457da5f1e9f984/apps/ticket/models),
+  [orders](https://github.com/GETProtocolLab/entrails/tree/e89406e469d81a153c48aab6a4457da5f1e9f984/apps/order),
+  [payments](https://github.com/GETProtocolLab/entrails/tree/e89406e469d81a153c48aab6a4457da5f1e9f984/apps/psp),
+  and [ledger](https://github.com/GETProtocolLab/entrails/tree/e89406e469d81a153c48aab6a4457da5f1e9f984/apps/ledger),
+  commit `e89406e469d81a153c48aab6a4457da5f1e9f984`.
+
+Repository access may require organization permissions. The blueprint links to
+source locations but does not reproduce credentials, personal data, or private
+production records.
+
 ## Terminology: Ticka, PlaNet, and Planet
 
 - **Ticka** is the automated ticketing product described by its vendor.
@@ -66,6 +90,13 @@ suitability. It does not restrict applications to the current system holder.
 Recognition follows documentation, experimental tests, examination, and a
 favourable commission opinion; it is valid for five years and variants require
 prior authorization.[L1][L2]
+
+As of this research date, the [Ticka product site](https://www.ticka.it/)
+describes release 5.0.6 as approved in June 2025 and lists tickets,
+subscriptions, access control, SIAE reporting, online sale, seating and
+fulfilment among the product functions. This is a vendor statement. It does not
+establish the approved version currently used by Como; that requires the
+production contract, installed-version evidence and recognition dossier.
 
 ## What the Como code currently delegates to Planet
 
@@ -87,6 +118,115 @@ more than fiscal-seal generation:
 This breadth explains why the current system feels overcomplicated. It does not
 prove that all of those features belong in a certified fiscal module. Most are
 ordinary domain or workflow capabilities that should move into Entrails.
+
+## Current Como capability map
+
+The [Como route inventory](https://github.com/SENT-Italy/como-app/blob/25f69e5e024b8b8a23590ad6a803e733e97d7c38/src/router/index.js)
+and [Como API client](https://github.com/SENT-Italy/como-app/blob/25f69e5e024b8b8a23590ad6a803e733e97d7c38/src/clients/ComoAPI.js)
+show a club application with ticketing, administration, fulfilment, loyalty,
+content, hospitality, and service workflows. The following table isolates the
+parts relevant to ticketing migration.
+
+| Capability | Como implementation found | Entrails position | Target treatment |
+|---|---|---|---|
+| Single-match sale | Seated/no-map selection, reductions, presale, checkout, complimentary/admin issue, recovery queues | Event, TicketKind, Price, seating, shop, cashier, reservation and invitation primitives exist | Reuse; add holder, fiscal configuration and per-right issuance |
+| Away fixture | Separate purchase, complimentary issue, seat assignment, payment and pass delivery | Generic event capability; no away-specific primitive | Represent as event policy/workflow unless a distinct legal rule requires more |
+| Season ticket | Subscription types, included fixtures, pricing, fixed seat, renewal/pre-emption, transfer and recovery | No explicit multi-event subscription; combi rights stay within one Event | Add subscription and event allocations before season migration |
+| Corporate/sponsor | Reserved allocations, sponsor purchaser, deferred holder finalization and reports | Reservations, invitations, groups and cashier cover parts | Add allocation/finalization workflow, not a new ticket primitive |
+| Bulk operations | Mass issue, seat lock/unlock, Excel exports, cleanup, backlogs and mismatch reports | Some bulk APIs exist, not the complete football workflow | Server-side commands with reconciliation and explicit authority |
+| Holder/eligibility | Planet person, fidelity/supporter-card and VRO calls, bans and holder data | Purchaser/owner exists; immutable legal holder does not | Holder snapshot plus time-bounded external decision reference |
+| Title lifecycle | State, fiscal-seal lookup, cancel, transferability, holder transfer and history | Commercial transfer/resale/invalidation exists | Add append-only fiscal action chain |
+| Payment/refund | Stripe, Revolut Pay through Stripe, free/admin issue, gift card, refunds and webhook logs | Order, Payment and ledger are already normalized | Keep Entrails authoritative; add PSP routing and fiscal price evidence |
+| Delivery | Email, PDF, share links, Apple Wallet and Google Wallet | Email/ticket presentation exists; wallet parity not established | Provider adapters consuming canonical title facts |
+| Access/reporting | Planet title/access data, Firestore projections, Excel access-log ingestion | `Privilege.claimed` is state, not a journal | Append-only access events plus confirmed venue adapter |
+| Gift card/points | Stored-value gift-card service and ledger; separate Como points ledger | Credits/discounts/ledger cover some commercial effects | Optional modules; do not put them in the ticket primitive |
+| Club services | Service passes, disability requests, residents, hospitality, tourism, retail, collectibles | Outside ticket kernel | Keep outside migration-critical scope unless a flow consumes a ticket/right |
+
+### Billing and settlement
+
+Como's money state is distributed across reservation records, Stripe objects
+and webhook logs, ticket report documents, the gift-card ledger, and reporting
+projections. Relevant code is in the [API payment routes](https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/server.js),
+[issuance flows](https://github.com/SENT-Italy/como-api/tree/322dc5b73ed17e89762d051d524cccb60535a745/server/tickets),
+and [gift-card service](https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/services/giftCardService.js).
+
+| Concern | Code-verified current behavior | Entrails consequence |
+|---|---|---|
+| Card/redirect payment | Stripe PaymentIntents; Revolut Pay is selected as a Stripe payment method | Keep behind the existing Payment abstraction |
+| Merchant context | Multiple Stripe account contexts appear in the API | Scope PSP credentials and settlement owner to the legal organizer/tenant |
+| Free/operator issue | Issuance accepts free tickets and operator-entered payment descriptions | Record commercial reason, operator and accepted fiscal reduction/free code |
+| Invoice/VAT treatment | Issuance sends Planet an `ivaPreassolta` flag; the public invoice checkbox is disabled in the pinned checkout, while mass/admin issue can supply it | Confirm the invoicing workflow and freeze the accepted VAT treatment; the flag does not prove e-invoice generation |
+| Gift card | Purchase, balance, expiry, void, chained ledger, full and split match payment | Optional stored-value module integrated with Order/Payment/Ledger |
+| Refund/dispute | Refund flow and Stripe webhook fields update report data | Couple refund to fiscal correction, capacity release and notification through reconciliation |
+| Payglobe | Callback routes return placeholder responses; no full flow was found | Do not count as parity without production evidence |
+| Accounting | Entrails already separates order, payment attempts and ledger transactions | Preserve this model; do not migrate Firestore report documents as accounting truth |
+
+The important billing gap is not a generic cart or ledger. It is immutable
+issuance-time evidence of the legally reported price, tax, reduction, seat
+order, free-ticket reason, subscription value and rateo.
+
+### Season tickets and season cards
+
+The [season selection component](https://github.com/SENT-Italy/como-app/blob/25f69e5e024b8b8a23590ad6a803e733e97d7c38/src/components/season_tickets/SelectedSeasonTickets.vue)
+contains seat selection, phase windows, presale, fiscal-seal and fidelity-card
+pre-emption, renewal codes and price/reduction handling. The API obtains
+subscription types, included events, seat/price data and title issuance from
+Planet. A `season_tickets_resale` store is present, but the source reviewed does
+not establish the complete commercial semantics of that feature.
+
+```mermaid
+flowchart LR
+  product["Season product"] --> subscription["Purchased subscription"]
+  subscription --> fiscal["Fiscal subscription title"]
+  subscription --> allocation1["Event allocation A"]
+  subscription --> allocation2["Event allocation B"]
+  subscription --> allocationN["Event allocation …"]
+  allocation1 --> privilege1["Privilege A"]
+  allocation2 --> privilege2["Privilege B"]
+  allocationN --> privilegeN["Privilege …"]
+  credential["Season card / wallet pass"] -. references .-> subscription
+```
+
+The card, barcode or wallet pass is a credential. It is not the subscription,
+the per-match admission right, the commercial purchase, or the fiscal record.
+The exact accepted relationship between the subscription title, ratei and
+event-level reporting remains Gate 0 evidence.
+
+| Season concern | Required target behavior |
+|---|---|
+| Included fixtures | Versioned allocations so fixture changes do not rewrite what was sold |
+| Seat continuity | Subscription seat preference plus one concrete seat on each event privilege |
+| Price and rateo | Frozen season total and per-event fiscal allocation |
+| Renewal/pre-emption | Grant with source, seat/area, phase window, use limit and consumption history |
+| Holder and eligibility | Holder snapshot and external decision at the scope legally required |
+| Transfer/seat-back | Per-event workflow linked to commercial, fiscal and access effects |
+| Cancellation/refund | Per-event and whole-subscription paths with deterministic value allocation |
+| Existing Ticka season | Migration lineage and supported legacy actions until an accepted replacement path exists |
+
+This is a fundamental Entrails gap. A `TicketKind` that grants several
+privileges in one Event is useful for group/combi products, but it does not
+represent a season spanning many events with allocation, rateo and independent
+event lifecycles.
+
+### Other integrations found in Como
+
+| Integration | Evidence and current purpose | Migration classification |
+|---|---|---|
+| Firebase | Authentication, Firestore workflow/report data, storage and messaging | Migration dependency; replace with target mechanisms |
+| Ticka/PlaNet | Title plus event, pricing, seat, person, eligibility and lifecycle APIs | Critical transition; split into Entrails, fiscal component and external authorities |
+| Stripe/Revolut Pay | Payment, webhook, refund and reconciliation paths | Required commerce adapter; provider is replaceable |
+| SendGrid/Twilio | Ticket emails, email events, SMS OTP and alerts | Operational adapter |
+| Apple/Google Wallet | Match and season pass generation/delivery | Optional parity channel |
+| VRO/public safety | Supporter-card registration/issue/check and ticket eligibility routed through Planet | Conditional legal/external authority boundary |
+| Venue access/Alfi | The pinned source proves Excel access-report ingestion, not a live Alfi API | Deployed contract and interface required before design |
+| Stadium/BindRabbit | Dormant client routes and a server service referring to partner modules absent from the snapshot | Incomplete/unproven; exclude until confirmed |
+| reCAPTCHA | Bot protection on public flows | Preserve the security outcome |
+| Collectibles/Web3/content | Collectibles, loyalty, tourism, hospitality and retail features | Optional club layer, not Italian ticketing core |
+
+No clear BOCA-specific implementation reference was found in the pinned
+repositories. If BOCA printing is an operating requirement, obtain the current
+device, driver, template and failure procedure rather than inferring it from
+generic PDF delivery.
 
 ## What Italian rules actually require
 
@@ -121,17 +261,29 @@ ordinary domain or workflow capabilities that should move into Entrails.
   days before planned operation.[L5] That is a filing floor, not an estimate of
   total design, test, approval, or rollout time.
 
+### Legal requirement versus current-product parity
+
+| Classification | Current conclusion |
+|---|---|
+| Verified regulated outcome | Suitable/recognized system, activation smart card and fiscal seal, non-rewritable transaction evidence, periodic summaries/transmission, inspection, named football title, venue/sector/seat and capacity controls, relevant public-security access, and one-time admission invalidation |
+| Conditional or exact form open | Match-specific supporter/fidelity eligibility, current C1/C2 schemas and correction protocol, reported Codice Fiscale/accreditation change, current holder-data retention, and the deployed venue-access interface |
+| Operational parity | Season renewal/pre-emption, corporate allocations, reservations, bulk operations, delivery and recovery tools |
+| Optional product scope | Gift cards, wallet passes, Como points, collectibles, hospitality, tourism, retail and other club services |
+
+This separation prevents two errors: treating every Como feature as law, and
+treating the legal work as only a Planet endpoint replacement.
+
 ## Target architecture
 
 ```mermaid
 flowchart TB
   clients["Entrails clients\nshop, back office, operations"]
 
-  subgraph entrails["Entrails: intended target platform"]
+  subgraph entrails["Entrails: target platform"]
     commerce["Products, orders, payments"]
     rights["Ticket → Privilege → Seating"]
     italy["Holder, fiscal configuration,\nsubscription, eligibility references"]
-    orchestration["Per-right issuance orchestration\ntransactional outbox + reconciliation"]
+    orchestration["Issuance-unit orchestration\ntransactional outbox + reconciliation"]
     access["Append-only access events"]
     commerce --> rights
     rights --> italy
@@ -150,7 +302,7 @@ flowchart TB
 
   authorities["Agenzia delle Entrate / SIAE"]
   safety["Questura / VRO or successor"]
-  gates["Alfi initially\nor SENT access system later"]
+  gates["Venue access\nprovider and contract open"]
   legacy["Ticka / PlaNet\ntransitional servicing only"]
 
   clients --> entrails
@@ -190,8 +342,42 @@ testable boundary with explicit contracts.
 | Cancellation, correction, holder change | Workflow + commercial effects | Append-only fiscal action | Authority/access sync as required | Historical title authority |
 | Daily/monthly summaries and transmission | Monitoring/projection | ✓ authoritative | Agenzia/SIAE | Until cutover |
 | Supporter/eligibility decision | Decision reference | Uses result when required | Questura/VRO | During transition |
-| Scan/access journal | ✓ target canonical journal | Certified-list evidence where required | Alfi initially; own access later if approved | Import/reconcile history |
-| Email, PDF, wallet, BOCA fulfilment | ✓ | Supplies certified facts only | Channel/hardware adapters | During transition |
+| Scan/access journal | ✓ target canonical journal | Certified-list evidence where required | Venue adapter after deployed contract is confirmed | Import/reconcile history |
+| Email, PDF, wallet and printer fulfilment | ✓ | Supplies certified facts only | Channel/hardware adapters | During transition |
+
+## Reusable multi-club boundary
+
+The reusable target is one maintained product with tenant-scoped legal and
+operational configuration, not a separate code fork per club.
+
+```mermaid
+flowchart LR
+  core["Entrails core\ncommerce · inventory · rights · subscriptions"]
+  italy["Entrails Italy\nholder · fiscal config · eligibility · orchestration"]
+  fiscal["SENT fiscal component\nseal · journal · issue/cancel/correct · reports"]
+  adapters["External adapters\nauthorities · PSP · venue · messaging · wallet"]
+  club["Club-scoped configuration\nlegal entity · venue · merchant · policy · brand"]
+  core --> italy --> fiscal --> adapters
+  club --> core
+  club --> italy
+  club --> fiscal
+  club --> adapters
+```
+
+The following must be scoped and isolated per club/legal deployment:
+
+- legal organizer, fiscal operator and invoicing/settlement entity;
+- venue, sectors, capacity rules and access provider;
+- fiscal installation, activation cards, approved terminals and release;
+- versioned event, seat-order, reduction, price and tax codes;
+- PSP merchant accounts and payout ownership;
+- public-safety/accreditation policy and authority connection;
+- holder-data purpose, access and retention rules;
+- delivery providers, templates and branding.
+
+The authority systems, smart cards, PSPs and stadium hardware remain external.
+Owning the fiscal software reduces vendor dependence; it does not remove those
+interfaces or their operating obligations.
 
 ## Entrails data primitives to add
 
@@ -201,7 +387,7 @@ These are conceptual records, not final Django model names.
 |---|---|---:|---|
 | `HolderSnapshot` | Minimum named-person facts effective for one admission right and issuance version | Yes | Wrong person admitted; privacy and legal evidence collapse into mutable profile data |
 | `FiscalConfigurationVersion` | Versioned seat order, reduction, price/tax, organizer, and event fiscal codes | Yes | Later edits silently change historical fiscal meaning |
-| `FiscalIssuance` | One per-right request/result lifecycle with idempotency key and issuing context | Yes | Paid orders can hide partial or duplicate issuance |
+| `FiscalIssuance` | One request/result lifecycle per fiscal issue unit: a match right or a subscription, subject to the accepted schema | Yes | Paid orders can hide partial or duplicate issuance |
 | `FiscalTitleIdentity` | Fiscal title ID, seal, barcode/access token links, card/log references | Yes | Commercial UUID is mistaken for certified identity |
 | `FiscalCorrection` | Append-only cancellation, correction, reissue, or holder-transfer evidence | Yes | History is overwritten and cannot be reconciled |
 | `SubscriptionInstance` | The bought season entitlement and its lifecycle | Yes | A season title is flattened into one ticket or a product bundle |
@@ -217,6 +403,7 @@ erDiagram
   TICKET ||--o{ PRIVILEGE : grants
   PRIVILEGE ||--o{ HOLDER_SNAPSHOT : names
   PRIVILEGE ||--o{ FISCAL_ISSUANCE : certifies
+  SUBSCRIPTION_INSTANCE ||--o{ FISCAL_ISSUANCE : certifies
   FISCAL_ISSUANCE ||--|| FISCAL_TITLE_IDENTITY : produces
   FISCAL_ISSUANCE }o--|| FISCAL_CONFIGURATION_VERSION : freezes
   FISCAL_ISSUANCE ||--o{ FISCAL_CORRECTION : appends
@@ -229,7 +416,8 @@ erDiagram
 
 ## Issuance state and recovery
 
-Commerce remains atomic in Entrails; certified fulfilment is tracked per right.
+Commerce remains atomic in Entrails; certified fulfilment is tracked per fiscal
+issue unit, normally a match privilege or a subscription.
 
 ```mermaid
 stateDiagram-v2
@@ -248,8 +436,8 @@ stateDiagram-v2
 Required invariants:
 
 1. Payment success never implies fiscal issuance success.
-2. A batch can succeed or fail per privilege without double issuing successful
-   rights.
+2. A batch can succeed or fail per issue unit without double issuing successful
+   privileges or subscriptions.
 3. `Ticket`, `Privilege`, fiscal title, fiscal seal, barcode, and access token
    keep separate identities.
 4. Used fiscal configuration and issuing context are immutable.
@@ -273,7 +461,7 @@ These change the target data model or controlled behavior:
 4. fiscal seat-order, reduction, and versioned price/tax evidence;
 5. certified issuing context;
 6. multi-event subscriptions and per-event ratei;
-7. per-right partial issuance and reconciliation;
+7. per-issue-unit partial issuance and reconciliation;
 8. cancellation, correction, reissue, and holder-transfer continuity;
 9. one inventory and seating authority;
 10. append-only access history;
@@ -341,7 +529,7 @@ produce the evidence needed for a build decision and a credible estimate.
 - implement the conceptual primitives above;
 - make inventory, holder, subscription, fiscal configuration, and access
   ownership explicit;
-- add per-right issuance orchestration, outbox, idempotency, and reconciliation;
+- add issuance-unit orchestration, outbox, idempotency, and reconciliation;
 - preserve existing Entrails commercial and ledger invariants.
 
 ### 2. SENT Fiscal Kernel
@@ -372,8 +560,8 @@ produce the evidence needed for a build decision and a credible estimate.
 
 ## Open decisions and evidence requests
 
-1. Is Entrails the agreed target, and what must Como and Ticka/PlaNet continue
-   to support during migration?
+1. Which actions on legacy-issued match and season titles must Como and
+   Ticka/PlaNet continue to support during migration?
 2. Will SENT fund a certification-discovery phase before promising delivery?
 3. Who obtains the Ticka recognition dossier, current specifications, test
    card, accepted fiscal samples, and malfunction procedures?
@@ -389,6 +577,12 @@ produce the evidence needed for a build decision and a credible estimate.
 9. Which system is the seat/capacity authority during dual running?
 10. Who can approve holder data minimization, protection, authority access,
     field-level retention, and deletion?
+11. What is the accepted fiscal-title and rateo structure for a season,
+    including postponement, cancellation, holder change and seat-back?
+12. Which gift-card, wallet, corporate, away-fixture and club-service flows are
+    required parity, later scope, or deliberately retired?
+13. What is the current invoice/e-invoice process, and what is the accepted
+    meaning of `ivaPreassolta` for online and operator issuance?
 
 ## Exit criteria
 
@@ -424,8 +618,7 @@ produce the evidence needed for a build decision and a credible estimate.
 
 ## Repository evidence snapshot
 
-Public source links and excerpts are intentionally omitted from this sanitized
-brief. Findings were traced at:
+The source links above are pinned to:
 
 - `SENT-Italy/como-app`: `25f69e5e024b8b8a23590ad6a803e733e97d7c38`;
 - `SENT-Italy/como-api`: `322dc5b73ed17e89762d051d524cccb60535a745`;
@@ -433,4 +626,7 @@ brief. Findings were traced at:
 
 The code audit covered single-match and season issuance, the Planet adapter,
 reservations, seat operations, holder/person workflows, title transfer and
-cancellation, payment/fulfilment, report generation, and access-log import.
+cancellation, payment/fulfilment, report generation, gift cards, wallet passes,
+and access-log import. Source links may require organization permissions. No
+credentials, personal-data artefacts, or production-record excerpts are
+included here.

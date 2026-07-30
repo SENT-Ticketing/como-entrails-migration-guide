@@ -6,12 +6,14 @@ A public, sanitized pre-research note for the Como ticketing migration.
 
 **Detailed research notes:** [research-blueprint.md](research-blueprint.md)
 
-The page covers the current and proposed system boundaries, the Entrails data
-model, Italian requirements, migration gaps, and open questions. The
-research notes include the official primary sources and more detail on the
-option of building a SENT fiscal component.
+The page covers the current Como feature and integration surface, its mapping
+to Entrails, billing and season-ticket gaps, Italian requirements, a reusable
+multi-club boundary, migration risks, and open questions. The research notes
+link to pinned Como and Entrails source revisions and official primary sources.
+They also examine the option of building a SENT fiscal component.
 Neither document is a legal or certification opinion. They intentionally contain
-no private source links, code excerpts, credentials, or personal-data examples.
+no credentials, private production records, or personal-data examples. Some
+repository links may require organization permissions.
 
 Research snapshot: **29 July 2026**.
 
