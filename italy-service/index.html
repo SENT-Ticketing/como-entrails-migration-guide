@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Technical design study for a separate Italian issuance service used by Entrails." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content="Italian issuance service — design study" />
+    <meta property="og:description" content="Service boundary, Entrails feature scope, recognition paths, external integrations, and open questions." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f5f6f7" />
+    <title>Italian issuance service — design study</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="document-name" href="#top">Italian issuance study</a>
+        <span class="document-state">Research draft</span>
+        <nav aria-label="Document sections">
+          <a href="../">Como comparison</a>
+          <a href="../platform/">Platform overview</a>
+          <a href="#boundary">Boundary</a>
+          <a href="#entrails-scope">Entrails scope</a>
+          <a href="#api">API</a>
+          <a href="#recognition">Recognition</a>
+          <a href="#questions">Questions</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="intro study-intro" id="top">
+        <p class="document-type">Technical design study</p>
+        <h1>An Italian issuance service for Entrails</h1>
+        <p class="intro-text">
+          This page tests a specific architecture: Entrails remains the ticketing product, while a
+          separately managed SENT service coordinates Italian fiscal issuance, public-safety checks,
+          statutory records, and venue access providers through a controlled API.
+        </p>
+
+        <div class="working-assumption">
+          <strong>Working thesis</strong>
+          <p>
+            A separate service would give SENT control of the regulated issuing boundary without
+            placing ordinary shop, payment, seating, and white-label development inside the same
+            codebase. It would still form part of a recognized system. This is a starting design,
+            not a claim that its certification perimeter or operating roles are already settled.
+          </p>
+        </div>
+
+        <dl class="document-meta">
+          <div><dt>Research date</dt><dd>1 August 2026</dd></div>
+          <div><dt>Product scope</dt><dd>Full Como coverage, not a match-only launch</dd></div>
+          <div><dt>Current reference</dt><dd>Como app/API and Planet integration</dd></div>
+          <div><dt>Limit</dt><dd>Technical pre-research, not legal advice</dd></div>
+        </dl>
+      </section>
+
+      <section class="document-section" id="boundary">
+        <header class="section-header">
+          <span class="section-number">01</span>
+          <div>
+            <h2>Proposed responsibility boundary</h2>
+            <p>Three connected planes keep commercial, certified, and external authority state distinct.</p>
+          </div>
+        </header>
+
+        <figure class="responsibility-map">
+          <figcaption><span>Working architecture</span><strong>Entrails calls a controlled issuance API</strong></figcaption>
+          <div class="responsibility-planes" role="group" aria-label="Entrails owns white-label applications, products, seating, orders, subscriptions and privileges. The Italian issuance service owns fiscal configuration, eligibility coordination, fiscal title issuance, immutable records and reconciliation. External systems include SIAE and Agenzia, VeRO and Questura, activation card components, and venue access providers such as Alfi for Como.">
+            <div class="plane product-plane">
+              <b><small>Product plane</small>Entrails</b>
+              <div class="rail">
+                <span>White-label shop</span><i>→</i><span>Seat picker</span><i>→</i><span>Order + payment</span><i>→</i><span>Ticket + privileges</span><i>→</i><span>Season + sponsor flows</span>
+              </div>
+            </div>
+            <div class="plane certified-plane">
+              <b><small>Controlled plane</small>Issuance service</b>
+              <div class="rail">
+                <span>Fiscal configuration</span><i>→</i><span>Eligibility precheck</span><i>→</i><span>Seal + title</span><i>→</i><span>Immutable journal</span><i>→</i><span>Reports + reconciliation</span>
+              </div>
+            </div>
+            <div class="plane external-plane">
+              <b><small>External plane</small>Italian interfaces</b>
+              <div class="rail">
+                <span>Activation card</span><i>↔</i><span>SIAE / Agenzia</span><i>↔</i><span>Questura / Ve.R.O.</span><i>↔</i><span>Access adapter</span><i>↔</i><span>Alfi for Como</span>
+              </div>
+            </div>
+          </div>
+          <div class="plane-handoffs" aria-hidden="true">
+            <span>configuration + privilege + holder</span>
+            <span>title ID + fiscal seal + lifecycle result</span>
+            <span>signed records + authority/access responses</span>
+          </div>
+          <p>
+            The service would be independently deployed, but it is not assumed to sit outside the
+            recognition perimeter. Planet's public release notes indicate that third-party app and
+            football API integrations were handled as approved Ticka variants (<a href="#source-v2">V2</a>, <a href="#source-v3">V3</a>).
+          </p>
+        </figure>
+
+        <h3>State ownership</h3>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Concern</th><th>Authority</th><th>Linked projection</th></tr></thead>
+            <tbody>
+              <tr><td>Product, cart, order, payment and refund</td><td>Entrails and the configured PSP</td><td>The issuance service references the order and paid fiscal amount.</td></tr>
+              <tr><td>Seat selection and commercial hold</td><td>Entrails seating stack</td><td>The service applies a final duplicate-seat and fiscal-capacity guard; certification treatment remains open.</td></tr>
+              <tr><td>Commercial ticket and usable right</td><td>Entrails <code>Ticket</code> and <code>Privilege</code></td><td>The certified title links to the exact privilege but keeps a different identity.</td></tr>
+              <tr><td>Fiscal configuration and certified title</td><td>Italian issuance service</td><td>Entrails stores stable references and customer-service status.</td></tr>
+              <tr><td>Eligibility decision</td><td>Questura / Ve.R.O.</td><td>The service stores the minimum decision reference and required evidence.</td></tr>
+              <tr><td>Gate validation</td><td>Configured venue access provider</td><td>The service normalizes entitlement updates, acknowledgements and event reconciliation.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="technical-note">
+          <strong>Identifier rule:</strong> Entrails ticket ID, privilege ID, certified title ID,
+          fiscal seal, and gate token identify different things. They remain separate and explicitly linked.
+        </p>
+      </section>
+
+      <section class="document-section" id="entrails-scope">
+        <header class="section-header">
+          <span class="section-number">02</span>
+          <div>
+            <h2>Entrails must still become feature-complete</h2>
+            <p>The compliance service does not replace the football product work required for Como.</p>
+          </div>
+        </header>
+
+        <div class="scope-grid">
+          <article class="scope-card required">
+            <small>Required product capability</small>
+            <h3>Visual seat picker</h3>
+            <p>Buyers select an available section, row, and seat. Random assignment can remain optional, but it is not the default football experience.</p>
+            <span>shop · seating · inventory holds</span>
+          </article>
+          <article class="scope-card required">
+            <small>Required domain capability</small>
+            <h3>Season cards</h3>
+            <p>A subscription spans events and creates one right per event, with renewal, pre-emption, holder, seat, transfer, and value-allocation rules.</p>
+            <span>subscription · event allocations · rateo</span>
+          </article>
+          <article class="scope-card required">
+            <small>Required commercial capability</small>
+            <h3>Sponsor and business packages</h3>
+            <p>Reserved allocations, corporate purchasers, hospitality products, unfinalized holders, sponsor finalization, and reports use the normal ticket lifecycle.</p>
+            <span>allocation · purchaser · holder finalization</span>
+          </article>
+          <article class="scope-card required">
+            <small>Required operations</small>
+            <h3>Bulk and service issuance</h3>
+            <p>Traceable imports, complimentary and accreditation flows, service passes, operator attribution, and BOCA fulfilment where required.</p>
+            <span>batch · audit · print adapter</span>
+          </article>
+          <article class="scope-card required">
+            <small>Required identity model</small>
+            <h3>Purchaser and holder</h3>
+            <p>The account, buyer, operator, commercial owner, named holder, and attendee are kept as distinct roles throughout issuance and reporting.</p>
+            <span>holder snapshot · eligibility reference</span>
+          </article>
+          <article class="scope-card required">
+            <small>Required recovery</small>
+            <h3>Lifecycle reconciliation</h3>
+            <p>Payment, issue, cancellation, holder change, refund, inventory, access, and report state reconcile without mutable repair records becoming legal evidence.</p>
+            <span>idempotency · append-only corrections</span>
+          </article>
+        </div>
+
+        <h3>Season structure</h3>
+        <div class="season-structure" role="img" aria-label="A season product is purchased as a subscription. It contains event allocations. Each allocation creates an Entrails privilege linked to a certified per-event right and the stable season credential used for presentation.">
+          <div><small>Sellable definition</small><strong>Season product</strong></div><i>→</i>
+          <div><small>Purchased instance</small><strong>Subscription</strong></div><i>→</i>
+          <div class="stack"><small>Enumerated contents</small><strong>Event allocations</strong><span>event · seat · fiscal value</span></div><i>→</i>
+          <div class="stack focus"><small>Executable rights</small><strong>Per-event privileges</strong><span>holder · access · lifecycle</span></div><i>↔</i>
+          <div class="stack certified"><small>Italian evidence</small><strong>Certified subscription/title</strong><span>C2 · rateo · fiscal identity</span></div>
+          <p>The season card or stable barcode presents the subscription. It is not a substitute for the subscription record or its event rights.</p>
+        </div>
+
+        <div class="cutover-rule">
+          <b>Production rule</b>
+          <p>A single-match flow is useful as the first engineering and recognition slice. It is not the Como go-live scope. Production requires the complete agreed Como capability set.</p>
+        </div>
+      </section>
+
+      <section class="document-section" id="api">
+        <header class="section-header">
+          <span class="section-number">03</span>
+          <div>
+            <h2>API and issuance flow</h2>
+            <p>The browser does not wait on a long fiscal operation; Entrails submits a durable, idempotent command.</p>
+          </div>
+        </header>
+
+        <ol class="service-flow" aria-label="Proposed issuance flow">
+          <li><span>01</span><div><small>Entrails</small><strong>Reserve and prepare</strong><p>Freeze the event, privilege, seat, buyer, holder, and fiscal-price references.</p></div></li>
+          <li><span>02</span><div><small>Issuance API</small><strong>Precheck</strong><p>Validate activated configuration, capacity, identity evidence, and applicable Ve.R.O. decision.</p></div></li>
+          <li><span>03</span><div><small>Entrails</small><strong>Confirm money</strong><p>Complete the payment or approved operator/free issuance path.</p></div></li>
+          <li><span>04</span><div><small>Issuance API</small><strong>Accept command</strong><p>Return request and per-right operation IDs. A timeout is unknown, not automatically failed.</p></div></li>
+          <li><span>05</span><div><small>Controlled worker</small><strong>Issue and seal</strong><p>Serialize certified work where required, create the fiscal title, and append evidence.</p></div></li>
+          <li><span>06</span><div><small>External adapters</small><strong>Notify and publish</strong><p>Complete authority follow-up and publish the valid entitlement to the venue provider.</p></div></li>
+          <li><span>07</span><div><small>Signed result</small><strong>Project and deliver</strong><p>Entrails commits the title references, then produces PDF, wallet, email, and customer status.</p></div></li>
+        </ol>
+
+        <h3>Minimum contract</h3>
+        <div class="table-panel">
+          <table>
+            <thead><tr><th>Operation</th><th>Purpose</th><th>Important behavior</th></tr></thead>
+            <tbody>
+              <tr><td><code>fiscal-configurations</code></td><td>Submit, validate, and activate versioned event, sector, reduction, price, and subscription facts.</td><td>Used values become immutable; later changes create a new version.</td></tr>
+              <tr><td><code>issuance-prechecks</code></td><td>Validate configuration, capacity, holder evidence, and event-specific eligibility.</td><td>Returns a bounded decision reference, not a permanent copy of authority data.</td></tr>
+              <tr><td><code>issuance-requests</code></td><td>Request one or more certified titles.</td><td>Idempotency required; status returned per privilege/right.</td></tr>
+              <tr><td><code>titles/{id}</code></td><td>Read authoritative normalized title state.</td><td>Supports recovery after timeout or lost webhook.</td></tr>
+              <tr><td><code>cancellation-requests</code></td><td>Request a regulated cancellation with cause and actor.</td><td>Payment refund and inventory release remain separate reconciled actions.</td></tr>
+              <tr><td><code>holder-change-requests</code></td><td>Run the current football-specific holder-change operation.</td><td>Exact fiscal continuity must be confirmed; do not infer it from generic resale rules.</td></tr>
+              <tr><td><code>reconciliations</code></td><td>Compare one event, request, title set, report, or access-provider exchange.</td><td>Repairs append observations/corrections rather than erasing the original fact.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="lifecycle-line" role="img" aria-label="A right moves from requested to prechecking, ready, issuing, and issued. It can be blocked or failed before issuance. An issued title may enter cancellation pending, holder change pending, or correction recorded, with each outcome appended and reconciled.">
+          <span>Requested</span><i>→</i><span>Prechecking</span><i>→</i><span>Ready</span><i>→</i><span>Issuing</span><i>→</i><span class="done">Issued</span>
+          <div><b>Alternate outcomes</b><em>Blocked</em><em>Failed / retry</em><em>Cancellation pending</em><em>Holder change pending</em><em>Correction recorded</em></div>
+        </div>
+      </section>
+
+      <section class="document-section" id="access">
+        <header class="section-header">
+          <span class="section-number">04</span>
+          <div>
+            <h2>Venue access is an adapter boundary</h2>
+            <p>Alfi remains the Como provider; other clubs may bring other certified gate systems.</p>
+          </div>
+        </header>
+
+        <div class="adapter-map" role="img" aria-label="The Italian issuance service exposes a normalized access provider contract for publishing and withdrawing entitlements, receiving access events, and reconciling an event. The first adapter connects to Alfi for Como. Later white-label deployments can add their actual provider through a separately tested adapter.">
+          <div class="adapter-core">
+            <small>Controlled service boundary</small>
+            <strong>Access-provider contract</strong>
+            <span>publish · withdraw/change · access events · reconcile event</span>
+          </div>
+          <div class="adapter-branches">
+            <i></i>
+            <div class="adapter active"><small>Como</small><strong>Alfi adapter</strong><span>first implementation</span></div>
+            <div class="adapter"><small>Future club</small><strong>Provider adapter</strong><span>added for a real deployment</span></div>
+            <div class="adapter"><small>Future option</small><strong>SENT access component</strong><span>separate Italian recognition scope</span></div>
+          </div>
+        </div>
+
+        <p class="section-copy">
+          The current repositories prove an Alfi Excel access-log import, not the live certified
+          interface (<a href="#source-c5">C5</a>). The protocol, acknowledgement model, offline behavior,
+          cancellation propagation, event-opening checks, and canonical access-history owner remain evidence requests.
+        </p>
+      </section>
+
+      <section class="document-section" id="recognition">
+        <header class="section-header">
+          <span class="section-number">05</span>
+          <div>
+            <h2>Two recognition paths</h2>
+            <p>Both paths keep the full Entrails product scope; they differ in who owns regulated issuance.</p>
+          </div>
+        </header>
+
+        <div class="recognition-grid">
+          <article class="recognition-card current-path">
+            <header><small>Path A</small><h3>Entrails integrated with Ticka</h3></header>
+            <div class="recognition-flow"><span>Entrails apps</span><i>↔</i><span>Ticka / Planet</span><i>↔</i><span>Authorities + access</span></div>
+            <dl>
+              <div><dt>SENT owns</dt><dd>Ticketing product, seating, commerce, subscriptions, integration, and white labels.</dd></div>
+              <div><dt>Planet owns</dt><dd>The recognized fiscal issuing system and its controlled backend.</dd></div>
+              <div><dt>Trade-off</dt><dd>Less fiscal implementation, continued external dependency for changes and incidents.</dd></div>
+            </dl>
+          </article>
+          <article class="recognition-card own-path">
+            <header><small>Path B</small><h3>Entrails with a SENT issuance service</h3></header>
+            <div class="recognition-flow"><span>Entrails apps</span><i>↔</i><span>SENT service</span><i>↔</i><span>Authorities + access</span></div>
+            <dl>
+              <div><dt>SENT owns</dt><dd>Product plus the recognized fiscal backend, authority coordination, journal, and reporting.</dd></div>
+              <div><dt>Planet owns</dt><dd>No new-title role after transition; it may remain an approved contingency provider.</dd></div>
+              <div><dt>Trade-off</dt><dd>More conformity and operational responsibility, direct control of the reusable backend.</dd></div>
+            </dl>
+          </article>
+        </div>
+
+        <h3>Working role hypothesis</h3>
+        <div class="role-line" role="img" aria-label="SENT could be the software producer and potentially the system holder or service operator. Each club remains the event organizer. A configured venue company such as Alfi for Como remains the access provider. The exact legal entity and per-deployment approval need confirmation.">
+          <div><small>Software role</small><strong>SENT as producer</strong></div><i>+</i>
+          <div class="open-role"><small>Operating role to confirm</small><strong>SENT as Titolare / service operator</strong></div><i>+</i>
+          <div><small>Event role</small><strong>Club as organiser</strong></div><i>+</i>
+          <div><small>Venue role</small><strong>Configured access provider</strong></div>
+        </div>
+        <p class="section-copy">
+          Ticka distinguishes producer and <em>titolare del sistema</em>, and advertises a service model
+          in which an organiser need not become Titolare (<a href="#source-v1">V1</a>). That supports the
+          hypothesis, but it does not prove that one SENT installation or activation card can lawfully
+          serve multiple club organisers. A certifier must confirm the entity, installation, card, and deployment model.
+        </p>
+
+        <div class="legal-boundary">
+          <strong>What is established</strong>
+          <p>Recognized systems use activation-card and fiscal-seal mechanisms, immutable records, periodic transmissions, controlled variants, and an integrated access-control process (<a href="#source-l1">L1</a>, <a href="#source-l2">L2</a>).</p>
+          <strong>What is not established here</strong>
+          <p>The exact cloud architecture, multi-club licence or approval model, card placement, current private schemas, recognition cost, and full certification perimeter.</p>
+        </div>
+      </section>
+
+      <section class="document-section" id="sequence">
+        <header class="section-header">
+          <span class="section-number">06</span>
+          <div>
+            <h2>Engineering sequence and production gate</h2>
+            <p>Small slices reduce technical risk; they do not reduce the required go-live scope.</p>
+          </div>
+        </header>
+
+        <div class="readiness-path" role="img" aria-label="The work starts with an evidence pack, then a normalized Planet-backed contract, a shadow journal, a single-match vertical slice, completion of all Como parity features, and finally recognition plus production reconciliation before go-live.">
+          <div><span>Evidence</span><strong>Contracts and examples</strong><p>Planet · SIAE · Ve.R.O. · Alfi</p></div><i>→</i>
+          <div><span>Boundary</span><strong>Planet-backed API</strong><p>Entrails states and idempotency</p></div><i>→</i>
+          <div><span>Observation</span><strong>Shadow journal</strong><p>Compare known outcomes</p></div><i>→</i>
+          <div><span>Vertical slice</span><strong>Single match</strong><p>End-to-end technical proof</p></div><i>→</i>
+          <div><span>Parity</span><strong>Complete Como scope</strong><p>seating · seasons · sponsor · operations</p></div><i>→</i>
+          <div class="gate"><span>Production gate</span><strong>Recognized and reconciled</strong><p>money · capacity · holder · fiscal · access</p></div>
+        </div>
+
+        <p class="cutover-statement">
+          <strong>No match-only production cutover.</strong>
+          Como moves only after the agreed current functions have an Entrails implementation and the complete Italian path has the required recognition and operational evidence.
+        </p>
+      </section>
+
+      <section class="document-section" id="questions">
+        <header class="section-header">
+          <span class="section-number">07</span>
+          <div>
+            <h2>Questions that decide the design</h2>
+            <p>These are evidence requests, not gaps to fill with assumptions.</p>
+          </div>
+        </header>
+
+        <div class="question-grid">
+          <details open>
+            <summary>Recognition and operating model</summary>
+            <ul>
+              <li>Can the cloud API and an Italian card agent be recognized as one distributed system?</li>
+              <li>Which Entrails shops, dashboards, APIs, adapters, and builds sit inside the perimeter?</li>
+              <li>Can SENT be Titolare/service operator for several club organisers, and which legal entity?</li>
+              <li>Does each club, installation, frontend, access adapter, or card require separate approval?</li>
+              <li>Which changes require a variant application?</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Planet and current Como behavior</summary>
+            <ul>
+              <li>What are Planet's versioned request, response, idempotency, timeout, and title-state contracts?</li>
+              <li>What proves whether a title exists after a network timeout?</li>
+              <li>How do cancellation, football holder change, partial issue, subscription issue, and correction behave?</li>
+              <li>Can we obtain redacted C1, C2, daily/monthly, failed-report, and recovery examples?</li>
+              <li>Which Como frontend/API revision is covered by the current Ticka variant?</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Authorities, holder data, and reporting</summary>
+            <ul>
+              <li>What is the current Ve.R.O. production interface and event-specific policy source?</li>
+              <li>Is Codice Fiscale required, for which titles, under which enacted source and from what date?</li>
+              <li>What holder data is retained by each party and for how long?</li>
+              <li>What are the accepted report schemas, rateo formula, rounding, signing, receipt, and correction procedures?</li>
+              <li>What fallback is permitted during card, network, or service outage?</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Alfi and future venue providers</summary>
+            <ul>
+              <li>What is the live Alfi interface and its responsibility split with Planet?</li>
+              <li>Who creates the gate token and canonical valid-title list?</li>
+              <li>How are issue, cancellation, holder/seat change, acknowledgement, offline mode, and scan history exchanged?</li>
+              <li>What event-opening reconciliation and test environment are required?</li>
+              <li>Which four normalized operations are common enough to support another real provider?</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Entrails product parity</summary>
+            <ul>
+              <li>Approve the exact Como list for seat picker, seasons, renewal, sponsor/corporate, bulk, accreditation, service pass, delivery, and reports.</li>
+              <li>Which system is the authoritative seat hold while Planet and Entrails coexist?</li>
+              <li>How are season value, per-event rights, seat-back, cancellation, postponement, and holder change represented?</li>
+              <li>Which package and upsell facts belong to the product, the privilege, or a separate service entitlement?</li>
+              <li>Which team owns 24/7 fiscal operations, report failures, card custody, and incident response?</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="evidence-legend" aria-label="Evidence labels used in this page">
+          <span><i class="verified"></i><strong>Verified</strong> repository or primary-source evidence</span>
+          <span><i class="confirmed"></i><strong>Confirmed</strong> current operator requirement</span>
+          <span><i class="inferred"></i><strong>Inferred</strong> proposed technical design</span>
+          <span><i class="open"></i><strong>Open</strong> requires contract, sample, or authority answer</span>
+        </div>
+      </section>
+
+      <section class="document-section sources" id="sources">
+        <header class="section-header">
+          <span class="section-number">08</span>
+          <div>
+            <h2>Sources and evidence boundary</h2>
+            <p>Repository links are pinned. Legal sources establish requirements, not approval of this architecture.</p>
+          </div>
+        </header>
+
+        <ol class="source-list">
+          <li id="source-c1"><span>C1</span><a href="https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/planet/index.js">Como API: Planet adapter at <code>322dc5b7</code></a></li>
+          <li id="source-c2"><span>C2</span><div><a href="https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/tickets/issueSingleMatchTickets.js">single-match issuance</a>; <a href="https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/tickets/issueSeasonTickets.js">season issuance</a></div></li>
+          <li id="source-c3"><span>C3</span><a href="https://github.com/SENT-Italy/como-app/blob/25f69e5e024b8b8a23590ad6a803e733e97d7c38/src/clients/ComoAPI.js">Como app: API client surface at <code>25f69e5e</code></a></li>
+          <li id="source-c4"><span>C4</span><div><a href="https://github.com/SENT-Italy/como-app/blob/25f69e5e024b8b8a23590ad6a803e733e97d7c38/src/components/season_tickets/SelectedSeasonTickets.vue">Como season selection</a>; <a href="https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/business_datalake/ticketing/season_tickets.md">season export contract</a></div></li>
+          <li id="source-c5"><span>C5</span><a href="https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/business_datalake/access_control/acccessControlProcessing.js">Como API: Alfi access-log Excel ingestion</a></li>
+          <li id="source-e1"><span>E1</span><div><a href="https://github.com/GETProtocolLab/entrails/tree/e89406e469d81a153c48aab6a4457da5f1e9f984/apps/ticket/models">Entrails ticket and privilege models</a>; <a href="https://github.com/GETProtocolLab/entrails/tree/e89406e469d81a153c48aab6a4457da5f1e9f984/apps/order">orders</a>; <a href="https://github.com/GETProtocolLab/entrails/tree/e89406e469d81a153c48aab6a4457da5f1e9f984/apps/seating">seating</a></div></li>
+          <li id="source-v1"><span>V1</span><a href="https://www.ticka.it/">Ticka product site: product, producer, current version, and service claims</a></li>
+          <li id="source-v2"><span>V2</span><a href="https://www.ticka.it/informazioni-utili/news/50-aggiornamenti-di-versione/329-ticka-omologata-la-versione-5-0-3.html">Ticka 5.0.3: approved third-party web/app integration variant</a></li>
+          <li id="source-v3"><span>V3</span><a href="https://www.ticka.it/informazioni-utili/news/50-aggiornamenti-di-versione/330-ticka-omologata-versione-5-0-4.html">Ticka 5.0.4: API for named professional-football tickets</a></li>
+          <li id="source-l1"><span>L1</span><a href="https://www.siae.it/it/cosa-facciamo/servizi-collaborazione-altri-enti/agenzia-delle-entrate/biglietterie-automatizzate-controllo-accessi/">SIAE: automated ticketing, activation cards, suitability, reporting, and access control</a></li>
+          <li id="source-l2"><span>L2</span><a href="https://d2aod8qfhzlk6j.cloudfront.net/SITOIS/Provvedimento_secondary_ticketing_27_06_2019_78fe5a6183.pdf">Agenzia delle Entrate: coordinated online-ticketing rules as amended in 2025</a></li>
+          <li id="source-l3"><span>L3</span><a href="https://osservatoriosport.interno.gov.it/web/wp-content/uploads/2018/01/DM6_2005-Ticketing.pdf">Ministry of the Interior: D.M. 6 June 2005 football ticketing</a></li>
+          <li id="source-l4"><span>L4</span><a href="https://osservatoriosport.interno.gov.it/web/wp-content/uploads/2018/01/DM2009VERO.pdf">Ministry of the Interior: D.M. 15 August 2009 Ve.R.O.</a></li>
+        </ol>
+
+        <div class="evidence-note">
+          <p><strong>Code boundary:</strong> the repositories expose Como's calls to Planet, not Planet's certified implementation, private SIAE pack, current Alfi protocol, or deployed operating procedures.</p>
+          <p><strong>Research boundary:</strong> the architecture should be reviewed with the current Como operators and an Italian certifier before it becomes an implementation commitment.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Technical research draft · 1 August 2026</span>
+      <span>Repository evidence + operator input + published Italian sources</span>
+    </footer>
+  </body>
+</html>
