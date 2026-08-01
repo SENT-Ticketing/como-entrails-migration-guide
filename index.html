@@ -21,6 +21,7 @@
         <span class="document-state">Working document</span>
         <nav aria-label="Document sections">
           <a href="platform/">Platform overview</a>
+          <a href="italy-service/">Issuance study</a>
           <a href="#systems">Systems</a>
           <a href="#coverage">Coverage</a>
           <a href="#data">Data model</a>
@@ -59,6 +60,8 @@
         </dl>
 
         <p class="document-link">
+          <a href="italy-service/">Italian issuance service study</a>
+          <span aria-hidden="true"> · </span>
           <a href="https://github.com/SENT-Ticketing/como-entrails-migration-guide/blob/main/research-blueprint.md">Detailed research notes (Markdown)</a>
         </p>
       </section>
@@ -106,7 +109,7 @@
               <div class="diagram-row three">
                 <div class="diagram-node external">Agenzia / SIAE</div>
                 <div class="diagram-node external">Questura / VRO</div>
-                <div class="diagram-node external">Venue access<small>provider and contract open</small></div>
+                <div class="diagram-node external">Venue access<small>Alfi for Como; adapter per deployment</small></div>
               </div>
             </div>
             <p>A separate fiscal component may reduce the certification impact of normal Entrails changes. The certification perimeter still needs to be confirmed.</p>
@@ -179,6 +182,7 @@
             <thead><tr><th>Capability</th><th>Current Como implementation</th><th>Entrails position</th><th>Implementation treatment</th></tr></thead>
             <tbody>
               <tr><td>Single-match sales</td><td>Seated and no-map sales, reductions, presale, complimentary/admin issue, checkout, failure queues.</td><td>Events, products, prices, seating, shop, cashier, reservations and invitations exist.</td><td>Reuse the Entrails flow; add named holder, fiscal configuration and per-right fiscal issuance.</td></tr>
+              <tr><td>Visual seat selection</td><td>Numbered seats are assigned and carried into Planet issuance.</td><td>Entrails can allocate a seat, including random allocation within a section, but does not yet provide the required buyer-facing seat map.</td><td>Add a shared visual seat picker with live holds, accessible alternatives and exact seat confirmation. Keep random allocation as an optional mode.</td></tr>
               <tr><td>Away fixtures</td><td>Separate purchase, complimentary allocation, payment confirmation, seat assignment and delivery flow.</td><td>Away status is not a separate domain primitive.</td><td>Model as an event policy/workflow unless a distinct legal or inventory rule is proven.</td></tr>
               <tr><td>Season tickets</td><td>Subscription types, included events, fixed seat, pricing, renewal/pre-emption, transfer and operational recovery.</td><td>No explicit multi-event subscription primitive. A combi is scoped to one event.</td><td>Add subscription and per-event allocation records to cover the season flow.</td></tr>
               <tr><td>Corporate and sponsor</td><td>Reserved allocations, sponsor purchaser identity, deferred holder finalization and dedicated reports.</td><td>Reservations, invitations, groups and cashier cover parts of the workflow.</td><td>Keep allocation/finalization as Entrails workflows; do not create a separate ticket type.</td></tr>
@@ -399,6 +403,8 @@
           component would cover certified issuance, correction, evidence, and transmission.
         </p>
 
+        <p class="document-link"><a href="italy-service/">Open the Italian issuance service design study</a></p>
+
         <div class="ownership-grid" role="img" aria-label="A shared Entrails core serves club-scoped configuration. An Italy domain layer connects it to a controlled SENT fiscal component. Authority, payment, messaging and venue systems remain external adapters. Optional club modules remain separate.">
           <div><small>Shared product</small><strong>Entrails core</strong><span>commerce · inventory · rights · subscriptions · operations</span></div>
           <div><small>Country domain</small><strong>Entrails Italy</strong><span>holder · fiscal configuration · eligibility reference · issuance orchestration</span></div>
@@ -414,7 +420,7 @@
               <tr><td>Entrails core</td><td>Events, products, prices, inventory, seating, carts, orders, payments, ledger, rights, reservations, transfer and operational reporting.</td><td>Italian seals, authority decisions or provider-specific payloads.</td></tr>
               <tr><td>Entrails Italy</td><td>Named-holder snapshots, subscriptions and rateo inputs, versioned fiscal codes, eligibility references and issuance-unit workflow.</td><td>Secret signing material or the legal authority's decision.</td></tr>
               <tr><td>SENT fiscal component</td><td>Activation-card interaction, seal, immutable transaction record, certified issue/cancel/correct actions, summaries, transmissions, receipts and inspection evidence.</td><td>Shop presentation, seat selection, CRM or loyalty.</td></tr>
-              <tr><td>External adapters</td><td>PSP processing, public-safety queries, SIAE/Agenzia interfaces, venue access hardware, email/SMS and wallet channels.</td><td>Canonical commercial or holder state.</td></tr>
+              <tr><td>External adapters</td><td>PSP processing, public-safety queries, SIAE/Agenzia interfaces, email/SMS and wallet channels. A small venue-access contract supports Alfi for Como and the actual provider for later deployments.</td><td>Canonical commercial or holder state.</td></tr>
               <tr><td>Optional club modules</td><td>Gift cards, loyalty/points, collectibles, hospitality, service passes and other club-specific services.</td><td>Fiscal or admission invariants.</td></tr>
               <tr><td>Existing Ticka-issued titles</td><td>Actions that remain under the current issuing arrangement.</td><td>New Entrails functions do not alter their original fiscal authority.</td></tr>
             </tbody>
@@ -442,23 +448,24 @@
       <section class="document-section" id="transition">
         <header class="section-header">
           <span class="section-number">06</span>
-          <div><h2>Implementation sequence</h2><p>This sequence is for proving functional and regulatory coverage. It does not decide a vendor handover.</p></div>
+          <div><h2>Implementation sequence</h2><p>Engineering can proceed in slices; production requires complete agreed Como coverage and recognition.</p></div>
         </header>
-        <div class="phase-flow" role="img" aria-label="Implementation starts with the current reference, then covers functional replication, Italian extensions, representative-event validation, and a responsibility decision.">
+        <div class="phase-flow" role="img" aria-label="Implementation starts with the current reference, then completes Entrails product parity, chooses and validates the recognition path, integrates Italian authorities and venue access, and reaches a production gate based on full reconciliation.">
           <div><span>1</span><strong>Current reference</strong><p>Verify the behaviour in Como and Ticka.</p></div>
           <i>→</i>
-          <div><span>2</span><strong>Functional coverage</strong><p>Implement the ordinary ticket and season primitives in Entrails.</p></div>
+          <div><span>2</span><strong>Entrails parity</strong><p>Add visual seating, seasons, business packages and operations.</p></div>
           <i>→</i>
-          <div><span>3</span><strong>Italian extension</strong><p>Add holder, fiscal, public-safety, and access boundaries.</p></div>
+          <div><span>3</span><strong>Recognition path</strong><p>Validate Planet-backed or SENT-controlled issuance.</p></div>
           <i>→</i>
-          <div><span>4</span><strong>Event validation</strong><p>Test one representative event and reconcile the results.</p></div>
+          <div><span>4</span><strong>Italian interfaces</strong><p>Connect fiscal, public-safety and access boundaries.</p></div>
           <i>→</i>
-          <div><span>5</span><strong>Responsibility decision</strong><p>Choose the provider boundary after the evidence and recognition work.</p></div>
+          <div><span>5</span><strong>Production gate</strong><p>Reconcile the full agreed Como capability set.</p></div>
         </div>
         <p class="section-copy">
-          The suggested pilot includes seated and standing inventory, one reduction, complimentary issuance,
-          named holders, cancellation, and refund handling. Reconciliation should cover money, capacity, issued
-          titles, holders, and access results.
+          A single-match vertical slice can validate the architecture and recognition work, but it is not a
+          production cutover. Como production requires visual seat selection, seasons and season cards,
+          sponsor/business flows, required operator tools, Italian compliance, Alfi access and end-to-end
+          reconciliation across money, capacity, titles, holders and admission.
         </p>
       </section>
 
