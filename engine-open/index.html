@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Technical suitability study for adapting GETProtocol Engine Open into SENT's Italian certified issuance service." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content="Engine Open → Italian issuer" />
+    <meta property="og:description" content="Repository fit, Entrails compatibility, Planet parity, target contract, implementation sequence, and evidence requests." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f5f6f7" />
+    <title>Engine Open → Italian issuer</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="document-name" href="#top">Engine Open assessment</a>
+        <span class="document-state">Technical blueprint</span>
+        <nav aria-label="Document sections">
+          <a href="../">Como comparison</a>
+          <a href="../italy-service/">Issuance study</a>
+          <a href="#decision">Decision</a>
+          <a href="#trace">Trace</a>
+          <a href="#fit">Fit</a>
+          <a href="#target">Target</a>
+          <a href="#contract">Contract</a>
+          <a href="#sequence">Sequence</a>
+          <a href="#questions">Questions</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="intro engine-intro" id="top">
+        <p class="document-type">Repository and architecture assessment</p>
+        <h1>Reuse Engine Open.<br /><span>Do not deploy it unchanged.</span></h1>
+        <p class="intro-text">
+          SENT has forked GETProtocol's public Engine Open repository. This study tests whether its
+          existing Entrails-facing API, durable action model, workers, status queries, and callbacks
+          can become the foundation of the Italian certified issuance service.
+        </p>
+
+        <div class="decision-banner">
+          <div><small>Decision</small><strong>Adopt as a controlled foundation</strong></div>
+          <p>
+            Keep the Go repository and its useful integration patterns. Carve out a small fiscal
+            service with a new data model and contract. Remove blockchain-only execution from the
+            Italian deployment instead of renaming it.
+          </p>
+          <a href="https://github.com/SENT-Ticketing/engine-open">Open SENT fork ↗</a>
+        </div>
+
+        <dl class="document-meta">
+          <div><dt>Assessment date</dt><dd>4 August 2026</dd></div>
+          <div><dt>Engine source</dt><dd><code>46cfdb08</code></dd></div>
+          <div><dt>Como source</dt><dd>app <code>25f69e5e</code> · API <code>322dc5b7</code></dd></div>
+          <div><dt>Limit</dt><dd>Technical assessment; recognition remains evidence-dependent</dd></div>
+        </dl>
+      </section>
+
+      <section class="document-section" id="decision">
+        <header class="section-header">
+          <span class="section-number">01</span>
+          <div><h2>The short answer</h2><p>The repository fits the integration problem better than it fits the regulated domain.</p></div>
+        </header>
+
+        <div class="verdict-grid">
+          <article class="verdict keep">
+            <small>Keep</small>
+            <h3>The foundation</h3>
+            <ul>
+              <li>Go repository and source provenance</li>
+              <li>tenant API authentication concept</li>
+              <li>durable action + promise pattern</li>
+              <li>PostgreSQL system of record</li>
+              <li>async worker and status polling</li>
+              <li>persisted callbacks and recovery tasks</li>
+            </ul>
+          </article>
+          <article class="verdict replace">
+            <small>Replace</small>
+            <h3>The execution model</h3>
+            <ul>
+              <li>server-only request identity</li>
+              <li>positional batch correlation</li>
+              <li>blockchain action states</li>
+              <li>unsigned sparse callbacks</li>
+              <li>mutable status as historical evidence</li>
+              <li>generic ticket actions as fiscal commands</li>
+            </ul>
+          </article>
+          <article class="verdict remove">
+            <small>Exclude from Italian runtime</small>
+            <h3>The unrelated stack</h3>
+            <ul>
+              <li>chain cores and transaction assembly</li>
+              <li>broadcaster and confirmer services</li>
+              <li>wallets and gas/fuel accounting</li>
+              <li>NFT metadata and CDN invalidation</li>
+              <li>DynamoDB unless a new need is proven</li>
+              <li>Kafka until measured load requires it</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="plain-conclusion">
+          <strong>Suitability conclusion</strong>
+          <p>
+            Engine Open is suitable as a code and contract foundation. It is not a configurable
+            Italian issuer. The smallest safe adoption is one API process, one worker, and PostgreSQL,
+            with Planet behind a normalized provider adapter first.
+          </p>
+        </div>
+      </section>
+
+      <section class="document-section" id="trace">
+        <header class="section-header">
+          <span class="section-number">02</span>
+          <div><h2>What the systems do today</h2><p>The design follows the actual calls, not the names of the repositories.</p></div>
+        </header>
+
+        <h3>Entrails → Engine Open</h3>
+        <div class="trace-line" role="img" aria-label="Entrails changes event or ticket state, queues a Ticket Engine action, periodically sends a positional batch to Engine Open stream, stores the returned promise, and later receives a callback and polls action status.">
+          <div><small>Entrails domain</small><strong>Event / ticket / privilege transition</strong></div><i>→</i>
+          <div><small>Celery queue</small><strong>TicketEngineAction</strong><span>grouped by tenant + environment</span></div><i>→</i>
+          <div class="emphasis"><small>Engine API</small><strong><code>POST /stream</code></strong><span>promise returned by array position</span></div><i>→</i>
+          <div><small>Async pipeline</small><strong>assemble · broadcast · confirm</strong></div><i>→</i>
+          <div><small>Recovery</small><strong>callback then status poll</strong></div>
+        </div>
+
+        <div class="risk-strip">
+          <span><b>Correlation risk</b> response position identifies the Entrails action</span>
+          <span><b>Duplicate risk</b> client has no promise until after acceptance</span>
+          <span><b>Boundary risk</b> callback route is not a signed certified message</span>
+          <span><b>State risk</b> commerce changes before external issuance completes</span>
+        </div>
+
+        <h3>Como app → Como API → Planet</h3>
+        <div class="trace-line planet-line" role="img" aria-label="Como app calls Como API. Como API prepares one Planet issue request per seat or right, Planet returns independent outcomes, Como API fetches title state, info and extended info, and then updates reports and delivery.">
+          <div><small>Browser</small><strong>Como app</strong><span>calls Como API only</span></div><i>→</i>
+          <div><small>Workflow</small><strong>Como API</strong><span>buyer · holder · seat · payment · operator</span></div><i>→</i>
+          <div class="emphasis fiscal"><small>Provider</small><strong>one Planet issue call per right</strong><span>match / season variants</span></div><i>→</i>
+          <div><small>Enrichment</small><strong>state · info · extended info</strong></div><i>→</i>
+          <div><small>Projection</small><strong>report · PDF · wallet · email</strong></div>
+        </div>
+
+        <p class="section-copy">
+          A paid reservation can produce both successful and failed titles. The current code records
+          successful rights, stores failures, and performs seat compensation. This proves that the new
+          service needs one durable operation per right and separate commerce, issuance, inventory,
+          reporting, access, and delivery states.
+        </p>
+
+        <div class="operation-inventory">
+          <h3>Planet surface observed in Como API</h3>
+          <div>
+            <span>organizers + events</span><span>seat orders + reductions</span><span>availability + locks</span>
+            <span>persons + sponsors</span><span>supporter cards + bans</span><span>Ve.R.O. checks</span>
+            <span>match issue variants</span><span>season issue variants</span><span>pre-emption + collection</span>
+            <span>title state + fiscal seal</span><span>cancelled-title queries</span><span>holder change / Cessione</span>
+          </div>
+          <p>Approximately seventy distinct provider routes are referenced by the pinned adapter. The target Entrails contract should expose capabilities, not those vendor route names.</p>
+        </div>
+      </section>
+
+      <section class="document-section" id="fit">
+        <header class="section-header">
+          <span class="section-number">03</span>
+          <div><h2>Fit-gap scorecard</h2><p>Green means reusable. Amber means a pattern can survive. Red means a new regulated capability is required.</p></div>
+        </header>
+
+        <div class="fit-table table-panel">
+          <table>
+            <thead><tr><th>Concern</th><th>Engine Open</th><th>Italian issuer</th><th>Decision</th></tr></thead>
+            <tbody>
+              <tr><td>Tenant access</td><td>API key / JWT integrator</td><td>organization-scoped machine access</td><td><span class="tag fit">Keep + harden</span></td></tr>
+              <tr><td>Command identity</td><td>server-generated action promise</td><td>client idempotency + operation ID</td><td><span class="tag adapt">Extend</span></td></tr>
+              <tr><td>Persistence</td><td>PostgreSQL action records</td><td>request, attempt, title and journal</td><td><span class="tag adapt">Reuse base</span></td></tr>
+              <tr><td>Async work</td><td>Kafka and many services</td><td>controlled issue/report/access work</td><td><span class="tag adapt">One worker first</span></td></tr>
+              <tr><td>Status</td><td>assemble/broadcast/confirm</td><td>issued/rejected/unknown/corrected</td><td><span class="tag gap">Replace</span></td></tr>
+              <tr><td>Callback</td><td>persisted retry; promise/type body</td><td>signed versioned event + replay</td><td><span class="tag adapt">Rebuild contract</span></td></tr>
+              <tr><td>Fiscal configuration</td><td>absent</td><td>immutable activated versions</td><td><span class="tag gap">New</span></td></tr>
+              <tr><td>Holder evidence</td><td>user/wallet centric</td><td>buyer · holder · operator · terminal</td><td><span class="tag gap">New</span></td></tr>
+              <tr><td>Certified title</td><td>NFT / chain transaction</td><td>title ID · seal · barcode · lifecycle</td><td><span class="tag gap">New</span></td></tr>
+              <tr><td>Fiscal reports</td><td>absent</td><td>C1 · C2 · rateo · receipts</td><td><span class="tag gap">New</span></td></tr>
+              <tr><td>Access control</td><td>chain-aware gatekeeper</td><td>Alfi entitlement + scan reconciliation</td><td><span class="tag gap">New adapter</span></td></tr>
+              <tr><td>Test baseline</td><td>requires live local Postgres/DynamoDB</td><td>reproducible contract/conformance tests</td><td><span class="tag adapt">Make hermetic</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="test-note">
+          <strong>Baseline test observation</strong>
+          <p>
+            <code>go test ./...</code> starts but packages panic when PostgreSQL on
+            <code>localhost:5432</code> or DynamoDB on <code>localhost:8020</code> is absent. This is an
+            environment-blocked baseline, not evidence that the current suite passes or fails.
+          </p>
+        </div>
+      </section>
+
+      <section class="document-section" id="target">
+        <header class="section-header">
+          <span class="section-number">04</span>
+          <div><h2>Target service</h2><p>The first production-shaped system is deliberately small and auditable.</p></div>
+        </header>
+
+        <figure class="target-map">
+          <figcaption><span>Proposed deployment</span><strong>One API, one worker, one system of record</strong></figcaption>
+          <div class="target-flow" role="img" aria-label="Entrails calls the issuer API. The API commits requests and operations to PostgreSQL. One issuer worker claims operations and calls Planet first, then report or authority and Alfi adapters. Signed callbacks and status queries return results to Entrails.">
+            <div class="system-node entrails"><small>Commercial authority</small><strong>Entrails</strong><span>orders · payments · privileges · seats</span></div>
+            <div class="connector"><b>HTTPS</b><span>idempotency + signed callbacks</span></div>
+            <div class="service-box">
+              <div class="system-node api"><small>Process 1</small><strong>Issuer API</strong><span>auth · validate · accept · query</span></div>
+              <div class="db-line">↕ transaction + outbox</div>
+              <div class="system-node db"><small>System of record</small><strong>PostgreSQL</strong><span>journal · operations · evidence · projections</span></div>
+              <div class="db-line">↕ claim + append</div>
+              <div class="system-node worker"><small>Process 2</small><strong>Issuer worker</strong><span>issue · reconcile · report · publish</span></div>
+            </div>
+            <div class="adapter-stack">
+              <div><small>First provider</small><strong>Planet</strong><span>normalized adapter</span></div>
+              <div><small>Italian boundary</small><strong>SIAE / authorities</strong><span>reports + receipts</span></div>
+              <div><small>Como venue</small><strong>Alfi</strong><span>entitlements + access</span></div>
+            </div>
+          </div>
+        </figure>
+
+        <h3>State ownership</h3>
+        <div class="ownership-columns">
+          <article><small>Entrails owns</small><p>product, order, payment, refund, commercial ticket, privilege, seat hold, subscription, customer experience and delivery orchestration.</p></article>
+          <article><small>Issuer owns</small><p>activated fiscal configuration, per-right operation, title and seal evidence, append-only lifecycle, C1/C2, provider/access exchange and reconciliation.</p></article>
+          <article><small>External systems own</small><p>Planet state during transition, authority decisions/receipts, certified device outcomes, and Alfi acknowledgements/scans under the agreed contract.</p></article>
+        </div>
+
+        <h3>Core records</h3>
+        <div class="record-chain" role="img" aria-label="An issuance request contains per-right operations. Each operation links frozen party, fiscal price and configuration snapshots. Attempts create a title and append lifecycle facts. Separate report and access exchanges follow.">
+          <span>Issuance request</span><i>→</i><span>Per-right operation</span><i>→</i><span>Attempt journal</span><i>→</i><span class="certified-record">Certified title</span>
+          <div><b>Frozen inputs</b><em>configuration version</em><em>buyer + holder</em><em>operator + terminal</em><em>seat</em><em>fiscal price</em></div>
+          <div><b>Independent follow-up</b><em>report run</em><em>access exchange</em><em>callback delivery</em><em>reconciliation</em></div>
+        </div>
+
+        <div class="excluded">
+          <strong>Not in the first Italian deployment</strong>
+          <span>Kafka / ZooKeeper</span><span>DynamoDB</span><span>chain cores</span><span>assembler</span>
+          <span>broadcaster</span><span>confirmer</span><span>wallet custody</span><span>fuel accounting</span><span>NFT metadata</span>
+          <p>Add infrastructure only when a measured requirement cannot be met by PostgreSQL claiming and outbox delivery.</p>
+        </div>
+      </section>
+
+      <section class="document-section" id="contract">
+        <header class="section-header">
+          <span class="section-number">05</span>
+          <div><h2>Contract Entrails should call</h2><p>Capabilities remain stable while Planet is replaced behind the provider boundary.</p></div>
+        </header>
+
+        <div class="contract-grid">
+          <article><code>POST /v1/fiscal-configurations</code><h3>Version configuration</h3><p>Event, sector, reduction, price/VAT, gate and subscription allocation facts. Activation makes used values immutable.</p></article>
+          <article><code>POST /v1/issuance-prechecks</code><h3>Check readiness</h3><p>Configuration, capacity, holder evidence, supporter/pre-emption and applicable Ve.R.O. decision.</p></article>
+          <article class="primary-contract"><code>POST /v1/issuance-requests</code><h3>Request per-right issue</h3><p>Client request and operation IDs, explicit idempotency, frozen buyer/holder/seat/price and independent results.</p></article>
+          <article><code>GET /v1/operations/{id}</code><h3>Recover authority</h3><p>Normalized current state and title links. Polling works if a callback or HTTP response was lost.</p></article>
+          <article><code>POST /v1/cancellation-requests</code><h3>Append cancellation</h3><p>Fiscal cancellation is separate from refund and inventory release.</p></article>
+          <article><code>POST /v1/holder-change-requests</code><h3>Change named holder</h3><p>Preserves certified-title continuity and Entrails commercial lineage separately.</p></article>
+          <article><code>POST /v1/reconciliation-runs</code><h3>Compare facts</h3><p>Operation, event, subscription, report, access event or migration batch. Observations are append-only.</p></article>
+        </div>
+
+        <div class="id-rule">
+          <strong>Identity rule</strong>
+          <div>
+            <span>Entrails order</span><i>≠</i><span>commercial ticket</span><i>≠</i><span>privilege</span><i>≠</i>
+            <span>issuer operation</span><i>≠</i><span>certified title</span><i>≠</i><span>fiscal seal</span><i>≠</i><span>gate token</span>
+          </div>
+          <p>Each identifier is stable, explicit, and linked. None is inferred from array position.</p>
+        </div>
+
+        <h3>Failure semantics</h3>
+        <div class="state-track" role="img" aria-label="An operation moves from accepted to precheck pending, ready, submitting and issued. Alternate states are rejected, retry wait, outcome unknown and operator review. Issued titles may later be cancelled or superseded through append-only lifecycle actions.">
+          <span>accepted</span><i>→</i><span>precheck pending</span><i>→</i><span>ready</span><i>→</i><span>submitting</span><i>→</i><span class="issued">issued</span>
+          <div><b>Alternate</b><em>rejected</em><em>retry wait</em><em class="unknown">outcome unknown</em><em>operator review</em><em>cancelled</em><em>superseded</em></div>
+        </div>
+
+        <div class="unknown-rule">
+          <strong>A timeout is not a failure.</strong>
+          <p>If Planet may have accepted the request, the operation becomes <code>outcome_unknown</code>. The worker performs an authoritative title lookup before it can retry. This rule prevents a second valid title.</p>
+        </div>
+      </section>
+
+      <section class="document-section" id="sequence">
+        <header class="section-header">
+          <span class="section-number">06</span>
+          <div><h2>Implementation sequence</h2><p>Small engineering slices; explicit operational and recognition gates.</p></div>
+        </header>
+
+        <ol class="implementation-sequence">
+          <li><span>0</span><div><small>Adopt</small><h3>Repository baseline</h3><p>Fork provenance, licence, owner, development branch, reproducible local stack and tests. No Italian behavior claimed.</p></div></li>
+          <li><span>1</span><div><small>Build</small><h3>Target kernel</h3><p>API, worker, PostgreSQL journal/outbox, idempotency, signed callbacks and fake-provider contract tests.</p></div></li>
+          <li><span>2</span><div><small>Observe</small><h3>Planet shadow adapter</h3><p>Normalize single-match calls and compare accepted test cases with the current Como API. No customer cutover.</p></div></li>
+          <li><span>3</span><div><small>Connect</small><h3>Entrails integration</h3><p>Explicit operation IDs, no positional correlation, authenticated callbacks, separate commerce/issue/delivery state.</p></div></li>
+          <li><span>4</span><div><small>Complete</small><h3>Como parity</h3><p>Season, pre-emption, sponsor/finalization, bulk, cancellation, holder change, reports and Alfi.</p></div></li>
+          <li class="production-gate"><span>5</span><div><small>Replace + recognize</small><h3>SENT certified execution</h3><p>Replace Planet behind the adapter; prove recognition, reporting, access marriage, operations and reconciliation before cutover.</p></div></li>
+        </ol>
+
+        <div class="gate-grid">
+          <span>contract approved</span><span>duplicate/timeout tests</span><span>Planet parity</span><span>security + privacy</span>
+          <span>C1/C2 accepted</span><span>Alfi reconciliation</span><span>operator runbooks</span><span>recognized production build</span>
+        </div>
+
+        <p class="cutover-statement">
+          <strong>A single-match slice is an engineering proof, not a production-completeness claim.</strong>
+          Como cutover still requires the agreed product scope and the complete fiscal, access, reporting and recovery path.
+        </p>
+      </section>
+
+      <section class="document-section" id="questions">
+        <header class="section-header">
+          <span class="section-number">07</span>
+          <div><h2>Evidence needed next</h2><p>The source audit narrows the questions; it does not invent private-system behavior.</p></div>
+        </header>
+
+        <div class="question-summary">
+          <details open>
+            <summary>Planet: idempotency and title recovery <span>P0</span></summary>
+            <ul>
+              <li>What stable key deduplicates every mutating endpoint?</li>
+              <li>After a timeout, what lookup proves whether the title exists?</li>
+              <li>How long can provider replication make a lookup falsely negative?</li>
+              <li>Which error codes prove that no title was created?</li>
+              <li>Supply redacted success, rejection, duplicate, partial and timeout scenarios.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Planet: lifecycle, season and reports <span>P0/P1</span></summary>
+            <ul>
+              <li>Versioned schemas for all match/season issue variants and fields.</li>
+              <li>Full title state machine, cancellation/correction, and Cessione identity continuity.</li>
+              <li>Season collection/log semantics and per-event rateo calculation.</li>
+              <li>C1/C2 schemas, signing, receipts, rejection and correction examples.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Recognition and activation card <span>P0</span></summary>
+            <ul>
+              <li>What exact frontend, API, device and access components are inside the approved perimeter?</li>
+              <li>Can a cloud API and Italian card agent form one recognized system?</li>
+              <li>Can one SENT operator serve multiple clubs, and what repeats per deployment?</li>
+              <li>Which software/configuration changes require a new variant or evidence cycle?</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Alfi live access interface <span>P0</span></summary>
+            <ul>
+              <li>Who owns barcode/token creation, valid-title lists and canonical scan history?</li>
+              <li>What is the live protocol, identifier set, acknowledgement and replay behavior?</li>
+              <li>How do issue, cancellation, holder/seat change and season rights reach every gate?</li>
+              <li>How do offline devices synchronize and how is event opening reconciled?</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Como scope and operations <span>P0/P1</span></summary>
+            <ul>
+              <li>Approve first-cutover versus legacy-shutdown capabilities.</li>
+              <li>Choose seat/capacity authority for every coexistence phase.</li>
+              <li>Supply failed issue, partial issue, backlog, cancellation, report and outage runbooks.</li>
+              <li>Confirm volumes, SLAs, roles and 24/7 incident ownership.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Security, privacy and records <span>P0/P1</span></summary>
+            <ul>
+              <li>Classify purchaser/holder/provider/report/access fields and retention.</li>
+              <li>Define protected raw-evidence storage, masking and break-glass access.</li>
+              <li>Define audit/tamper evidence and key/card custody.</li>
+              <li>Confirm whether seals, barcodes and provider IDs are security-sensitive.</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="request-pack">
+          <strong>Best next deliverable</strong>
+          <p>
+            One coherent redacted match and season scenario pack: Como order/payment, requested
+            rights, Planet requests/results/title/seal, C1/C2 references, Alfi entitlement/scans,
+            lifecycle changes, failures and recovery. Consistent fake IDs are more valuable than
+            isolated screenshots.
+          </p>
+        </div>
+      </section>
+
+      <section class="document-section sources" id="sources">
+        <header class="section-header">
+          <span class="section-number">08</span>
+          <div><h2>Evidence boundary</h2><p>Repository links are pinned; private provider and certification behavior remains requested evidence.</p></div>
+        </header>
+        <ol class="source-list">
+          <li><span>E1</span><a href="https://github.com/GETProtocol/engine-open/tree/46cfdb0893869750097c71d4198c60edbf5dacfa">GETProtocol Engine Open at <code>46cfdb08</code></a></li>
+          <li><span>E2</span><a href="https://github.com/SENT-Ticketing/engine-open">SENT-Ticketing Engine Open fork</a></li>
+          <li><span>C1</span><a href="https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/planet/index.js">Como API Planet adapter at <code>322dc5b7</code></a></li>
+          <li><span>C2</span><div><a href="https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/tickets/issueSingleMatchTickets.js">single-match issuance</a>; <a href="https://github.com/SENT-Italy/como-api/blob/322dc5b73ed17e89762d051d524cccb60535a745/server/tickets/issueSeasonTickets.js">season issuance</a></div></li>
+          <li><span>C3</span><a href="https://github.com/SENT-Italy/como-app/blob/25f69e5e024b8b8a23590ad6a803e733e97d7c38/src/clients/ComoAPI.js">Como app API client at <code>25f69e5e</code></a></li>
+          <li><span>I1</span><a href="../italy-service/">Italian issuance service design study</a></li>
+        </ol>
+        <div class="evidence-note">
+          <p><strong>Verified:</strong> the code paths, payload construction, endpoint names, action/promise behavior and repository topology described here.</p>
+          <p><strong>Not verified by source:</strong> Planet's internal idempotency, full certified state machine, current C1/C2 protocol, recognition perimeter and live Alfi exchange.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Technical blueprint · 4 August 2026</span>
+      <span>Engine Open + Entrails + pinned Como repository evidence</span>
+    </footer>
+  </body>
+</html>
