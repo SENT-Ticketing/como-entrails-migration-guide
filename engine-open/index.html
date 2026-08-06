@@ -37,7 +37,7 @@
     <main id="content">
       <section class="intro engine-intro" id="top">
         <p class="document-type">Repository and architecture assessment</p>
-        <h1>Reuse Engine Open.<br /><span>Do not deploy it unchanged.</span></h1>
+        <h1>Engine Open suitability<br /><span>for the Italian certified issuer</span></h1>
         <p class="intro-text">
           SENT has forked GETProtocol's public Engine Open repository. This study tests whether its
           existing Entrails-facing API, durable action model, workers, status queries, and callbacks
@@ -65,13 +65,13 @@
       <section class="document-section" id="decision">
         <header class="section-header">
           <span class="section-number">01</span>
-          <div><h2>The short answer</h2><p>The repository fits the integration problem better than it fits the regulated domain.</p></div>
+          <div><h2>Summary</h2><p>The integration patterns are reusable. The regulated issuance capabilities are absent.</p></div>
         </header>
 
         <div class="verdict-grid">
           <article class="verdict keep">
             <small>Keep</small>
-            <h3>The foundation</h3>
+            <h3>Repository and integration patterns</h3>
             <ul>
               <li>Go repository and source provenance</li>
               <li>tenant API authentication concept</li>
@@ -83,7 +83,7 @@
           </article>
           <article class="verdict replace">
             <small>Replace</small>
-            <h3>The execution model</h3>
+            <h3>Execution and correlation model</h3>
             <ul>
               <li>server-only request identity</li>
               <li>positional batch correlation</li>
@@ -95,7 +95,7 @@
           </article>
           <article class="verdict remove">
             <small>Exclude from Italian runtime</small>
-            <h3>The unrelated stack</h3>
+            <h3>Blockchain execution stack</h3>
             <ul>
               <li>chain cores and transaction assembly</li>
               <li>broadcaster and confirmer services</li>
@@ -120,7 +120,7 @@
       <section class="document-section" id="trace">
         <header class="section-header">
           <span class="section-number">02</span>
-          <div><h2>What the systems do today</h2><p>The design follows the actual calls, not the names of the repositories.</p></div>
+          <div><h2>What the systems do today</h2><p>Traced from the calls in the pinned source revisions.</p></div>
         </header>
 
         <h3>Entrails → Engine Open</h3>
@@ -163,14 +163,14 @@
             <span>match issue variants</span><span>season issue variants</span><span>pre-emption + collection</span>
             <span>title state + fiscal seal</span><span>cancelled-title queries</span><span>holder change / Cessione</span>
           </div>
-          <p>Approximately seventy distinct provider routes are referenced by the pinned adapter. The target Entrails contract should expose capabilities, not those vendor route names.</p>
+          <p>Approximately seventy distinct provider routes are referenced by the pinned adapter. The target Entrails contract should expose capabilities rather than vendor route names.</p>
         </div>
       </section>
 
       <section class="document-section" id="fit">
         <header class="section-header">
           <span class="section-number">03</span>
-          <div><h2>Fit-gap scorecard</h2><p>Green means reusable. Amber means a pattern can survive. Red means a new regulated capability is required.</p></div>
+          <div><h2>Fit-gap scorecard</h2><p>Green marks reusable code. Amber marks a reusable pattern with a new implementation. Red marks a capability that does not exist yet.</p></div>
         </header>
 
         <div class="fit-table table-panel">
@@ -198,7 +198,7 @@
           <p>
             <code>go test ./...</code> starts but packages panic when PostgreSQL on
             <code>localhost:5432</code> or DynamoDB on <code>localhost:8020</code> is absent. This is an
-            environment-blocked baseline, not evidence that the current suite passes or fails.
+            environment-blocked baseline. It does not show whether the current suite passes.
           </p>
         </div>
       </section>
@@ -206,7 +206,7 @@
       <section class="document-section" id="target">
         <header class="section-header">
           <span class="section-number">04</span>
-          <div><h2>Target service</h2><p>The first production-shaped system is deliberately small and auditable.</p></div>
+          <div><h2>Target service</h2><p>Minimum deployable topology for the first production scope.</p></div>
         </header>
 
         <figure class="target-map">
@@ -273,7 +273,7 @@
             <span>Entrails order</span><i>≠</i><span>commercial ticket</span><i>≠</i><span>privilege</span><i>≠</i>
             <span>issuer operation</span><i>≠</i><span>certified title</span><i>≠</i><span>fiscal seal</span><i>≠</i><span>gate token</span>
           </div>
-          <p>Each identifier is stable, explicit, and linked. None is inferred from array position.</p>
+          <p>Each identifier is stored explicitly and linked to the others. No identifier is inferred from array position.</p>
         </div>
 
         <h3>Failure semantics</h3>
@@ -283,15 +283,15 @@
         </div>
 
         <div class="unknown-rule">
-          <strong>A timeout is not a failure.</strong>
-          <p>If Planet may have accepted the request, the operation becomes <code>outcome_unknown</code>. The worker performs an authoritative title lookup before it can retry. This rule prevents a second valid title.</p>
+          <strong>Timeout handling</strong>
+          <p>A timeout is treated as an unresolved outcome rather than a failure. If Planet may have accepted the request, the operation becomes <code>outcome_unknown</code>. The worker performs an authoritative title lookup before it can retry. This rule prevents a second valid title.</p>
         </div>
       </section>
 
       <section class="document-section" id="sequence">
         <header class="section-header">
           <span class="section-number">06</span>
-          <div><h2>Implementation sequence</h2><p>Small engineering slices; explicit operational and recognition gates.</p></div>
+          <div><h2>Implementation sequence</h2><p>Engineering slices with explicit operational and recognition gates.</p></div>
         </header>
 
         <ol class="implementation-sequence">
@@ -309,7 +309,7 @@
         </div>
 
         <p class="cutover-statement">
-          <strong>A single-match slice is an engineering proof, not a production-completeness claim.</strong>
+          <strong>A single-match slice proves the engineering path only.</strong>
           Como cutover still requires the agreed product scope and the complete fiscal, access, reporting and recovery path.
         </p>
       </section>
@@ -317,7 +317,7 @@
       <section class="document-section" id="questions">
         <header class="section-header">
           <span class="section-number">07</span>
-          <div><h2>Evidence needed next</h2><p>The source audit narrows the questions; it does not invent private-system behavior.</p></div>
+          <div><h2>Evidence needed next</h2><p>Questions derived from the source audit. Private provider and certification behavior is not inferred here.</p></div>
         </header>
 
         <div class="question-summary">
@@ -368,14 +368,14 @@
           <details>
             <summary>Ve.R.O., Questura and holder eligibility <span>P0</span></summary>
             <ul>
-              <li>Who holds the authorized Ve.R.O. connection today &mdash; Planet, Como or SENT Italy &mdash; and is that authorization transferable to a new producer?</li>
+              <li>Who holds the authorized Ve.R.O. connection today: Planet, Como or SENT Italy? Is that authorization transferable to a new producer?</li>
               <li>Is the eligibility decision inside or outside the issuance transaction? A Questura timeout would otherwise become a second source of unknown outcome, alongside Planet.</li>
               <li>Supply the production and test interface contract, authentication and network requirements.</li>
               <li>Which event, sector, product and holder scenarios require a decision, and which policy source controls it?</li>
               <li>Define request fields, normalization, matching and the result vocabulary.</li>
               <li>Define decision validity window: must it repeat at issue, holder change and entry?</li>
               <li>Define timeout and unavailable behavior: block, retry, operator exception or another procedure.</li>
-              <li>Which protocol generation is live for Como? An internal SENT brief asserts &ldquo;VRO 2.0&rdquo; without a source; treat as unverified until confirmed.</li>
+              <li>Which protocol generation is live for Como? An internal SENT brief asserts "VRO 2.0" without a source, so the version stays unverified until the interface owner confirms it.</li>
             </ul>
           </details>
           <details>
@@ -424,19 +424,19 @@
               <li>Is the public repository the production source wired to Entrails today, or a partial distribution?</li>
               <li>Name the owner, maintainer and supported branch policy for the SENT fork, and the fork-synchronization end date.</li>
               <li>Supply the deployed Entrails-to-engine API version and known contract differences from public main.</li>
-              <li>Approve the minimal Italian topology &mdash; API, worker and PostgreSQL &mdash; or give a measured reason Kafka and DynamoDB are required.</li>
+              <li>Approve the minimal Italian topology of API, worker and PostgreSQL, or give a measured reason Kafka and DynamoDB are required.</li>
               <li>Does any downstream client besides Entrails require <code>/stream</code> compatibility?</li>
             </ul>
           </details>
         </div>
 
         <div class="request-pack">
-          <strong>Best next deliverable</strong>
+          <strong>Requested deliverable</strong>
           <p>
-            One coherent redacted match and season scenario pack: Como order/payment, requested
+            One redacted match and season scenario pack covering Como order/payment, requested
             rights, Planet requests/results/title/seal, C1/C2 references, Alfi entitlement/scans,
-            lifecycle changes, failures and recovery. Consistent fake IDs are more valuable than
-            isolated screenshots.
+            lifecycle changes, failures and recovery. Use redacted identifiers that stay consistent
+            across every artifact in the pack.
           </p>
         </div>
       </section>
