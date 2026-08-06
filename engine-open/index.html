@@ -332,12 +332,25 @@
             </ul>
           </details>
           <details>
+            <summary>Planet: contract and operating context <span>P0/P1</span></summary>
+            <ul>
+              <li>Which exact Ticka/PlaNet version runs in production and test for Como?</li>
+              <li>Supply the versioned OpenAPI or equivalent contract for every endpoint Como calls.</li>
+              <li>Are the primary and fallback endpoints one logical system, and is alternating them safe for mutating retries?</li>
+              <li>Define token lifetime, rotation, concurrency, clock tolerance and environment separation.</li>
+              <li>Is <code>session_id</code> tracing only, or does it carry a deduplication guarantee?</li>
+              <li>Return the supported endpoint inventory, and name every mutating endpoint required for cancellation, correction or report recovery that Como does not currently call.</li>
+            </ul>
+          </details>
+          <details>
             <summary>Planet: lifecycle, season and reports <span>P0/P1</span></summary>
             <ul>
               <li>Versioned schemas for all match/season issue variants and fields.</li>
+              <li>Which fields are legally or certification required, versus Planet implementation choices?</li>
               <li>Full title state machine, cancellation/correction, and Cessione identity continuity.</li>
               <li>Season collection/log semantics and per-event rateo calculation.</li>
               <li>C1/C2 schemas, signing, receipts, rejection and correction examples.</li>
+              <li>Stable per-endpoint error catalogues stating retryability and whether a title may exist.</li>
             </ul>
           </details>
           <details>
@@ -347,6 +360,32 @@
               <li>Can a cloud API and Italian card agent form one recognized system?</li>
               <li>Can one SENT operator serve multiple clubs, and what repeats per deployment?</li>
               <li>Which software/configuration changes require a new variant or evidence cycle?</li>
+              <li>Does producing a new certified system require approval on both the Agenzia delle Entrate/SIAE track and the Interior Ministry track, and in what sequence and lead time?</li>
+              <li>Which configuration facts become immutable after first title or report use, and what is the lawful correction path for each?</li>
+              <li>Confirm complimentary thresholds, dynamic-VAT formula, precision and effective-date source.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Ve.R.O., Questura and holder eligibility <span>P0</span></summary>
+            <ul>
+              <li>Who holds the authorized Ve.R.O. connection today &mdash; Planet, Como or SENT Italy &mdash; and is that authorization transferable to a new producer?</li>
+              <li>Is the eligibility decision inside or outside the issuance transaction? A Questura timeout would otherwise become a second source of unknown outcome, alongside Planet.</li>
+              <li>Supply the production and test interface contract, authentication and network requirements.</li>
+              <li>Which event, sector, product and holder scenarios require a decision, and which policy source controls it?</li>
+              <li>Define request fields, normalization, matching and the result vocabulary.</li>
+              <li>Define decision validity window: must it repeat at issue, holder change and entry?</li>
+              <li>Define timeout and unavailable behavior: block, retry, operator exception or another procedure.</li>
+              <li>Which protocol generation is live for Como? An internal SENT brief asserts &ldquo;VRO 2.0&rdquo; without a source; treat as unverified until confirmed.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Outage, continuity and correction <span>P0/P1</span></summary>
+            <ul>
+              <li>What issuance, gate admission and reporting fallback is permitted during network, card, authority or backend outage?</li>
+              <li>What maximum offline periods, queues and reconciliation deadlines apply?</li>
+              <li>Which clocks must be synchronized, and what drift is tolerated?</li>
+              <li>What disaster-recovery, backup/restore and tamper-detection evidence is required?</li>
+              <li>Define report rejection handling: resubmit, correct, replace, and how sequence continuity is preserved.</li>
             </ul>
           </details>
           <details>
@@ -356,6 +395,8 @@
               <li>What is the live protocol, identifier set, acknowledgement and replay behavior?</li>
               <li>How do issue, cancellation, holder/seat change and season rights reach every gate?</li>
               <li>How do offline devices synchronize and how is event opening reconciled?</li>
+              <li>What test plan and evidence does the mandatory ticketing/access-control integration require, and which exact builds are named in the accepted one?</li>
+              <li>Can another venue provider implement a normalized adapter, or does each need a separately approved integration path?</li>
             </ul>
           </details>
           <details>
@@ -374,6 +415,17 @@
               <li>Define protected raw-evidence storage, masking and break-glass access.</li>
               <li>Define audit/tamper evidence and key/card custody.</li>
               <li>Confirm whether seals, barcodes and provider IDs are security-sensitive.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>Engine Open adoption <span>P0/P1</span></summary>
+            <ul>
+              <li>Confirm licence and attribution obligations, and whether required private runtime components are available or intentionally excluded.</li>
+              <li>Is the public repository the production source wired to Entrails today, or a partial distribution?</li>
+              <li>Name the owner, maintainer and supported branch policy for the SENT fork, and the fork-synchronization end date.</li>
+              <li>Supply the deployed Entrails-to-engine API version and known contract differences from public main.</li>
+              <li>Approve the minimal Italian topology &mdash; API, worker and PostgreSQL &mdash; or give a measured reason Kafka and DynamoDB are required.</li>
+              <li>Does any downstream client besides Entrails require <code>/stream</code> compatibility?</li>
             </ul>
           </details>
         </div>
