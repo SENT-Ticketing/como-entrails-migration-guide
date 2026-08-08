@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A concise reading guide for the Como to OPN feature parity audit." />
+    <meta name="description" content="What can move from Como to OPN, what needs to be built, and what should be decided first." />
     <meta name="robots" content="noindex, nofollow" />
-    <meta property="og:title" content="Como and OPN: the migration picture" />
-    <meta property="og:description" content="What OPN covers, what remains partial, and what must be decided before a Como migration." />
+    <meta property="og:title" content="What moves from Como to OPN" />
+    <meta property="og:description" content="The practical migration answer: reuse the commercial core, build the defined gaps, and decide issuer scope first." />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#f5f6f7" />
-    <title>Como and OPN: the migration picture</title>
+    <title>What moves from Como to OPN</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -18,16 +18,17 @@
     <header class="topbar"><div class="topbar-inner"><a class="document-name" href="index.html">OPN architecture</a><span class="document-state">Como comparison</span><nav aria-label="Document sections"><a href="../">Como comparison</a><a href="index.html">Architecture map</a><a href="platform.html">Platform</a><a href="#legend">Legend</a><a href="#transition">Transition</a><a href="#findings">Findings</a><a href="#decisions">Decisions</a><a href="#source">Source</a></nav></div></header>
     <main id="content">
       <section class="intro architecture-intro" id="top">
-        <p class="document-type">Feature parity matrix, condensed</p>
-        <h1>Como and OPN<br /><span>the migration picture</span></h1>
-        <p class="intro-text">The underlying audit compares 111 capabilities across ticketing, subscriptions, resale, hospitality, access, inventory, back office and delivery. It is an evidence record, not a percentage score.</p>
+        <p class="document-type">Migration answer</p>
+        <h1>What moves from Como<br /><span>to OPN?</span></h1>
+        <p class="intro-text">Most of the commercial and operational ticketing core can move to OPN without reproducing Como's implementation. The work that remains is concrete: the buyer seat map, an Italian fiscal issuer boundary, holder and access evidence, and a handful of operator decisions.</p>
+        <p class="section-copy intro-copy">Read this page if you need to set scope, estimate a migration or decide what should not be rebuilt. You can use the full 111-row matrix later to test a specific feature, rather than reading it cover to cover.</p>
         <dl class="document-meta"><div><dt>Capabilities</dt><dd>111 comparison rows</dd></div><div><dt>Domains</dt><dd>11 operating areas</dd></div><div><dt>Como evidence</dt><dd>Built, external, config or form</dd></div><div><dt>OPN verdict</dt><dd>Has, partial, missing, n/a or open</dd></div></dl>
       </section>
 
       <section class="document-section" id="legend">
-        <header class="section-header"><span class="section-number">01</span><div><h2>How to read a parity verdict</h2><p>The labels describe a functional match, not an implementation count.</p></div></header>
+        <header class="section-header"><span class="section-number">01</span><div><h2>The answer in one page</h2><p>There is no need to port every Como route or screen. Treat the migration as a reuse, build or decide exercise.</p></div></header>
         <div class="table-panel legend-table"><table><thead><tr><th>OPN verdict</th><th>What it means in the audit</th></tr></thead><tbody><tr><td class="has">Has</td><td>A genuine functional counterpart exists in OPN.</td></tr><tr><td class="partial">Partial</td><td>A mechanism exists, but the scope or semantics differ. The gap has to be named before it is planned.</td></tr><tr><td class="missing">Missing</td><td>The audit found no counterpart in Entrails, Vuescera or Vuejones.</td></tr><tr><td>n/a</td><td>The Como item is dead code, static content, a form, or PlaNet plumbing with no direct OPN equivalent.</td></tr><tr><td>Open</td><td>The answer depends on operator, commercial or provider evidence rather than more source reading.</td></tr></tbody></table></div>
-        <p class="section-copy">The matrix also distinguishes how Como implements a feature. A PlaNet call, static configuration and an embedded JotForm are not the same kind of product surface. That distinction prevents an iframe or manual back-office process from being treated as a software regression.</p>
+        <p class="section-copy">The labels are there to keep the discussion honest. A PlaNet call, static configuration and an embedded JotForm are not the same product surface. Twenty-three of the inventoried capabilities are JotForms with manual follow-up, so their absence in OPN is a product choice, not automatically a regression.</p>
       </section>
 
       <section class="document-section" id="transition">
@@ -39,23 +40,23 @@
           <i>→</i>
           <article class="transition-node decide"><small>Decide first</small><strong>Operating and provider scope</strong><span>certified issuer, retained forms, historical data and match-day operations</span></article>
         </figure>
-        <p class="section-copy">The audit is most useful when it prevents a false choice between porting everything and rebuilding everything. Much of the OPN core can be reused. The rest either has a clear implementation gap or needs a business decision first.</p>
+        <p class="section-copy">OPN already has the stronger commerce and operations core in several places. It has a server-validated resale market, a transactional order and ledger flow, dedicated organiser tooling, a waiting room, scanning and automatic seat allocation. It should be the base, not a blank canvas.</p>
       </section>
 
       <section class="document-section" id="findings">
-        <header class="section-header"><span class="section-number">03</span><div><h2>The short version</h2><p>OPN has a strong commercial and operational core. The largest gap is the certified Italian issuer boundary.</p></div></header>
+        <header class="section-header"><span class="section-number">03</span><div><h2>What we can decide now</h2><p>These conclusions are based on the audited source, not on a promise that every Como workflow has a direct OPN screen.</p></div></header>
         <div class="finding-grid"><article class="finding-card"><h3>OPN already has a broader platform core</h3><p>It supports multi-brand tenancy, a separate organiser dashboard, server-validated fan resale, a transactional order and ledger flow, scanning and an automatic seat-allocation capability.</p></article><article class="finding-card"><h3>Some Como features are manual today</h3><p>Twenty-three inventoried capabilities are embedded JotForms, mostly hospitality and experience enquiries. The cutover decision is whether to keep the form and process, or productise the workflow.</p></article><article class="finding-card"><h3>Seat experience is a product decision</h3><p>Como supports a buyer clicking an exact stadium seat. OPN has allocation and organiser seating tools, but not that consumer click-to-pick map.</p></article><article class="finding-card"><h3>Resale is not a baseline to copy</h3><p>OPN has the more complete resale design. In the audited Como version, the buyer path is unreachable and the issuance step is a stub.</p></article></div>
       </section>
 
       <section class="document-section" id="decisions">
         <header class="section-header"><span class="section-number">04</span><div><h2>Questions that set the scope</h2><p>These are the decisions that source review cannot make on its own.</p></div></header>
         <div class="finding-grid"><article class="finding-card"><h3>Who remains the certified issuer?</h3><p>If PlaNet and Alfi remain in that role, OPN needs a well-defined issuer adapter. If not, the work becomes a recognition and compliance programme, not a normal feature build.</p></article><article class="finding-card"><h3>What data must migrate?</h3><p>Issued fiscal titles, seals, holder and seat records, supporter data, season rights, gift-card balances and loyalty balances have different fidelity and liability questions.</p></article><article class="finding-card"><h3>Which manual operations continue?</h3><p>Hospitality, refund requests, accreditations and seasonal campaigns currently depend on forms and staff follow-up. The target service needs a clear owner for each retained process.</p></article><article class="finding-card"><h3>What is required at the stadium?</h3><p>Physical box-office printing, access integration, reporting and any live operational jobs should be confirmed with the people who run match days.</p></article></div>
-        <div class="callout"><strong>Useful planning rule</strong><p>Port a Como feature only after deciding whether it is a commercial requirement, a workflow worth retaining, or a bridge to PlaNet that disappears once the target boundary is in place.</p></div>
+        <div class="callout"><strong>Useful planning rule</strong><p>Do not create a migration task for a Como feature until someone can say whether it is a retained commercial requirement, a manual workflow worth productising, or a PlaNet bridge that disappears once the target boundary is in place.</p></div>
       </section>
 
       <section class="document-section" id="source">
-        <header class="section-header"><span class="section-number">05</span><div><h2>Read the evidence before making a commitment</h2><p>Every matrix row names its Como evidence, OPN counterpart and the reason for the verdict.</p></div></header>
-        <p class="document-link"><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-opn-feature-parity.md">Open the complete parity matrix ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-resale-issuance-defect.md">Open the resale finding ↗</a><span aria-hidden="true"> · </span><a href="index.html">Back to the architecture map →</a></p>
+        <header class="section-header"><span class="section-number">05</span><div><h2>Need to test a specific feature?</h2><p>The full matrix names the Como evidence, OPN counterpart and the reason for every verdict. It is for a targeted question, not a first read.</p></div></header>
+        <p class="document-link"><a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/como-opn-feature-parity.md">Open canonical Markdown ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-opn-feature-parity.md">Read matrix on GitHub ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-resale-issuance-defect.md">Read the resale finding ↗</a><span aria-hidden="true"> · </span><a href="index.html">Back to the migration answer →</a></p>
       </section>
     </main>
     <footer class="footer"><p>OPN / SENT ticketing research map</p></footer>
