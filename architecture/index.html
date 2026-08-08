@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="What the OPN and Como research says about a practical ticketing migration." />
+    <meta name="description" content="Business and technical summary of the Como ticketing feature migration to OPN and Entrails." />
     <meta name="robots" content="noindex, nofollow" />
-    <meta property="og:title" content="What the OPN research says about Como" />
-    <meta property="og:description" content="The practical answer on what can move to OPN, what needs to be built, and what still needs a decision." />
+    <meta property="og:title" content="Como to OPN feature migration" />
+    <meta property="og:description" content="Current ticketing needs, OPN coverage, migration treatment, issuer scope and source references." />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#f5f6f7" />
-    <title>What the OPN research says about Como</title>
+    <title>Como to OPN feature migration</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -17,16 +17,15 @@
     <a class="skip-link" href="#content">Skip to content</a>
     <header class="topbar">
       <div class="topbar-inner">
-        <a class="document-name" href="#top">OPN architecture</a>
-        <span class="document-state">Research map</span>
+        <a class="document-name" href="#top">Como to OPN</a>
+        <span class="document-state">Feature migration</span>
         <nav aria-label="Document sections">
-          <a href="../">Como comparison</a>
-          <a href="../platform/">Platform overview</a>
-          <a href="../italy-service/">Issuance study</a>
           <a href="platform.html">Platform</a>
-          <a href="como.html">Como comparison</a>
-          <a href="#overview">Overview</a>
-          <a href="#findings">Findings</a>
+          <a href="como.html">Como features</a>
+          <a href="../italy-service/">Italian issuer</a>
+          <a href="../engine-open/">Engine Open</a>
+          <a href="#coverage">Capabilities</a>
+          <a href="#target">Target</a>
           <a href="#sources">Sources</a>
         </nav>
       </div>
@@ -34,26 +33,31 @@
 
     <main id="content">
       <section class="intro architecture-intro" id="top">
-        <p class="document-type">A practical reading guide</p>
-        <h1>Can Como move its ticketing<br /><span>to OPN?</span></h1>
+        <p class="document-type">Business and technical summary</p>
+        <h1>Como to OPN<br /><span>feature migration</span></h1>
         <p class="intro-text">
-          Yes, for the commercial core. OPN already covers orders, payments, tickets, inventory,
-          dashboards, scanning and a stronger resale flow. The hard part is not reproducing the
-          shop. It is deciding who owns Italian fiscal issuance, the holder record, compliance
-          evidence and venue access.
+          Como has an active ticketing operation. A successful migration must preserve the outcomes
+          that matter to supporters, staff and the club: tickets can be sold and delivered, seats and
+          season rights remain usable, payments reconcile, operators can recover failures, and valid
+          holders can enter the stadium.
+        </p>
+        <p class="section-copy intro-copy">
+          The target can use different screens, routes and storage while preserving comparable
+          business behaviour. OPN already provides much of the commercial platform. The
+          migration work is concentrated in Italian fiscal issuance, exact stadium seat choice,
+          season-ticket modelling, holder evidence and a defined venue-access exchange.
         </p>
         <div class="summary-banner">
           <p>
-            Read this page if you need the migration conclusion in a few minutes. Follow a detail
-            page only when you need to design a part of the platform, challenge a finding, or turn
-            an open decision into work.
+            This is the short version of the repository audits. It combines the main findings,
+            target treatments and source links needed to start migration planning.
           </p>
-          <a href="#overview">Choose what to read →</a>
+          <a href="#coverage">Feature coverage →</a>
         </div>
         <dl class="document-meta">
-          <div><dt>What is established</dt><dd>OPN can own the commercial ticketing core</dd></div>
-          <div><dt>What needs building</dt><dd>Italian issuer boundary and stadium seat choice</dd></div>
-          <div><dt>What needs a decision</dt><dd>Certified issuer, data scope and operations</dd></div>
+          <div><dt>Core position</dt><dd>OPN remains the commercial system of record</dd></div>
+          <div><dt>Build scope</dt><dd>Issuer boundary, seasons, seat choice and evidence</dd></div>
+          <div><dt>Decision scope</dt><dd>Issuer role, migration history and match-day operations</dd></div>
           <div><dt>Evidence</dt><dd>Pinned source audits, not a vendor claim</dd></div>
         </dl>
       </section>
@@ -61,33 +65,63 @@
       <section class="document-section" id="overview">
         <header class="section-header">
           <span class="section-number">01</span>
-          <div><h2>What should you read?</h2><p>Pick the question you have. You do not need to read the whole research pack first.</p></div>
+          <div><h2>Summary set</h2><p>Each page covers one part of the migration, with the detailed source linked at the end.</p></div>
         </header>
         <div class="page-grid">
           <article class="page-card">
-            <small>For product and migration owners</small>
-            <h3>What can we take over now?</h3>
-            <p>Read the Como comparison. It separates OPN capabilities we can reuse from the flows that need a product build or a decision outside engineering.</p>
-            <a href="como.html">Read the migration answer →</a>
+            <small>Feature coverage</small>
+            <h3>Como functionality and migration treatment</h3>
+            <p>The capability view separates direct OPN coverage, partial coverage, missing behaviour and decisions that must be resolved before scope is locked.</p>
+            <a href="como.html">Open feature migration summary →</a>
           </article>
           <article class="page-card">
-            <small>For engineers and architects</small>
-            <h3>How does OPN work today?</h3>
-            <p>Read the platform map. It explains the ticket, privilege and seat model, why online sales are atomic, and where the architecture has real extension seams.</p>
-            <a href="platform.html">Read the platform answer →</a>
+            <small>Platform baseline</small>
+            <h3>OPN architecture and business behaviour</h3>
+            <p>The platform view explains ownership, entry rights, inventory, money, tenancy, order completion and the boundary for new services.</p>
+            <a href="platform.html">Open platform summary →</a>
           </article>
           <article class="page-card">
-            <small>For issuer and compliance work</small>
-            <h3>Why is Italy different?</h3>
-            <p>Read the issuance study. It sets out the fiscal boundary that OPN does not have today and the provider evidence needed before a target service can be committed.</p>
-            <a href="../italy-service/">Read the issuer answer →</a>
+            <small>Italian issuer boundary</small>
+            <h3>Fiscal title and access responsibilities</h3>
+            <p>The issuer study covers fiscal configuration, named holders, title lifecycle, C1/C2 reporting, provider evidence and the proposed service boundary.</p>
+            <a href="../italy-service/">Open issuer summary →</a>
           </article>
         </div>
       </section>
 
-      <section class="document-section">
+      <section class="document-section" id="coverage">
         <header class="section-header">
           <span class="section-number">02</span>
+          <div><h2>Business feature continuity</h2><p>The migration target is comparable supporter and operator outcomes, even where OPN uses a different model or workflow.</p></div>
+        </header>
+        <p class="section-copy">
+          The current Como implementation combines club-owned workflows, Firestore records and
+          calls to PlaNet. OPN should absorb the commercial and operational responsibility where it
+          already has a stable model. Regulated title facts and provider-specific work stay behind
+          the issuer boundary.
+        </p>
+        <div class="table-panel feature-table">
+          <table>
+            <thead><tr><th>Capability</th><th>Outcome to preserve</th><th>OPN position</th><th>Migration treatment</th></tr></thead>
+            <tbody>
+              <tr><td>Match sales</td><td>Fans and staff can issue seated, general-admission, free and reduced tickets.</td><td>Orders, products, prices, inventory, cashier and reservations exist.</td><td>Reuse the OPN sale. Add holder, fiscal configuration and per-right issuer calls.</td></tr>
+              <tr><td>Season tickets</td><td>A holder keeps a seat and entitlement across the season, including renewal and transfer rules.</td><td>No first-class multi-event subscription model.</td><td>Add subscription and per-event allocation records on top of the existing ticket and privilege model.</td></tr>
+              <tr><td>Seat selection</td><td>A stadium buyer can choose and confirm an exact available seat.</td><td>Automatic allocation and staff assignment exist; buyer click-to-pick does not.</td><td>Build the consumer seat map and live hold flow. Keep automatic allocation as another mode.</td></tr>
+              <tr><td>Resale and transfer</td><td>A seller can list safely and the buyer receives a valid replacement right.</td><td>OPN has the stronger server-validated resale flow. Como's audited buyer path is incomplete.</td><td>Use the OPN resale model and add the required fiscal holder-change or correction action.</td></tr>
+              <tr><td>Payments and refunds</td><td>Money, refunds, fees and settlement remain reconcilable against the ticket.</td><td>OPN has separate order, payment, refund, payout and ledger records.</td><td>Keep OPN authoritative for money and link fiscal cancellation or correction as a separate step.</td></tr>
+              <tr><td>Delivery and wallets</td><td>The supporter receives a usable ticket by the required channel.</td><td>Email and ticket presentation exist; exact Apple and Google Wallet parity was not verified.</td><td>Retain delivery adapters and implement missing wallet formats after certified title facts are available.</td></tr>
+              <tr><td>Access control</td><td>Valid rights enter once, operators can reverse mistakes, and access can be reconciled.</td><td>Gates, profiles, rotating codes and check-in exist; a full scan journal does not.</td><td>Reuse scanning and add append-only access events plus the confirmed Alfi or venue adapter.</td></tr>
+              <tr><td>Back office and recovery</td><td>Staff can configure events, manage allocations, export data and resolve failed operations.</td><td>OPN has a separate organiser dashboard and report jobs, but not every Como football workflow.</td><td>Reuse dashboard and report infrastructure. Add bounded bulk commands and issuer reconciliation views.</td></tr>
+              <tr><td>Hospitality and forms</td><td>Commercial enquiries and manual follow-up continue where the club still needs them.</td><td>Many Como capabilities are embedded forms rather than ticketing software.</td><td>Re-embed required forms at cutover or productise them only where the business case supports it.</td></tr>
+              <tr><td>Italian fiscal issuance</td><td>Every right has valid fiscal evidence, holder data, lifecycle continuity and required reports.</td><td>Entrails has no current fiscal title, seal, C1/C2 or immutable correction model.</td><td>Build the issuer service boundary and confirm recognition, PlaNet transition and authority contracts.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="document-section" id="target">
+        <header class="section-header">
+          <span class="section-number">03</span>
           <div><h2>The proposed shape</h2><p>Do not rebuild Como inside Entrails. Keep the commercial work in OPN and put regulated issuance on a separate boundary.</p></div>
         </header>
         <figure class="system-overview" role="img" aria-label="Como and Planet are the current application and fiscal provider. Entrails becomes the target commercial system of record. An Italian issuer service handles fiscal titles and interfaces with Planet, authorities and venue access.">
@@ -102,8 +136,8 @@
 
       <section class="document-section" id="findings">
         <header class="section-header">
-          <span class="section-number">03</span>
-          <div><h2>What we can already say</h2><p>These are the parts of the answer that do not depend on a new provider contract or a workshop.</p></div>
+          <span class="section-number">04</span>
+          <div><h2>Confirmed architecture findings</h2><p>These findings come directly from the audited repositories and do not depend on a new provider contract.</p></div>
         </header>
         <p class="section-copy">The short version is that OPN is a credible commercial platform for Como. The work is concentrated in a few visible product gaps and a separate Italian issuer programme. The table below is the basis for planning that split.</p>
         <div class="table-panel confidence-table">
@@ -122,15 +156,15 @@
 
       <section class="document-section" id="sources">
         <header class="section-header">
-          <span class="section-number">04</span>
-          <div><h2>Use the detailed sources when they save time</h2><p>The summaries above are enough for an initial conversation. Use the source material when you need to verify a claim, design an interface or ask an AI to work through the evidence.</p></div>
+          <span class="section-number">05</span>
+          <div><h2>Source register</h2><p>The public pages summarize the evidence. The Markdown and repositories remain the deep technical reference.</p></div>
         </header>
         <div class="source-grid">
           <article class="source-card">
             <small>For working with an AI</small>
             <h3>Give it the canonical Markdown</h3>
-            <p>The two Markdown files contain the evidence, source locations and caveats. Ask an AI to compare a proposed design against them or answer a specific migration question. Do not start with the Google Docs.</p>
-            <p class="source-actions"><a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/opn-platform-architecture.md">Platform Markdown ↗</a><a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/como-opn-feature-parity.md">Parity Markdown ↗</a></p>
+            <p>The five Markdown papers contain the detailed evidence, repository paths and caveats. Give the relevant files to an AI when reviewing a design, preparing migration tickets or checking a feature decision.</p>
+            <a href="#markdown-sources">Choose the source files ↓</a>
           </article>
           <article class="source-card">
             <small>For people who want the working material</small>
@@ -139,17 +173,45 @@
             <a href="https://drive.google.com/drive/u/4/folders/1nAPGu3Upr9DgYbTAW8HAUWJCnJOj-Soc">Open shared folder ↗</a>
           </article>
         </div>
+        <h3 id="markdown-sources">Canonical Markdown</h3>
+        <p class="section-copy">Use the GitHub view for human review. Use the raw link when supplying the document to an AI agent.</p>
+        <div class="table-panel source-table">
+          <table>
+            <thead><tr><th>Document</th><th>Planning use</th><th>Links</th></tr></thead>
+            <tbody>
+              <tr><td>OPN platform architecture</td><td>Commercial domains, transaction boundaries, APIs, async work and repository ownership.</td><td><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/opn-platform-architecture.md">GitHub ↗</a> · <a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/opn-platform-architecture.md">Raw ↗</a></td></tr>
+              <tr><td>Como and OPN feature parity</td><td>The 111-row capability inventory, evidence, verdicts and migration implications.</td><td><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-opn-feature-parity.md">GitHub ↗</a> · <a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/como-opn-feature-parity.md">Raw ↗</a></td></tr>
+              <tr><td>Domain difference blueprint</td><td>Concepts that look similar in Como and OPN but differ in ownership, lifecycle or legal meaning.</td><td><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-entrails-domain-difference-blueprint.md">GitHub ↗</a> · <a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/como-entrails-domain-difference-blueprint.md">Raw ↗</a></td></tr>
+              <tr><td>Italy and SIAE fit-gap</td><td>Fiscal title, holder, seal, correction, reporting and access requirements outside the current OPN domain.</td><td><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/italy-siae-fit-gap.md">GitHub ↗</a> · <a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/italy-siae-fit-gap.md">Raw ↗</a></td></tr>
+              <tr><td>Como resale issuance defect</td><td>Code evidence showing why the current Como resale buyer path is not a migration baseline.</td><td><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-resale-issuance-defect.md">GitHub ↗</a> · <a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/como-resale-issuance-defect.md">Raw ↗</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Audited codebases</h3>
+        <p class="section-copy">These repositories contain the implementations behind the findings. The Markdown papers identify the relevant paths.</p>
+        <ul class="repository-list">
+          <li><a href="https://github.com/GETProtocolLab/entrails">Entrails ↗</a><span>commercial backend and system of record</span></li>
+          <li><a href="https://github.com/GETProtocolLab/vuescera">Vuescera ↗</a><span>supporter shop</span></li>
+          <li><a href="https://github.com/GETProtocolLab/vuejones">Vuejones ↗</a><span>organiser dashboard</span></li>
+          <li><a href="https://github.com/GETProtocolLab/sphincter">Sphincter ↗</a><span>access and scanning service</span></li>
+          <li><a href="https://github.com/SENT-Italy/como-app">Como app ↗</a><span>current club-facing and supporter-facing application</span></li>
+          <li><a href="https://github.com/SENT-Italy/como-api">Como API ↗</a><span>current API and PlaNet integration layer</span></li>
+          <li><a href="https://github.com/SENT-Ticketing/engine-open">SENT Engine Open fork ↗</a><span>issuer-service candidate</span></li>
+          <li><a href="https://github.com/GETProtocol/engine-open">GET Protocol Engine Open ↗</a><span>upstream implementation</span></li>
+        </ul>
+        <h3>Human review pack</h3>
+        <p class="section-copy">The Google documents are useful for comments and shared reading. The Markdown set above remains the implementation reference.</p>
         <ul class="source-list">
-          <li><a href="https://docs.google.com/document/d/1tl9Bkc2yelWabpmp-_zMHOwe65H5c9PonFsIXWSbx1M/edit?usp=drive_link">Working document 1 ↗</a></li>
-          <li><a href="https://docs.google.com/document/d/1CDDK06XfI-lRRllc-RFHbmUzpCAMUI4UvgkPDvfkQeo/edit?usp=drive_link">Working document 2 ↗</a></li>
-          <li><a href="https://docs.google.com/document/d/17-Eb79uMcJrp27notmi6WiipOySV_7QGgNc5uyYPZPw/edit?usp=drive_link">Working document 3 ↗</a></li>
-          <li><a href="https://docs.google.com/document/d/1BRcbc4voKPRtgG83DOWVVGAXB-cYsHSVTFBhPeX3_k8/edit?usp=drive_link">Working document 4 ↗</a></li>
+          <li><a href="https://docs.google.com/document/d/1tl9Bkc2yelWabpmp-_zMHOwe65H5c9PonFsIXWSbx1M/edit?usp=drive_link">Shared review document 1 ↗</a></li>
+          <li><a href="https://docs.google.com/document/d/1CDDK06XfI-lRRllc-RFHbmUzpCAMUI4UvgkPDvfkQeo/edit?usp=drive_link">Shared review document 2 ↗</a></li>
+          <li><a href="https://docs.google.com/document/d/17-Eb79uMcJrp27notmi6WiipOySV_7QGgNc5uyYPZPw/edit?usp=drive_link">Shared review document 3 ↗</a></li>
+          <li><a href="https://docs.google.com/document/d/1BRcbc4voKPRtgG83DOWVVGAXB-cYsHSVTFBhPeX3_k8/edit?usp=drive_link">Shared review document 4 ↗</a></li>
         </ul>
       </section>
 
       <section class="document-section">
         <header class="section-header">
-          <span class="section-number">05</span>
+          <span class="section-number">06</span>
           <div><h2>Supporting papers</h2><p>These are the shortest route to the issues that can change the migration design.</p></div>
         </header>
         <div class="domain-grid">

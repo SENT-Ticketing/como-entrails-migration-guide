@@ -109,8 +109,8 @@
 .source-card a { display: inline-block; margin-top: 14px; }
 .source-card .source-actions { display: flex; flex-wrap: wrap; gap: 14px; margin: 14px 0 0; }
 .source-card .source-actions a { margin-top: 0; }
-.source-list { columns: 2; margin: 16px 0 0; padding-left: 18px; }
-.source-list li { break-inside: avoid; margin: 0 0 9px; }
+.source-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 16px 0 0; padding: 0; }
+.source-list li { display: block; padding: 12px 0; }
 
 .system-overview,
 .transition-map {
@@ -144,6 +144,25 @@
 
 .confidence-table td:first-child { width: 23%; font-weight: 700; }
 .confidence-table td:last-child { width: 31%; }
+.feature-table table { min-width: 1040px; }
+.feature-table td:first-child { width: 15%; }
+.source-table td:first-child { width: 24%; }
+.source-table td:last-child { width: 18%; white-space: nowrap; }
+.feature-summary-table td:first-child { width: 22%; }
+.feature-summary-table td:last-child { width: 34%; }
+
+.repository-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+  margin: 18px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+.repository-list li { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.repository-list a { font-weight: 600; }
+.repository-list span { display: block; margin-top: 2px; color: var(--muted); font-size: .8rem; }
 
 .transition-map { grid-template-columns: 1fr auto 1fr auto 1fr; }
 .transition-node.reuse { border-top: 4px solid var(--good); }
@@ -160,5 +179,6 @@
 }
 
 @media (max-width: 540px) {
-  .source-list { columns: 1; }
+  .source-list { grid-template-columns: 1fr; }
+  .repository-list { grid-template-columns: 1fr; }
 }
