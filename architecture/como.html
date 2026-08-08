@@ -3,36 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="What can move from Como to OPN, what needs to be built, and what should be decided first." />
+    <meta name="description" content="Business capability coverage, migration treatment and scope decisions for moving active Como ticketing to OPN." />
     <meta name="robots" content="noindex, nofollow" />
-    <meta property="og:title" content="What moves from Como to OPN" />
-    <meta property="og:description" content="The practical migration answer: reuse the commercial core, build the defined gaps, and decide issuer scope first." />
+    <meta property="og:title" content="Como feature migration to OPN" />
+    <meta property="og:description" content="Commercial reuse, defined product gaps, issuer scope and the evidence behind each migration treatment." />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#f5f6f7" />
-    <title>What moves from Como to OPN</title>
+    <title>Como feature migration to OPN</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
-    <header class="topbar"><div class="topbar-inner"><a class="document-name" href="index.html">OPN architecture</a><span class="document-state">Como comparison</span><nav aria-label="Document sections"><a href="../">Como comparison</a><a href="index.html">Architecture map</a><a href="platform.html">Platform</a><a href="#legend">Legend</a><a href="#transition">Transition</a><a href="#findings">Findings</a><a href="#decisions">Decisions</a><a href="#source">Source</a></nav></div></header>
+    <header class="topbar"><div class="topbar-inner"><a class="document-name" href="index.html">Como to OPN</a><span class="document-state">Feature comparison</span><nav aria-label="Document sections"><a href="../">Full parity matrix</a><a href="index.html">Migration summary</a><a href="platform.html">Platform</a><a href="#legend">Legend</a><a href="#transition">Treatment</a><a href="#findings">Capabilities</a><a href="#decisions">Decisions</a><a href="#source">Sources</a></nav></div></header>
     <main id="content">
       <section class="intro architecture-intro" id="top">
-        <p class="document-type">Migration answer</p>
-        <h1>What moves from Como<br /><span>to OPN?</span></h1>
-        <p class="intro-text">Most of the commercial and operational ticketing core can move to OPN without reproducing Como's implementation. The work that remains is concrete: the buyer seat map, an Italian fiscal issuer boundary, holder and access evidence, and a handful of operator decisions.</p>
-        <p class="section-copy intro-copy">Read this page if you need to set scope, estimate a migration or decide what should not be rebuilt. You can use the full 111-row matrix later to test a specific feature, rather than reading it cover to cover.</p>
+        <p class="document-type">Feature migration summary</p>
+        <h1>Como feature migration<br /><span>to OPN</span></h1>
+        <p class="intro-text">Como supports an active ticketing business. The migration must preserve the practical outcomes of sales, seasons, seating, delivery, refunds, resale, staff recovery and stadium access, even where OPN implements them differently.</p>
+        <p class="section-copy intro-copy">Most of the commercial and operational core can move to OPN without copying Como's implementation. The remaining scope is concentrated in exact seat choice, season rights, Italian fiscal issuance, holder and access evidence, and a limited set of operator decisions. The 111-row matrix is the detailed evidence behind this summary.</p>
         <dl class="document-meta"><div><dt>Capabilities</dt><dd>111 comparison rows</dd></div><div><dt>Domains</dt><dd>11 operating areas</dd></div><div><dt>Como evidence</dt><dd>Built, external, config or form</dd></div><div><dt>OPN verdict</dt><dd>Has, partial, missing, n/a or open</dd></div></dl>
       </section>
 
       <section class="document-section" id="legend">
-        <header class="section-header"><span class="section-number">01</span><div><h2>The answer in one page</h2><p>There is no need to port every Como route or screen. Treat the migration as a reuse, build or decide exercise.</p></div></header>
-        <div class="table-panel legend-table"><table><thead><tr><th>OPN verdict</th><th>What it means in the audit</th></tr></thead><tbody><tr><td class="has">Has</td><td>A genuine functional counterpart exists in OPN.</td></tr><tr><td class="partial">Partial</td><td>A mechanism exists, but the scope or semantics differ. The gap has to be named before it is planned.</td></tr><tr><td class="missing">Missing</td><td>The audit found no counterpart in Entrails, Vuescera or Vuejones.</td></tr><tr><td>n/a</td><td>The Como item is dead code, static content, a form, or PlaNet plumbing with no direct OPN equivalent.</td></tr><tr><td>Open</td><td>The answer depends on operator, commercial or provider evidence rather than more source reading.</td></tr></tbody></table></div>
+        <header class="section-header"><span class="section-number">01</span><div><h2>Assessment legend</h2><p>The audit distinguishes verified OPN coverage from partial matches, missing behaviour and decisions that require business or provider evidence.</p></div></header>
+        <div class="table-panel legend-table"><table><thead><tr><th>OPN verdict</th><th>What it means in the audit</th></tr></thead><tbody><tr><td class="has">Has</td><td>A genuine functional counterpart exists in OPN.</td></tr><tr><td class="partial">Partial</td><td>A mechanism exists, but the scope or semantics differ. The gap has to be named before it is planned.</td></tr><tr><td class="missing">Missing</td><td>The audit found no counterpart in Entrails, Vuescera or Vuejones.</td></tr><tr><td>n/a</td><td>The Como item is dead code, static content, a form, or PlaNet plumbing with no direct OPN equivalent.</td></tr><tr><td>Open</td><td>The verdict depends on operator, commercial or provider evidence rather than more source reading.</td></tr></tbody></table></div>
         <p class="section-copy">The labels are there to keep the discussion honest. A PlaNet call, static configuration and an embedded JotForm are not the same product surface. Twenty-three of the inventoried capabilities are JotForms with manual follow-up, so their absence in OPN is a product choice, not automatically a regression.</p>
       </section>
 
       <section class="document-section" id="transition">
-        <header class="section-header"><span class="section-number">02</span><div><h2>What the comparison means in practice</h2><p>Each capability should be put into one of three buckets before it becomes a migration task.</p></div></header>
+        <header class="section-header"><span class="section-number">02</span><div><h2>Migration treatment</h2><p>Each capability belongs in one of three treatments before it becomes a delivery task.</p></div></header>
         <figure class="transition-map" role="img" aria-label="The migration triage puts verified OPN capabilities in reuse, clearly defined gaps in build or adapt, and provider or operational questions in decide before build.">
           <article class="transition-node reuse"><small>Reuse</small><strong>Existing OPN core</strong><span>orders, payments, roles, scanning, reports, resale and allocation</span></article>
           <i>→</i>
@@ -44,19 +44,28 @@
       </section>
 
       <section class="document-section" id="findings">
-        <header class="section-header"><span class="section-number">03</span><div><h2>What we can decide now</h2><p>These conclusions are based on the audited source, not on a promise that every Como workflow has a direct OPN screen.</p></div></header>
-        <div class="finding-grid"><article class="finding-card"><h3>OPN already has a broader platform core</h3><p>It supports multi-brand tenancy, a separate organiser dashboard, server-validated fan resale, a transactional order and ledger flow, scanning and an automatic seat-allocation capability.</p></article><article class="finding-card"><h3>Some Como features are manual today</h3><p>Twenty-three inventoried capabilities are embedded JotForms, mostly hospitality and experience enquiries. The cutover decision is whether to keep the form and process, or productise the workflow.</p></article><article class="finding-card"><h3>Seat experience is a product decision</h3><p>Como supports a buyer clicking an exact stadium seat. OPN has allocation and organiser seating tools, but not that consumer click-to-pick map.</p></article><article class="finding-card"><h3>Resale is not a baseline to copy</h3><p>OPN has the more complete resale design. In the audited Como version, the buyer path is unreachable and the issuance step is a stub.</p></article></div>
+        <header class="section-header"><span class="section-number">03</span><div><h2>Major capability findings</h2><p>The migration can reuse a substantial platform core, with defined product and issuer work around it.</p></div></header>
+        <div class="table-panel feature-summary-table"><table><thead><tr><th>Capability area</th><th>Audit finding</th><th>Target treatment</th></tr></thead><tbody>
+          <tr><td>Sales, inventory and pricing</td><td>OPN already supports orders, prices, inventory, cashier sales, reservations, free allocation and ticket ownership.</td><td>Reuse the OPN commercial model and map Como products and allocations into it.</td></tr>
+          <tr><td>Payments, refunds and settlement</td><td>OPN has separate payment, refund, payout and ledger records with transactional online order completion.</td><td>Keep money in OPN and link fiscal corrections without making the issuer the payment system.</td></tr>
+          <tr><td>Season rights</td><td>OPN has tickets, privileges and seats but no first-class multi-event subscription.</td><td>Add subscription and per-event allocation records while reusing existing entry rights.</td></tr>
+          <tr><td>Exact seat choice</td><td>Automatic allocation and staff assignment exist. A supporter click-to-pick stadium map does not.</td><td>Build the buyer seat map and live seat-hold flow as a focused product capability.</td></tr>
+          <tr><td>Resale and transfer</td><td>OPN has the stronger server-validated resale design. Como's audited buyer path is unreachable and issuance is a stub.</td><td>Use OPN resale and add the required fiscal holder-change or correction action.</td></tr>
+          <tr><td>Delivery and stadium access</td><td>Ticket presentation, scanning and current check-in state exist. Wallet parity and a full scan journal were not verified.</td><td>Retain delivery adapters, confirm wallet requirements and add append-only access evidence.</td></tr>
+          <tr><td>Hospitality and enquiries</td><td>Twenty-three inventoried Como capabilities are embedded forms with manual follow-up.</td><td>Re-embed the required forms at cutover, then productise only where the business case supports it.</td></tr>
+          <tr><td>Italian fiscal issuance</td><td>Entrails has no fiscal title, seal, correction chain, named-holder evidence or C1/C2 reporting model.</td><td>Use a separate issuer service and confirm the certified role, PlaNet transition and authority contracts.</td></tr>
+        </tbody></table></div>
       </section>
 
       <section class="document-section" id="decisions">
-        <header class="section-header"><span class="section-number">04</span><div><h2>Questions that set the scope</h2><p>These are the decisions that source review cannot make on its own.</p></div></header>
-        <div class="finding-grid"><article class="finding-card"><h3>Who remains the certified issuer?</h3><p>If PlaNet and Alfi remain in that role, OPN needs a well-defined issuer adapter. If not, the work becomes a recognition and compliance programme, not a normal feature build.</p></article><article class="finding-card"><h3>What data must migrate?</h3><p>Issued fiscal titles, seals, holder and seat records, supporter data, season rights, gift-card balances and loyalty balances have different fidelity and liability questions.</p></article><article class="finding-card"><h3>Which manual operations continue?</h3><p>Hospitality, refund requests, accreditations and seasonal campaigns currently depend on forms and staff follow-up. The target service needs a clear owner for each retained process.</p></article><article class="finding-card"><h3>What is required at the stadium?</h3><p>Physical box-office printing, access integration, reporting and any live operational jobs should be confirmed with the people who run match days.</p></article></div>
+        <header class="section-header"><span class="section-number">04</span><div><h2>Scope-setting decisions</h2><p>These decisions require business, operator or provider evidence before delivery scope can be fixed.</p></div></header>
+        <div class="finding-grid"><article class="finding-card"><h3>Certified issuer role</h3><p>If PlaNet and Alfi remain in that role, OPN needs a well-defined issuer adapter. A replacement turns the work into a recognition and compliance programme, not a normal feature build.</p></article><article class="finding-card"><h3>Migration dataset</h3><p>Issued fiscal titles, seals, holder and seat records, supporter data, season rights, gift-card balances and loyalty balances have different fidelity and liability requirements.</p></article><article class="finding-card"><h3>Retained manual operations</h3><p>Hospitality, refund requests, accreditations and seasonal campaigns currently depend on forms and staff follow-up. Each retained process needs a target owner.</p></article><article class="finding-card"><h3>Stadium operations</h3><p>Physical box-office printing, access integration, reporting and live operational jobs need confirmation from the people who run match days.</p></article></div>
         <div class="callout"><strong>Useful planning rule</strong><p>Do not create a migration task for a Como feature until someone can say whether it is a retained commercial requirement, a manual workflow worth productising, or a PlaNet bridge that disappears once the target boundary is in place.</p></div>
       </section>
 
       <section class="document-section" id="source">
-        <header class="section-header"><span class="section-number">05</span><div><h2>Need to test a specific feature?</h2><p>The full matrix names the Como evidence, OPN counterpart and the reason for every verdict. It is for a targeted question, not a first read.</p></div></header>
-        <p class="document-link"><a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/como-opn-feature-parity.md">Open canonical Markdown ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-opn-feature-parity.md">Read matrix on GitHub ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-resale-issuance-defect.md">Read the resale finding ↗</a><span aria-hidden="true"> · </span><a href="index.html">Back to the migration answer →</a></p>
+        <header class="section-header"><span class="section-number">05</span><div><h2>Feature evidence</h2><p>The full matrix records the Como implementation evidence, OPN counterpart and reason for each verdict.</p></div></header>
+        <p class="document-link"><a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/como-opn-feature-parity.md">Canonical Markdown ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-opn-feature-parity.md">Matrix on GitHub ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-resale-issuance-defect.md">Resale evidence ↗</a><span aria-hidden="true"> · </span><a href="index.html">Migration summary →</a></p>
       </section>
     </main>
     <footer class="footer"><p>OPN / SENT ticketing research map</p></footer>

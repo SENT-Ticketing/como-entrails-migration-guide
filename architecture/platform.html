@@ -3,49 +3,49 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="What OPN already gives a Como ticketing migration, and where its current boundary is." />
+    <meta name="description" content="The OPN commercial platform baseline, business behaviour and service boundary for the Como migration." />
     <meta name="robots" content="noindex, nofollow" />
-    <meta property="og:title" content="What OPN already gives the migration" />
+    <meta property="og:title" content="OPN platform baseline for the Como migration" />
     <meta property="og:description" content="The OPN commercial core, its sale path, and the point where Italian issuance becomes a separate service." />
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#f5f6f7" />
-    <title>What OPN already gives the migration</title>
+    <title>OPN platform baseline for the Como migration</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
-    <header class="topbar"><div class="topbar-inner"><a class="document-name" href="index.html">OPN architecture</a><span class="document-state">Platform map</span><nav aria-label="Document sections"><a href="../">Como comparison</a><a href="index.html">Architecture map</a><a href="como.html">Como comparison</a><a href="#model">Domain</a><a href="#flow">Flow</a><a href="#boundary">Boundary</a><a href="#source">Source</a></nav></div></header>
+    <header class="topbar"><div class="topbar-inner"><a class="document-name" href="index.html">Como to OPN</a><span class="document-state">Platform baseline</span><nav aria-label="Document sections"><a href="../">Full parity matrix</a><a href="index.html">Migration summary</a><a href="como.html">Como features</a><a href="#model">Domain</a><a href="#flow">Order flow</a><a href="#boundary">Gaps</a><a href="#source">Sources</a></nav></div></header>
     <main id="content">
       <section class="intro architecture-intro" id="top">
-        <p class="document-type">Platform answer</p>
-        <h1>What OPN already gives<br /><span>the migration</span></h1>
+        <p class="document-type">Platform migration baseline</p>
+        <h1>OPN platform baseline<br /><span>for the Como migration</span></h1>
         <p class="intro-text">OPN can take responsibility for the ordinary ticketing business: catalogue, pricing, inventory, checkout, payment, ticket ownership, refunds, dashboard work and scanning. It should remain the commercial system of record even when an Italian issuer service is added beside it.</p>
-        <p class="section-copy intro-copy">Read this page when you need to judge whether a proposed feature belongs in Entrails, an existing adapter, or a new issuer service. You can skip the full platform architecture unless you need code-level evidence or the API and async model.</p>
+        <p class="section-copy intro-copy">The migration uses this ownership split: Entrails remains authoritative for commerce and customer rights, the existing applications provide customer and operator surfaces, and the issuer service owns regulated fiscal evidence. The full architecture paper provides the code-level evidence and API detail behind that split.</p>
         <dl class="document-meta"><div><dt>Backend</dt><dd>Entrails, Django REST API</dd></div><div><dt>Shop</dt><dd>Vuescera</dd></div><div><dt>Dashboard</dt><dd>Vuejones</dd></div><div><dt>Service model</dt><dd>Local transaction plus async outbox</dd></div></dl>
       </section>
 
       <section class="document-section" id="model">
-        <header class="section-header"><span class="section-number">01</span><div><h2>Why the model is useful</h2><p>OPN separates the thing a fan owns from the right that gets them through the gate. That gives the migration a sound commercial core.</p></div></header>
+        <header class="section-header"><span class="section-number">01</span><div><h2>Commercial domain model</h2><p>OPN separates the thing a supporter owns from the right used at the gate. That provides the commercial base for sales, transfers, seasons and resale.</p></div></header>
         <div class="boundary" role="img" aria-label="A Ticket represents ownership, a Privilege represents the right of entry, and Seating attaches to the privilege."><article><strong>Ticket</strong><p>The ownership record. It carries the sale, transfer and resale lifecycle.</p></article><i>→</i><article><strong>Privilege</strong><p>The actual right of entry. Check-in, seat allocation and ticket-engine records attach here.</p></article><i>→</i><article><strong>Seating</strong><p>The selected or allocated place for that privilege, when the event uses seating.</p></article></div>
         <p class="section-copy">This separation means the target does not need a special ticket type for every commercial workflow. A subscription, invitation, transfer or resale can use the same commercial records while the entry right, seat and issuer evidence follow their own lifecycle.</p>
         <div class="finding-grid"><article class="finding-card"><h3>Inventory is shared through pools</h3><p>Ticket kinds sell access to privilege-type inventory. A combined ticket is available only while every required pool has capacity.</p></article><article class="finding-card"><h3>Money has its own record</h3><p>Orders, payments, refunds, payouts and ledger transactions stay separate from a ticket's ownership state.</p></article><article class="finding-card"><h3>Tenancy is deliberate</h3><p>Ticketeer, organization and event form the scope hierarchy. Users are global and access is applied through roles and query scoping.</p></article><article class="finding-card"><h3>One known limit</h3><p>Scanning records a current checked-in state, not a complete scan journal. Regulated access reporting needs that additional evidence layer.</p></article></div>
       </section>
 
       <section class="document-section" id="flow">
-        <header class="section-header"><span class="section-number">02</span><div><h2>Why the sales path is safer than the current Como pattern</h2><p>The critical transaction keeps payment, ticket ownership and accounting together.</p></div></header>
+        <header class="section-header"><span class="section-number">02</span><div><h2>Order completion and issuer handoff</h2><p>The critical transaction keeps payment, ticket ownership and accounting together, then hands external work to the outbox.</p></div></header>
         <div class="boundary" role="img" aria-label="A customer adds tickets to a cart, inventory is reserved, payment completion creates ownership and accounting changes in one PostgreSQL transaction, and an outbox sends the later ticket-engine record."><article><strong>Cart</strong><p>Adding a ticket reserves inventory. A periodic cleanup releases expired carts and orders.</p></article><i>→</i><article><strong>Order completion</strong><p>The payment row is locked while ownership transitions and ledger rows are written in one PostgreSQL transaction.</p></article><i>→</i><article><strong>Outbox</strong><p>The ticket-engine record is queued as a local row and sent later. A remote engine call does not sit inside the sale.</p></article></div>
-        <div class="callout"><strong>What this means for the migration</strong><p>Do not reproduce the current dependency where payment succeeds and a remote title call can leave the order in an indeterminate state. The issuer integration should receive a durable request after the commercial sale is committed, then report its own result back to OPN.</p></div>
+        <div class="callout"><strong>Migration consequence</strong><p>The target should not reproduce the current dependency where payment succeeds and a remote title call can leave the order in an indeterminate state. The issuer integration receives a durable request after the commercial sale commits, then reports its own result back to OPN.</p></div>
       </section>
 
       <section class="document-section" id="boundary">
-        <header class="section-header"><span class="section-number">03</span><div><h2>What this does not solve</h2><p>Some requirements fit existing seams. Others change the target architecture.</p></div></header>
+        <header class="section-header"><span class="section-number">03</span><div><h2>Extension points and migration gaps</h2><p>Some Como outcomes fit existing OPN seams. The remaining items require a product build or the issuer boundary.</p></div></header>
         <div class="finding-grid"><article class="finding-card"><h3>Good extension seams</h3><ul class="fact-list"><li>New sellable products can use the existing ticket kind and privilege model.</li><li>Payment methods are adapter-based.</li><li>Delivery and notifications can be replaced behind their integrations.</li><li>Events, pricing, seats, reservations and organisation roles already have operating surfaces.</li></ul></article><article class="finding-card"><h3>Requirements that change the design</h3><ul class="fact-list"><li>A named legal holder and fiscal evidence are not ordinary profile fields.</li><li>Italian fiscal title lifecycle and C1/C2 reporting need an issuer record and append-only evidence.</li><li>Consumer click-to-pick seating is not the current shop experience.</li><li>White-label brands are separate static builds, not runtime theme switches.</li></ul></article></div>
       </section>
 
       <section class="document-section" id="source">
-        <header class="section-header"><span class="section-number">04</span><div><h2>Need to go deeper?</h2><p>Use the full reference for code-level design or give the Markdown to an AI with a precise question.</p></div></header>
-        <p class="document-link"><a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/opn-platform-architecture.md">Open canonical Markdown ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/opn-platform-architecture.md">Read on GitHub ↗</a><span aria-hidden="true"> · </span><a href="index.html">Back to the migration answer →</a></p>
+        <header class="section-header"><span class="section-number">04</span><div><h2>Technical evidence</h2><p>The platform paper contains the repository paths, domain model, APIs, async flows and caveats behind this summary.</p></div></header>
+        <p class="document-link"><a href="https://raw.githubusercontent.com/kasper-keunen/opn-monorepo/main/docs/architecture/opn-platform-architecture.md">Canonical Markdown ↗</a><span aria-hidden="true"> · </span><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/opn-platform-architecture.md">GitHub view ↗</a><span aria-hidden="true"> · </span><a href="index.html">Migration summary →</a></p>
       </section>
     </main>
     <footer class="footer"><p>OPN / SENT ticketing research map</p></footer>
