@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A concise technical map of the OPN ticketing platform." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content="How the OPN platform works" />
+    <meta property="og:description" content="A concise technical map of Entrails, the OPN domain model, platform flows, and extension boundaries." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f5f6f7" />
+    <title>How the OPN platform works</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="topbar"><div class="topbar-inner"><a class="document-name" href="index.html">OPN architecture</a><span class="document-state">Platform map</span><nav aria-label="Document sections"><a href="../">Como comparison</a><a href="index.html">Architecture map</a><a href="como.html">Como comparison</a><a href="#model">Domain</a><a href="#flow">Flow</a><a href="#boundary">Boundary</a><a href="#source">Source</a></nav></div></header>
+    <main id="content">
+      <section class="intro architecture-intro" id="top">
+        <p class="document-type">Platform reference, condensed</p>
+        <h1>How the OPN platform<br /><span>holds a ticket sale together</span></h1>
+        <p class="intro-text">OPN is more than a shop. Entrails is the central system of record for ticket rights, orders, inventory, tenancy and integrations. The customer shop and organiser dashboard are separate applications built around that backend.</p>
+        <dl class="document-meta"><div><dt>Backend</dt><dd>Entrails, Django REST API</dd></div><div><dt>Shop</dt><dd>Vuescera</dd></div><div><dt>Dashboard</dt><dd>Vuejones</dd></div><div><dt>Service model</dt><dd>Local transaction plus async outbox</dd></div></dl>
+      </section>
+
+      <section class="document-section" id="model">
+        <header class="section-header"><span class="section-number">01</span><div><h2>The important distinction</h2><p>Ownership, entry rights and the seat are related records. They are not the same record.</p></div></header>
+        <div class="boundary" role="img" aria-label="A Ticket represents ownership, a Privilege represents the right of entry, and Seating attaches to the privilege."><article><strong>Ticket</strong><p>The ownership record. It carries the sale, transfer and resale lifecycle.</p></article><i>→</i><article><strong>Privilege</strong><p>The actual right of entry. Check-in, seat allocation and ticket-engine records attach here.</p></article><i>→</i><article><strong>Seating</strong><p>The selected or allocated place for that privilege, when the event uses seating.</p></article></div>
+        <div class="finding-grid"><article class="finding-card"><h3>Inventory is shared through pools</h3><p>Ticket kinds sell access to privilege-type inventory. A combined ticket is available only while every required pool has capacity.</p></article><article class="finding-card"><h3>Money has its own record</h3><p>Orders, payments, refunds, payouts and ledger transactions stay separate from a ticket's ownership state.</p></article><article class="finding-card"><h3>Tenancy is deliberate</h3><p>Ticketeer, organization and event form the scope hierarchy. Users are global and access is applied through roles and query scoping.</p></article><article class="finding-card"><h3>Scanning is current state</h3><p>A privilege can be checked in and reversed, but the audited platform has no full scan-event journal. That matters for regulated access reporting.</p></article></div>
+      </section>
+
+      <section class="document-section" id="flow">
+        <header class="section-header"><span class="section-number">02</span><div><h2>The online sale path</h2><p>The critical transaction keeps payment, ticket ownership and accounting together.</p></div></header>
+        <div class="boundary" role="img" aria-label="A customer adds tickets to a cart, inventory is reserved, payment completion creates ownership and accounting changes in one PostgreSQL transaction, and an outbox sends the later ticket-engine record."><article><strong>Cart</strong><p>Adding a ticket reserves inventory. A periodic cleanup releases expired carts and orders.</p></article><i>→</i><article><strong>Order completion</strong><p>The payment row is locked while ownership transitions and ledger rows are written in one PostgreSQL transaction.</p></article><i>→</i><article><strong>Outbox</strong><p>The ticket-engine record is queued as a local row and sent later. A remote engine call does not sit inside the sale.</p></article></div>
+        <div class="callout"><strong>Why this matters for migration</strong><p>OPN does not need the same recovery mechanism as Como's remote title call. A payment can complete without the engine mirror, but the sale itself does not become partly issued.</p></div>
+      </section>
+
+      <section class="document-section" id="boundary">
+        <header class="section-header"><span class="section-number">03</span><div><h2>Where the platform ends</h2><p>Some requirements fit existing seams. Others need a separate service boundary.</p></div></header>
+        <div class="finding-grid"><article class="finding-card"><h3>Good extension seams</h3><ul class="fact-list"><li>New sellable products can use the existing ticket kind and privilege model.</li><li>Payment methods are adapter-based.</li><li>Delivery and notifications can be replaced behind their integrations.</li><li>Events, pricing, seats, reservations and organisation roles already have operating surfaces.</li></ul></article><article class="finding-card"><h3>Requirements that change the design</h3><ul class="fact-list"><li>A named legal holder and fiscal evidence are not ordinary profile fields.</li><li>Italian fiscal title lifecycle and C1/C2 reporting need an issuer record and append-only evidence.</li><li>Consumer click-to-pick seating is not the current shop experience.</li><li>White-label brands are separate static builds, not runtime theme switches.</li></ul></article></div>
+      </section>
+
+      <section class="document-section" id="source">
+        <header class="section-header"><span class="section-number">04</span><div><h2>Read the full reference when needed</h2><p>The detailed paper carries audited commits, code paths and the full API, async and frontend reference.</p></div></header>
+        <p class="document-link"><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/opn-platform-architecture.md">Open OPN platform architecture ↗</a><span aria-hidden="true"> · </span><a href="index.html">Back to the architecture map →</a></p>
+      </section>
+    </main>
+    <footer class="footer"><p>OPN / SENT ticketing research map</p></footer>
+  </body>
+</html>

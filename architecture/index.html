@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A short map of the shareable OPN architecture and Como comparison research." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content="OPN architecture map" />
+    <meta property="og:description" content="A concise guide to the OPN platform, the Como comparison, and the supporting research." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f5f6f7" />
+    <title>OPN architecture map</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="document-name" href="#top">OPN architecture</a>
+        <span class="document-state">Research map</span>
+        <nav aria-label="Document sections">
+          <a href="../">Como comparison</a>
+          <a href="../platform/">Platform overview</a>
+          <a href="../italy-service/">Issuance study</a>
+          <a href="platform.html">Platform</a>
+          <a href="como.html">Como comparison</a>
+          <a href="#sources">Sources</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="content">
+      <section class="intro architecture-intro" id="top">
+        <p class="document-type">Shareable architecture set</p>
+        <h1>OPN architecture<br /><span>without the long read</span></h1>
+        <p class="intro-text">
+          This is a guide to the architecture research rather than a replacement for it. Start here
+          to understand what OPN already does, how it differs from Como, and which questions still
+          need an operating or regulatory answer.
+        </p>
+        <div class="summary-banner">
+          <p>
+            The underlying material is deliberately split between a platform reference, a capability
+            comparison, and three focused papers on domain meaning, Italian fiscal fit, and a resale defect.
+          </p>
+          <a href="https://github.com/kasper-keunen/opn-monorepo/tree/main/docs/architecture">Open the source set ↗</a>
+        </div>
+        <dl class="document-meta">
+          <div><dt>Scope</dt><dd>OPN platform and Como migration</dd></div>
+          <div><dt>Evidence</dt><dd>Pinned repository audits</dd></div>
+          <div><dt>Audience</dt><dd>Product, engineering and migration teams</dd></div>
+          <div><dt>Use</dt><dd>Orientation before the detailed papers</dd></div>
+        </dl>
+      </section>
+
+      <section class="document-section">
+        <header class="section-header">
+          <span class="section-number">01</span>
+          <div><h2>Start with these two pages</h2><p>They carry most of the technical picture.</p></div>
+        </header>
+        <div class="page-grid">
+          <article class="page-card">
+            <small>Platform reference</small>
+            <h3>How OPN works</h3>
+            <p>Entrails is the system of record. It manages commerce, tickets, inventory, tenancy, APIs and the two web applications around them.</p>
+            <a href="platform.html">Read the platform map →</a>
+          </article>
+          <article class="page-card">
+            <small>Feature comparison</small>
+            <h3>What moves from Como</h3>
+            <p>The audit compares 111 operational capabilities. It separates OPN coverage from work that depends on the certified issuer or on a product decision.</p>
+            <a href="como.html">Read the Como comparison →</a>
+          </article>
+          <article class="page-card">
+            <small>Italian boundary</small>
+            <h3>What does not fit by default</h3>
+            <p>Fiscal titles, named holders, compliance reports and venue access need an issuer boundary. They are not ordinary ticket fields.</p>
+            <a href="../italy-service/">Read the issuance study →</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="document-section" id="sources">
+        <header class="section-header">
+          <span class="section-number">02</span>
+          <div><h2>Source legend</h2><p>Use the short pages for orientation, then follow the source that answers the question in front of you.</p></div>
+        </header>
+        <div class="source-grid">
+          <article class="source-card">
+            <small>Canonical repository set</small>
+            <h3>Shareable Markdown</h3>
+            <p>The repository copy is the technical reference. It names the audited commits and contains the evidence behind each finding.</p>
+            <a href="https://github.com/kasper-keunen/opn-monorepo/tree/main/docs/architecture">Open architecture documents ↗</a>
+          </article>
+          <article class="source-card">
+            <small>Working material</small>
+            <h3>Google Drive source pack</h3>
+            <p>The shared folder contains the working copies supplied alongside this research. Keep these links with the relevant discussion and review trail.</p>
+            <a href="https://drive.google.com/drive/u/4/folders/1nAPGu3Upr9DgYbTAW8HAUWJCnJOj-Soc">Open shared folder ↗</a>
+          </article>
+        </div>
+        <ul class="source-list">
+          <li><a href="https://docs.google.com/document/d/1tl9Bkc2yelWabpmp-_zMHOwe65H5c9PonFsIXWSbx1M/edit?usp=drive_link">Working document 1 ↗</a></li>
+          <li><a href="https://docs.google.com/document/d/1CDDK06XfI-lRRllc-RFHbmUzpCAMUI4UvgkPDvfkQeo/edit?usp=drive_link">Working document 2 ↗</a></li>
+          <li><a href="https://docs.google.com/document/d/17-Eb79uMcJrp27notmi6WiipOySV_7QGgNc5uyYPZPw/edit?usp=drive_link">Working document 3 ↗</a></li>
+          <li><a href="https://docs.google.com/document/d/1BRcbc4voKPRtgG83DOWVVGAXB-cYsHSVTFBhPeX3_k8/edit?usp=drive_link">Working document 4 ↗</a></li>
+        </ul>
+      </section>
+
+      <section class="document-section">
+        <header class="section-header">
+          <span class="section-number">03</span>
+          <div><h2>Supporting papers</h2><p>These are the shortest route to the issues that can change the migration design.</p></div>
+        </header>
+        <div class="domain-grid">
+          <article class="domain-card"><small>Domain semantics</small><h3>Same label, different thing</h3><p>Como and OPN use similar words for concepts that can have different lifecycle, ownership or legal meaning.</p><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-entrails-domain-difference-blueprint.md">Read the difference blueprint ↗</a></article>
+          <article class="domain-card"><small>Italian fiscal scope</small><h3>The issuer gap</h3><p>Entrails has a commercial ticket model. Italian fiscal objects, immutable evidence and C1/C2 reporting are separate requirements.</p><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/italy-siae-fit-gap.md">Read the Italy fit-gap ↗</a></article>
+          <article class="domain-card"><small>Concrete defect</small><h3>Como resale is incomplete</h3><p>The audited buyer path is unreachable and its issuance step is a stub. It should not be treated as a working migration baseline.</p><a href="https://github.com/kasper-keunen/opn-monorepo/blob/main/docs/architecture/como-resale-issuance-defect.md">Read the resale finding ↗</a></article>
+          <article class="domain-card"><small>Issuer option</small><h3>Engine Open assessment</h3><p>Engine Open can provide integration patterns, but the regulated issuance model and certification boundary still need to be built and evidenced.</p><a href="../engine-open/">Read the assessment →</a></article>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><p>OPN / SENT ticketing research map</p></footer>
+  </body>
+</html>
