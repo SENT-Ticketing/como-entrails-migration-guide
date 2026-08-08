@@ -25,6 +25,8 @@
           <a href="../italy-service/">Issuance study</a>
           <a href="platform.html">Platform</a>
           <a href="como.html">Como comparison</a>
+          <a href="#overview">Overview</a>
+          <a href="#findings">Findings</a>
           <a href="#sources">Sources</a>
         </nav>
       </div>
@@ -54,7 +56,7 @@
         </dl>
       </section>
 
-      <section class="document-section">
+      <section class="document-section" id="overview">
         <header class="section-header">
           <span class="section-number">01</span>
           <div><h2>Start with these two pages</h2><p>They carry most of the technical picture.</p></div>
@@ -81,9 +83,43 @@
         </div>
       </section>
 
-      <section class="document-section" id="sources">
+      <section class="document-section">
         <header class="section-header">
           <span class="section-number">02</span>
+          <div><h2>System overview</h2><p>The migration keeps commercial ticketing in OPN and puts regulated title work behind a dedicated issuer boundary.</p></div>
+        </header>
+        <figure class="system-overview" role="img" aria-label="Como and Planet are the current application and fiscal provider. Entrails becomes the target commercial system of record. An Italian issuer service handles fiscal titles and interfaces with Planet, authorities and venue access.">
+          <div class="overview-node current"><small>Current</small><strong>Como app + PlaNet</strong><span>club workflow plus fiscal title provider</span></div>
+          <i>→</i>
+          <div class="overview-node core"><small>Target commercial core</small><strong>Entrails</strong><span>orders, payments, tickets, seats and customer experience</span></div>
+          <i>→</i>
+          <div class="overview-node issuer"><small>Target issuer boundary</small><strong>Italian issuer service</strong><span>fiscal title, evidence, reporting, Planet, SIAE and Alfi adapters</span></div>
+        </figure>
+        <p class="section-copy">The issuer boundary is the important change. It keeps normal product and commerce work out of the certified lifecycle, while allowing the provider behind it to change as evidence and recognition work progress.</p>
+      </section>
+
+      <section class="document-section" id="findings">
+        <header class="section-header">
+          <span class="section-number">03</span>
+          <div><h2>High-confidence findings</h2><p>These are direct repository findings. They are useful planning anchors, not assumptions about a future provider agreement.</p></div>
+        </header>
+        <div class="table-panel confidence-table">
+          <table>
+            <thead><tr><th>Finding</th><th>What the audit shows</th><th>Planning consequence</th></tr></thead>
+            <tbody>
+              <tr><td>Entrails is the system of record</td><td>It owns the commercial ticket, order, payment, inventory and tenancy models.</td><td>Keep commerce and customer workflow in OPN.</td></tr>
+              <tr><td>Online sales are locally atomic</td><td>Payment completion, ownership and ledger records commit together; the engine record goes through an outbox.</td><td>Do not copy Como's paid-but-not-issued recovery model into the sale path.</td></tr>
+              <tr><td>Italian issuance is outside the current domain</td><td>Fiscal configuration, title evidence, correction chains and C1/C2 reporting have no matching Entrails model.</td><td>Use a separate issuer service and an append-only evidence model.</td></tr>
+              <tr><td>OPN resale is the stronger baseline</td><td>The audited Como buyer path is unreachable and the issuance step is a stub. OPN validates resale on the server.</td><td>Do not port Como resale as a working flow.</td></tr>
+              <tr><td>Exact seat choice is still a gap</td><td>OPN can allocate seats and staff can assign them, but the shop has no buyer click-to-pick map.</td><td>Treat stadium seat selection as a deliberate product build.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="document-section" id="sources">
+        <header class="section-header">
+          <span class="section-number">04</span>
           <div><h2>Source legend</h2><p>Use the short pages for orientation, then follow the source that answers the question in front of you.</p></div>
         </header>
         <div class="source-grid">
@@ -110,7 +146,7 @@
 
       <section class="document-section">
         <header class="section-header">
-          <span class="section-number">03</span>
+          <span class="section-number">05</span>
           <div><h2>Supporting papers</h2><p>These are the shortest route to the issues that can change the migration design.</p></div>
         </header>
         <div class="domain-grid">
